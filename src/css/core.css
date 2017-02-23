@@ -1,0 +1,16 @@
+body,html{
+    width: 100%;
+    height: 100%;
+    font-size: 100%;
+}
+
+#testContainer{
+    /*font-size: 1.5em;*/
+}
+.center-custom{
+    text-align: center;
+}
+
+.inline-custom{
+    
+}

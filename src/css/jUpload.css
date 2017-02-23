@@ -1,0 +1,22 @@
+/*upload*/
+.j-upload-input{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-color: #adadad;
+    border-width: 1px;
+    border-style: solid;
+    background-color: transparent;    
+    margin:5px 0px 5px 5px;
+    padding: 5px 15px 5px 15px;
+    
+}
+.j-upload-btn{
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-color: #adadad;
+    background-color: #e6e6e6;
+    border-width: 1px;
+    border-style: solid;
+    margin:5px 5px 5px 0px;    
+    padding: 5px 15px 5px 15px;
+}

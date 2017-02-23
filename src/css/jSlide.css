@@ -1,0 +1,70 @@
+/**
+*slide 的 css 文件
+*/
+
+.slide-container{
+    border-right-style: solid;
+    border-right-color: #e7eaec;
+    border-right-width: 1px;
+    text-align: left;
+    font-size: 1em;
+}
+.slide-container div{
+    margin: 2px 5px 2px 15px;    
+}
+/*header*/
+.slide-header {
+    border-bottom: 1px solid #e7eaec;
+    text-align: left;
+    padding-bottom: 5px;
+}
+.slide-header-content{
+    font-size: 2em;
+}
+.slide-header-label{
+    font-size: 0.8em;
+}
+/*body*/
+.slide-body{
+    border-bottom: 1px solid #e7eaec;
+    padding-top: 5px;
+    font-size: 1.3em;
+}
+
+.slide-group{
+    border-bottom: 1px solid #e7eaec;
+    font-size: 0.8em;
+}
+.slide-group-header{
+    background-color: white;    
+    border-left: 3px solid #4f9fcf;
+    font-size: 1em;
+    padding:  5px 5px 5px 10px;
+}
+.slide-group-header:hover{
+    color: #4f9fcf;
+    cursor:pointer;
+}
+.slide-option{
+    background-color: white;
+    border-radius: 5px;
+    font-size:0.8em;
+    padding: 5px 5px 5px 15px;
+    /*line-height: 1em;*/
+}
+.slide-option:hover{
+    background-color: #286090;
+    color: white;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor:pointer;
+    -webkit-transform: all 3s;
+    -moz-transform:all 3s;
+    -o-transform:all 3s;
+    transform:all 3s;
+}
+
+/*footer*/
+.slide-footer{
+    padding: 5px 5px 5px 15px;
+}

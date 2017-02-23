@@ -1,0 +1,32 @@
+/*button*/
+.j-btn{
+    padding: 5px 15px 5px 15px;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid transparent;
+    display: inline-block;
+    line-height: 1.5em;
+}
+.j-btn-submit{
+    background-color: #286090;
+    color: white;
+}
+.j-btn-submit:hover{
+    background-color: #4f9fcf;
+}
+
+.j-btn-clear{
+    background-color: #dd2d51;
+    color: white;
+}
+.j-btn-clear:hover{
+    background-color: #db5973;
+}
+.j-btn-disable{
+    cursor: not-allowed;
+    filter: alpha(opacity=65);
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: .65;
+}

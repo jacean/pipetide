@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>peptide</title>
+    <script src="..\lib\jquery-1.9.1\jquery.js"></script>
+    <script src="..\lib\bootstrap-3.3.7\js\bootstrap.js"></script>
+    <link rel="stylesheet" href="..\lib\bootstrap-3.3.7\css\bootstrap.css">
+    <script src="..\js\core.js"></script>
+    <script src="..\js\jSlide.js"></script>
+    <script src="..\js\jUpload.js"></script>
+    <link rel="stylesheet" href="..\css\core.css">
+    <link rel="stylesheet" href="..\css\jButton.css">
+    <link rel="stylesheet" href="..\css\jSlide.css">
+    <link rel="stylesheet" href="..\css\jUpload.css">
+    <link rel="stylesheet" href="..\css\jLoading.css">
+
+    <script>
+        $(document).ready(function () {
+            //初始化上传文件按钮
+            jUI.jUpload("#uploadFile");
+            //初始化左边栏
+            var slideData = {
+                header: {
+                    main: "peptide",
+                    label: "抗菌肽在线预测平台"
+                },
+                body: [{
+                    header: "功能",
+                    // options: ["IMP-PUP", "iLM-2L", "CKSAAP_PhoglySite"]
+                    options: [
+                        {
+                            text: "IMP_PUP",
+                            value: "IMP_PUP",
+                            label: "Prediction of pupylation sites in prokaryotic proteins",
+                            type: "tab"
+                        }, {
+                            text: "iLM_2L",
+                            value: "iLM_2L",
+                            label: "Prediction of protein lysine methylation sites and their methylation degrees",
+                            type: "tab"
+                        }, {
+                            text: "CKSAAP_PhoglySite",
+                            value: "CKSAAP_PhoglySite",
+                            label: "Prediction of protein lysine phosphoglycerylation sites",
+                            type: "tab"
+                        }
+                    ], type: "group"
+                }, {
+                    header: "说明",
+                    // options: ["readme", "data", "citation"]
+                    options: [
+                        {
+                            text: "readme",
+                            value: "ReadMe.html",
+                            type: "link"
+                        }, {
+                            text: "data",
+                            value: "data.html",
+                            type: "link"
+                        }, {
+                            text: "citation",
+                            value: "Citation.html",
+                            type: "link"
+                        }
+                    ], type: "group"
+                },
+                    "Contact @ jacean"],
+                footer: ["dut"]
+            };
+            var event = {
+                tabEvent: function (dom, text, value, label) {
+                    $("#testType").text(text);
+                    $("#testType").data('value', value);
+                    $("#testLabel").text(label);
+                }
+            }
+            jUI.jSlide("#slideContainer", {
+                data: slideData,
+                event: event
+            });
+
+            //初始化按钮事件
+            $("#seqeSubmit").click(function () {
+                // submitForm("seqeForm", "IMP_PUP");
+                if ($("#seqe").val().trim() == "") {
+                    // console.log(1);
+                    return;
+                }
+                // $(this).attr("disabled",true);
+                addLoading();
+                submitForm("seqeForm", $("#testType").data("value"));
+
+            });
+            $("#fileSubmit").click(function () {
+                // $(this).attr("disabled",true);
+                addLoading();
+                submitForm("fileForm", $("#testType").data("value"));
+
+            });
+
+            //隐藏结果面板            
+            $("#resultPanel").hide();
+
+            //阻止默认提交事件
+            $("form").submit(function (e) {
+                e.preventDefault();
+                // alert("Submit prevented");
+            });
+
+        });
+
+        function setResultPanel(title, status) {
+
+        }
+        function addLoading() {
+
+            var loadHtml = "<div class='loading'>" +
+                "<span > </span>" +
+                "<span > </span>" +
+                "<span > </span>" +
+                "<span > </span>" +
+                "<span > </span>" +
+                "</div>";
+            $("#resultPanel").show().removeClass("panel-success panel-danger").addClass("panel-default");
+            $("#resultTitle").html("正在执行");
+            $("#resultInfo").html("");
+            $("#resultInfo").append(loadHtml);
+            $("#seqeSubmit").attr("disabled", true);
+            $("#seqeSubmit").addClass("j-btn-disable");
+            $("#fileSubmit").addClass("j-btn-disable");
+            $("#fileSubmit").attr("disabled", true);
+        }
+        function removeLoading() {
+            $(".loading").remove();
+            $("#seqeSubmit").attr("disabled", false);
+            $("#fileSubmit").attr("disabled", false);
+            $("#seqeSubmit").removeClass("j-btn-disable");
+            $("#fileSubmit").removeClass("j-btn-disable");
+        }
+        function submitForm(formid, exec) {
+            var fd = new FormData(document.getElementById(formid));
+            fd.append("exec", exec);
+            fd.append("type", formid);
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: '../server/uploadclassnew.php',
+                data: fd,
+                async: true,
+                processData: false,  // 告诉jQuery不要去处理发送的数据
+                contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+                error: function (request) {
+                    $("#resultPanel").show().removeClass("panel-default panel-success").addClass("panel-danger");
+                    $("#resultTitle").html("提交失败");
+                    $("#resultInfo").html(request);
+                    removeLoading();
+                },
+                success: function (data) {
+                    if (data.status == "ok") {
+                        $("#resultPanel").show().removeClass("panel-default panel-danger").addClass("panel-success");
+                        $("#resultTitle").html("执行成功");
+                        var str = data.result;
+                        // $("#resultInfo").html(str.replace(/\r\n/g,"</br>"));
+                        var strArr = str.split('\r\n');
+                        var len = strArr.length;
+                        var tempStr = "";
+                        for (var i = 0; i < len; i++) {
+                            tempStr += "<p>" + strArr[i] + "</p>"
+                        }
+                        tempStr += "<a href='" + data.data + "'>click this to download result file</a>";
+                        $("#resultInfo").html(tempStr);
+                    } else {
+                        $("#resultPanel").show().removeClass("panel-default panel-success").addClass("panel-danger");
+                        $("#resultTitle").html("执行失败");
+                        var str = data.result;
+                        // $("#resultInfo").html(str.replace(/\r\n/g,"</br>"));
+                        var strArr = str.split('\r\n');
+                        var len = strArr.length;
+                        var tempStr = "";
+                        for (var i = 0; i < len; i++) {
+                            tempStr += "<p>" + strArr[i] + "</p>"
+                        }
+                        $("#resultInfo").html(tempStr);
+                    }
+                    removeLoading();
+                },
+                dataType: "json"
+            });
+        }
+        function clearForm() {
+            //type="reset"会重置form
+        }
+    </script>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <!--<div class="page-header">
+            <h1>peptide</h1>
+            <p>抗菌肽在线预测平台</p>
+        </div>-->
+        <div class="row">
+            <div class="col-md-3" id="slideContainer">
+            </div>
+            <div class="col-md-9">
+                <div class="" id="testContainer">
+                    <div class="" id="testDescription">
+                        <h2 id="testType">iLM-2L</h2>
+                        <p id="testLabel">Prediction of protein lysine methylation sites and their methylation degrees
+                        </p>
+                    </div>
+                    <div>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active "><a class="text-right" href="#testSequences" aria-controls="testSequences" role="tab" data-toggle="tab">序列测试</a></li>
+                            <li role="presentation"><a class="text-left" href="#testFile" aria-controls="testFile" role="tab" data-toggle="tab">文件测试</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="testSequences">
+                                <div class="center-custom">
+                                    <form id="seqeForm">
+                                        <!--<form  id="seqeForm" method="POST" action="../server/uploadclassnew.php">-->
+                                        <!--<input type="text" name="type" value="seqeForm">
+                                        <input type="text" name="exec" value="IMP_PUP">-->
+                                        <p>
+                                            Enter or copy/paste query protein sequences in FASTA format (Example):
+                                        </p>
+                                        <div>
+                                            <textarea name="seqe" id="seqe" cols="60" rows="10"></textarea>
+                                            <div>
+                                                <button id="seqeSubmit" class="j-btn j-btn-submit">submit</button>
+                                                <!--<button id="seqeSubmit" type="submit" class="j-btn j-btn-submit">submit</button>-->
+                                                <button id="seqeClear" type="reset" class="j-btn j-btn-clear">clear</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane " id="testFile">
+                                <div class="center-custom" style="width: 100%">
+                                    <form id="fileForm">
+                                        <!--<form id="fileForm" method="POST" action="../server/uploadclassnew.php" enctype="multipart/form-data">-->
+                                        <!--<input type="text" name="type" value="fileForm">
+                                        <input type="text" name="exec" value="IMP_PUP">-->
+                                        <p>Upload your input file in FASTA format:</p>
+                                        <div class="inline-custom">
+                                            <input id="uploadFile" name="uploadFile" type="file" />
+                                        </div>
+                                        <div>
+
+                                            <div>
+                                                <button id="fileSubmit" class="j-btn j-btn-submit">submit</button>
+                                                <button id="fileClear" type="reset" class="j-btn j-btn-clear">clear</button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="resultPanel" class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 id="resultTitle" class="panel-title">执行结果</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div id="resultInfo"></div>
+                        <div id="resultDown"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row"></div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>peptide</title>
+    <script src="..\lib\jquery-1.9.1\jquery.js"></script>
+    <script src="..\lib\bootstrap-3.3.7\js\bootstrap.js"></script>
+    <link rel="stylesheet" href="..\lib\bootstrap-3.3.7\css\bootstrap.css">
+    <script src="..\js\core.js"></script>
+    <script src="..\js\jSlide.js"></script>
+    <script src="..\js\jUpload.js"></script>
+    <link rel="stylesheet" href="..\css\core.css">
+    <link rel="stylesheet" href="..\css\jButton.css">
+    <link rel="stylesheet" href="..\css\jSlide.css">
+    <link rel="stylesheet" href="..\css\jUpload.css">
+
+    <script>
+        $(document).ready(function () {
+
+            //初始化上传文件按钮
+            jUI.jUpload("#uploadFile");
+
+
+            var slideData={
+                header:{
+                    main:"peptide",
+                    label:"抗菌肽在线预测平台"
+                },
+                body:[{
+                    header:"功能",
+                    options:["IMP-PUP","iLM-2L","CKSAAP_PhoglySite"]
+                },{
+                    header:"说明",
+                    options:["readme","data","citation"]
+                },
+                "Contact @ jacean"],
+                footer:["dut"]
+            };
+            jUI.jSlide("#slideContainer",{
+                data:slideData
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="page-header">
+            <h1>peptide</h1>
+            <p>抗菌肽在线预测平台</p>
+        </div>
+        <div class="row">
+            <div class="col-md-3" id="slideContainer">
+                <!--<div class="slide-container text-uppercase ">
+                    <div class="slide-header">
+                        <div class="slide-header-content">peptide</div>
+                        <div class="slide-header-label">抗菌肽在线预测平台</div>
+                    </div>
+                    <div class="slide-body">
+                        <div class="slide-group">
+                            <div class="slide-group-header ">功能</div>
+                            <div class="slide-option ">IMP-PUP</div>
+                            <div class="slide-option ">iLM-2L</div>
+                            <div class="slide-option ">CKSAAP_PhoglySite</div>
+                        </div>
+                        <div class="slide-group">
+                            <div class="slide-group-header ">说明</div>
+                            <div class="slide-option ">readme</div>
+                            <div class="slide-option ">data</div>
+                            <div class="slide-option ">citation</div>
+                        </div>
+                        <div class="slide-option ">Contact @ jacean</div>
+                    </div>
+                    <div class="slide-footer">
+                        <div>dut</div>
+                    </div>
+                </div>-->
+
+            </div>
+            <div class="col-md-9">
+                <div class="" id="testContainer">
+                    <div class="" id="testDescription">
+                        <h2>iLM-2L</h2>
+                        <p>Prediction of protein lysine methylation sites and their methylation degrees
+                        </p>
+                    </div>
+                    <div>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active "><a class="text-right" href="#testSequences" aria-controls="testSequences" role="tab" data-toggle="tab">序列测试</a></li>
+                            <li role="presentation"><a class="text-left" href="#testFile" aria-controls="testFile" role="tab" data-toggle="tab">文件测试</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="testSequences">
+                                <div class="center-custom">
+                                    <p>
+                                        Enter or copy/paste query protein sequences in FASTA format (Example):
+                                    </p>
+                                    <div>
+                                        <textarea name="" id="" cols="60" rows="10"></textarea>
+                                        <div>
+                                            <button type="button" class="j-btn j-btn-submit">submit</button>
+                                            <button type="button" class="j-btn j-btn-clear">clear</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane " id="testFile">
+                                <div class="center-custom" style="width: 100%">
+                                    <div>
+                                        <p>Upload your input file in FASTA format:</p>
+                                        <div class="inline-custom">
+                                            <input id="uploadFile" name="uploadFile" type="file" />
+                                        </div>
+                                        <div>
+
+                                            <div>
+                                                <button type="button" class="j-btn j-btn-submit">submit</button>
+                                                <button type="button" class="j-btn j-btn-clear">clear</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row"></div>
+    </div>
+</body>
+
+</html>
