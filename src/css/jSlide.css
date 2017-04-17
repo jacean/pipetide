@@ -10,18 +10,23 @@
     font-size: 1em;
 }
 .slide-container div{
-    margin: 2px 5px 2px 15px;    
+    /*margin: 2px 5px 2px 15px;    */
 }
 /*header*/
 .slide-header {
     border-bottom: 1px solid #e7eaec;
     text-align: left;
-    padding-bottom: 5px;
+    /*padding-bottom: 50px;*/
+    padding-top: 50px;
 }
 .slide-header-content{
-    font-size: 2em;
+    font-size: 2.5em;
+    padding-left: 15px;
 }
 .slide-header-label{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 25px;
     font-size: 0.8em;
 }
 /*body*/
@@ -30,7 +35,9 @@
     padding-top: 5px;
     font-size: 1.3em;
 }
-
+.slide-body div{
+    margin: 2px 5px 2px 15px;
+}
 .slide-group{
     border-bottom: 1px solid #e7eaec;
     font-size: 0.8em;
@@ -52,7 +59,7 @@
     padding: 5px 5px 5px 15px;
     /*line-height: 1em;*/
 }
-.slide-option:hover{
+.slide-option:not(.slide-group):hover{
     background-color: #286090;
     color: white;
     font-size: 1em;
@@ -66,5 +73,5 @@
 
 /*footer*/
 .slide-footer{
-    padding: 5px 5px 5px 15px;
+    padding: 5px 5px 5px 30px;
 }

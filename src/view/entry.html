@@ -29,10 +29,9 @@
                     label: "抗菌肽在线预测平台"
                 },
                 body: [{
-                    header: "功能",
-                    // options: ["IMP-PUP", "iLM-2L", "CKSAAP_PhoglySite"]
-                    options: [
-                        {
+                        header: "功能",
+                        // options: ["IMP-PUP", "iLM-2L", "CKSAAP_PhoglySite"]
+                        options: [{
                             text: "IMP_PUP",
                             value: "IMP_PUP",
                             label: "Prediction of pupylation sites in prokaryotic proteins",
@@ -47,13 +46,40 @@
                             value: "CKSAAP_PhoglySite",
                             label: "Prediction of protein lysine phosphoglycerylation sites",
                             type: "tab"
-                        }
-                    ], type: "group"
-                }, {
-                    header: "说明",
-                    // options: ["readme", "data", "citation"]
-                    options: [
-                        {
+                        }],
+                        type: "group"
+                    }, {
+                        header: "数据",
+                        options: [{
+                            text: "搜索",
+                            value: "search",
+                            label: "搜索抗菌肽序列",
+                            type: "tab"
+                        }, {
+                            text: "添加",
+                            value: "add",
+                            label: "填写您所知的抗菌肽序列丰富数据资源",
+                            type: "tab"
+                        }, {
+                            header: "链接",
+                            options: [{
+                                    text: "CAMP",
+                                    value: "http://www.camp.bicnirrh.res.in/",
+                                    type: "link"
+                                },
+                                {
+                                    text: "APD",
+                                    value: "http://aps.unmc.edu/AP/main.php",
+                                    type: "link"
+                                }
+                            ],
+                            type: "group"
+                        }],
+                        type: "group"
+                    }, {
+                        header: "说明",
+                        // options: ["readme", "data", "citation"]
+                        options: [{
                             text: "readme",
                             value: "ReadMe.html",
                             type: "link"
@@ -65,17 +91,21 @@
                             text: "citation",
                             value: "Citation.html",
                             type: "link"
-                        }
-                    ], type: "group"
-                },
-                    "Contact @ jacean"],
+                        }],
+                        type: "group"
+                    },
+                    // "Contact @ jacean"],
+                    {
+                        text: "Contact @ WanJiaqing",
+                        value: "mailto:wanjacean@outlook.com",
+                        type: "link"
+                    }
+                ],
                 footer: ["dut"]
             };
             var event = {
                 tabEvent: function (dom, text, value, label) {
-                    $("#testType").text(text);
-                    $("#testType").data('value', value);
-                    $("#testLabel").text(label);
+                    showTab(text, value, label);
                 }
             }
             jUI.jSlide("#slideContainer", {
@@ -101,6 +131,9 @@
                 submitForm("fileForm", $("#testType").data("value"));
 
             });
+            $("#submit_add_moudle").click(function(){
+                submitAddMoudle();
+            });
 
             //隐藏结果面板            
             $("#resultPanel").hide();
@@ -111,11 +144,17 @@
                 // alert("Submit prevented");
             });
 
+            //***//
+            $("[data-value=add]").click();
+
+
+
         });
 
         function setResultPanel(title, status) {
 
         }
+
         function addLoading() {
 
             var loadHtml = "<div class='loading'>" +
@@ -134,6 +173,7 @@
             $("#fileSubmit").addClass("j-btn-disable");
             $("#fileSubmit").attr("disabled", true);
         }
+
         function removeLoading() {
             $(".loading").remove();
             $("#seqeSubmit").attr("disabled", false);
@@ -141,6 +181,7 @@
             $("#seqeSubmit").removeClass("j-btn-disable");
             $("#fileSubmit").removeClass("j-btn-disable");
         }
+
         function submitForm(formid, exec) {
             var fd = new FormData(document.getElementById(formid));
             fd.append("exec", exec);
@@ -151,17 +192,19 @@
                 url: '../server/uploadclassnew.php',
                 data: fd,
                 async: true,
-                processData: false,  // 告诉jQuery不要去处理发送的数据
-                contentType: false,   // 告诉jQuery不要去设置Content-Type请求头
+                processData: false, // 告诉jQuery不要去处理发送的数据
+                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
                 error: function (request) {
-                    $("#resultPanel").show().removeClass("panel-default panel-success").addClass("panel-danger");
+                    $("#resultPanel").show().removeClass("panel-default panel-success").addClass(
+                        "panel-danger");
                     $("#resultTitle").html("提交失败");
                     $("#resultInfo").html(request);
                     removeLoading();
                 },
                 success: function (data) {
                     if (data.status == "ok") {
-                        $("#resultPanel").show().removeClass("panel-default panel-danger").addClass("panel-success");
+                        $("#resultPanel").show().removeClass("panel-default panel-danger").addClass(
+                            "panel-success");
                         $("#resultTitle").html("执行成功");
                         var str = data.result;
                         // $("#resultInfo").html(str.replace(/\r\n/g,"</br>"));
@@ -174,7 +217,8 @@
                         tempStr += "<a href='" + data.data + "'>click this to download result file</a>";
                         $("#resultInfo").html(tempStr);
                     } else {
-                        $("#resultPanel").show().removeClass("panel-default panel-success").addClass("panel-danger");
+                        $("#resultPanel").show().removeClass("panel-default panel-success").addClass(
+                            "panel-danger");
                         $("#resultTitle").html("执行失败");
                         var str = data.result;
                         // $("#resultInfo").html(str.replace(/\r\n/g,"</br>"));
@@ -191,93 +235,358 @@
                 dataType: "json"
             });
         }
+
+        function submitAddMoudle() {
+            //addmoudle模块上传事件
+            var fd = new FormData(document.getElementById("form_add_moudle"));
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url: 'upload_handle.php',
+                data: fd,
+                async: false,
+                processData: false, // 告诉jQuery不要去处理发送的数据
+                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                error: function (request) {
+                    alert("上传失败！");
+                },
+                success: function (data) {
+                    if (data.status == "ok") {
+                        alert("上传成功！" + data.result);
+                    } else {
+                        alert("上传失败:" + data.result);
+                    }
+
+                },
+                dataType: "json"
+            });
+
+        }
+
         function clearForm() {
             //type="reset"会重置form
         }
+
+        function showTab(text, value, label) {
+            if (value == "IMP_PUP" || value == "iLM_2L" || value == "CKSAAP_PhoglySite") {
+                $("#tabContainer").html($("#predictMoudle").html());
+                $("#testType").text(text);
+                $("#testType").data('value', value);
+                $("#testLabel").text(label);
+            }
+            if (value == "search") {
+                //添加搜索模块
+                $("#tabContainer").html($("#searchMoudle").html());
+            }
+            if (value == "add") {
+                //添加分类显示的模块
+                $("#tabContainer").html($("#addMoudle").html());
+            }
+
+        }
     </script>
+
+    <script type="text/javascript">
+        /*上传附件addmodlue，稍后改*/
+        $('input[id=inputTxl]').change(function () {
+            $('#txlshow').val($(this).val());
+        });
+    </script>
+    <script type="text/html" id="predictMoudle">
+        <div class="" id="testContainer">
+            <div class="" id="testDescription">
+                <h2 id="testType">iLM-2L</h2>
+                <p id="testLabel">Prediction of protein lysine methylation sites and their methylation degrees
+                </p>
+            </div>
+            <div>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active "><a class="text-right" href="#testSequences" aria-controls="testSequences" role="tab" data-toggle="tab">序列测试</a></li>
+                    <li role="presentation"><a class="text-left" href="#testFile" aria-controls="testFile" role="tab" data-toggle="tab">文件测试</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="testSequences">
+                        <div class="center-custom">
+                            <form id="seqeForm">
+                                <p class="test-type-desc">
+                                    Enter or copy/paste query protein sequences in FASTA format (Example):
+                                </p>
+                                <div>
+                                    <textarea name="seqe" id="seqe" cols="60" rows="10"></textarea>
+                                    <div>
+                                        <button id="seqeSubmit" class="j-btn j-btn-submit">submit</button>
+                                        <button id="seqeClear" type="reset" class="j-btn j-btn-clear">clear</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane " id="testFile">
+                        <div class="center-custom" style="width: 100%">
+                            <form id="fileForm">
+                                <p class="test-type-desc">Upload your input file in FASTA format:</p>
+                                <div class="inline-custom">
+                                    <input id="uploadFile" name="uploadFile" type="file" />
+                                </div>
+                                <div>
+
+                                    <div>
+                                        <button id="fileSubmit" class="j-btn j-btn-submit">submit</button>
+                                        <button id="fileClear" type="reset" class="j-btn j-btn-clear">clear</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="resultPanel" class="panel panel-default">
+            <div class="panel-heading">
+                <h3 id="resultTitle" class="panel-title">执行结果</h3>
+            </div>
+            <div class="panel-body">
+                <div id="resultInfo"></div>
+                <div id="resultDown"></div>
+            </div>
+        </div>
+    </script>
+    <script type="text/html" id="searchMoudle">
+        <div id="search_hearder">
+            <h2 id="testType">序列查询</h2>
+            <p id="testLabel">通过设定条件查找序列
+            </p>
+        </div>
+        <div id="search_opt">
+            <div class="panel panel-default" id="search_opt_base">
+                <div class="panel-body">
+                    <div class="form-inline row">
+                        <div id="search_opt_title" class="form-group col-md-4">
+                            <label for="search_val_title" class="">title</label>
+                            <input type="text" class="form-control " id="search_val_title" placeholder="title" />
+                        </div>
+
+                        <div id="search_opt_length" class="form-group  col-md-4">
+                            <label for="search_val_length" calss="">length</label>
+                            <input type="number" class="form-control " id="search_val_length" placeholder="length">
+                        </div>
+                        <div id="search_opt_sequence" class="form-group col-md-4">
+                            <label for="search_val_sequence">sequence</label>
+                            <input type="text" class="form-control" id="search_val_sequence" placeholder="sequence">
+                        </div>
+
+                        <div id="search_opt_activity" class="form-group col-md-10">
+                            <label for="search_val_activity">activity</label>
+                            <div class="form-control-static">
+                                <label class="checkbox-inline">
+  <input type="checkbox" id="inlineCheckbox2" value="option2"/> antiviral
+</label>
+                                <label class="checkbox-inline">
+  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antifungal
+</label>
+                                <label class="checkbox-inline">
+  <input type="checkbox" id="inlineCheckbox3" value="option3"/> anticancer
+</label>
+                                <label class="checkbox-inline">
+  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antihiv
+</label>
+                                <label class="checkbox-inline">
+  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antiparasitic
+</label>
+                                <label class="checkbox-inline">
+                                <input type="checkbox" id="inlineCheckbox1" value="option1" />antibacterial
+                                
+                                        <select name="" id="" class=" ">
+                                            <option>any</option>
+                                            <option>gram+</option>
+                                            <option>gram-</option>
+                                            <option>gram+/-</option>
+                                        </select>
+                                   
+                                </label>
+                            </div>
+
+                        </div>
+
+                        <input class="btn btn-default form-control  col-md-1" type="button" value="搜索" />
+                        <div class="col-md-1" style="height:100%">
+                        </div>
+
+                    </div>
+                    <button type="button" class="btn btn-default btn-xs"><small>more<span class="caret"></span></small></button>
+
+
+                    <div id="search_opt_adv" style="display:none">
+                        <div class="form-inline row">
+                            <div id="search_opt_validated" class="form-group col-md-4">
+                                <label>validated</label>
+                                <input type="text" class="form-control" id="search_val_sequence" placeholder="validated">
+                            </div>
+                            <div id="search_opt_database" class="form-group col-md-4">
+                                <label>源数据库</label>
+                                <input type="text" class="form-control" id="search_val_sequence" placeholder="source databse">
+                            </div>
+                            <div id="search_opt_otherid" class="form-group col-md-4">
+                                <label>数据库ID</label>
+                                <input type="text" class="form-control" id="search_val_sequence" placeholder="source database id">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="search_result">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">查询序列</div>
+                <div class="panel-body">
+                    <p>本次查询共获取xxx条序列</p>
+                </div>
+
+                <!-- Table -->
+                <table class="table">
+                    bootstraptable实现
+                </table>
+                <div class="panel-footer">下载数据</div>
+            </div>
+        </div>
+    </script>
+    <script type="text/html" id="addMoudle">
+        <div id="add_hearder">
+            <h2 id="testType">添加序列</h2>
+            <p id="testLabel">添加您的序列来丰富数据资源
+            </p>
+        </div>
+        <div id="add_body">
+            <form class="form-horizontal row " id="form_add_moudle">
+                <br>
+                <div class="form-group">
+                    <label for="yx" class="control-label col-xs-4 col-sm-3 text-right">sequence  :</label>
+                    <div class=" col-xs-6 col-sm-6">
+                        <input id="yx" name="yx" class="form-control" type="text" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="zy" class="control-label col-xs-4 col-sm-3 text-right">title  :</label>
+                    <div class=" col-xs-6 col-sm-6">
+                        <input id="zy" name="zy" class="form-control" type="text" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="search_val_activity" class="col-xs-4 col-sm-3 text-right">activity :</label>
+                    <div class="form-control-static col-xs-6 col-sm-6">
+                        <label class="checkbox-inline">
+  <input type="checkbox" id="inlineCheckbox2" value="option2"/> antiviral
+</label>
+                        <label class="checkbox-inline">
+  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antifungal
+</label>
+                        <label class="checkbox-inline">
+  <input type="checkbox" id="inlineCheckbox3" value="option3"/> anticancer
+</label>
+                        <label class="checkbox-inline">
+  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antihiv
+</label>
+                        <label class="checkbox-inline">
+  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antiparasitic
+</label>
+                        <label class="checkbox-inline">
+                                <input type="checkbox" id="inlineCheckbox1" value="option1" />antibacterial
+                                
+                                        <select name="" id="" class=" ">
+                                            <option>any</option>
+                                            <option>gram+</option>
+                                            <option>gram-</option>
+                                            <option>gram+/-</option>
+                                        </select>
+                                   
+                                </label>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="name" class="control-label col-xs-4 col-sm-3 text-right">length  :</label>
+                    <div class=" col-xs-6 col-sm-6">
+                        <input id="name" name="name" class="form-control" type="text" readonly placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tel" class="control-label col-xs-4 col-sm-3 text-right">source  :</label>
+                    <div class=" col-xs-6 col-sm-6">
+                        <input id="tel" name="tel" class="form-control" type="tel" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label col-xs-4 col-sm-3 text-right">target  :</label>
+                    <div class=" col-xs-6 col-sm-6">
+                        <input id="email" name="email" class="form-control" type="text" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label col-xs-4 col-sm-3 text-right">validated  :</label>
+                    <div class=" col-xs-6 col-sm-6">
+                        <input id="email" name="email" class="form-control" type="text" placeholder="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="control-label col-xs-4 col-sm-3 text-right">link  :</label>
+                    <div class=" col-xs-6 col-sm-6">
+                        <input id="email" name="email" class="form-control" type="text" placeholder="">
+                    </div>
+                </div>
+
+                <div class="col-xs-12  col-sm-12 " style="background-color:#adafb0">
+                </div>
+                <div class="col-xs-12  col-sm-12" style="background-color:white">
+                    &nbsp;
+                </div>
+                <!--上传附件,以上内容可以用文件批量上传-->
+                <div id="div_fj2" style="" class="form-group">
+                    <label for="inputTxl" class="control-label col-xs-4 col-sm-3 text-right">multi upload :</label>
+                    <div class="col-xs-6 col-sm-6">
+                        <div class="input-group ">
+                            <input id="inputTxl" name="inputTxl" type="file" style="display:none" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                            <input id="txlshow" type="text" class="form-control" aria-describedby="helpBlock2">
+                            <div class="input-group-btn">
+                                <a type="button" class="btn btn-default" onclick="$('input[id=inputTxl]').click();">上传</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--留言-->
+                <div class="form-group">
+                    <label for="ly" class="control-label col-xs-4 col-sm-3 text-right">desctext  :</label>
+                    <div class=" col-xs-6 col-sm-6">
+                        <textarea id="ly" name="ly" class="form-control" rows="3" placeholder=""></textarea>
+                    </div>
+                </div>
+                <!--提交-->
+                <div class="form-group">
+
+                    <div class="col-sm-6 col-xs-9 col-xs-offset-3 col-sm-offset-3">
+                        <button type="button" id="submit_add_moudle" class="btn btn-primary col-xs-9 col-sm-6" onclick="">submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+
 </head>
 
 <body>
 
     <div class="container-fluid">
-        <!--<div class="page-header">
-            <h1>peptide</h1>
-            <p>抗菌肽在线预测平台</p>
-        </div>-->
         <div class="row">
             <div class="col-md-3" id="slideContainer">
             </div>
-            <div class="col-md-9">
-                <div class="" id="testContainer">
-                    <div class="" id="testDescription">
-                        <h2 id="testType">iLM-2L</h2>
-                        <p id="testLabel">Prediction of protein lysine methylation sites and their methylation degrees
-                        </p>
-                    </div>
-                    <div>
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active "><a class="text-right" href="#testSequences" aria-controls="testSequences" role="tab" data-toggle="tab">序列测试</a></li>
-                            <li role="presentation"><a class="text-left" href="#testFile" aria-controls="testFile" role="tab" data-toggle="tab">文件测试</a></li>
-                        </ul>
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="testSequences">
-                                <div class="center-custom">
-                                    <form id="seqeForm">
-                                        <!--<form  id="seqeForm" method="POST" action="../server/uploadclassnew.php">-->
-                                        <!--<input type="text" name="type" value="seqeForm">
-                                        <input type="text" name="exec" value="IMP_PUP">-->
-                                        <p>
-                                            Enter or copy/paste query protein sequences in FASTA format (Example):
-                                        </p>
-                                        <div>
-                                            <textarea name="seqe" id="seqe" cols="60" rows="10"></textarea>
-                                            <div>
-                                                <button id="seqeSubmit" class="j-btn j-btn-submit">submit</button>
-                                                <!--<button id="seqeSubmit" type="submit" class="j-btn j-btn-submit">submit</button>-->
-                                                <button id="seqeClear" type="reset" class="j-btn j-btn-clear">clear</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane " id="testFile">
-                                <div class="center-custom" style="width: 100%">
-                                    <form id="fileForm">
-                                        <!--<form id="fileForm" method="POST" action="../server/uploadclassnew.php" enctype="multipart/form-data">-->
-                                        <!--<input type="text" name="type" value="fileForm">
-                                        <input type="text" name="exec" value="IMP_PUP">-->
-                                        <p>Upload your input file in FASTA format:</p>
-                                        <div class="inline-custom">
-                                            <input id="uploadFile" name="uploadFile" type="file" />
-                                        </div>
-                                        <div>
-
-                                            <div>
-                                                <button id="fileSubmit" class="j-btn j-btn-submit">submit</button>
-                                                <button id="fileClear" type="reset" class="j-btn j-btn-clear">clear</button>
-                                            </div>
-                                        </div>
-                                    </form>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="resultPanel" class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 id="resultTitle" class="panel-title">执行结果</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="resultInfo"></div>
-                        <div id="resultDown"></div>
-                    </div>
-                </div>
-
+            <div class="col-md-9" id="tabContainer">
             </div>
         </div>
         <div class="row"></div>

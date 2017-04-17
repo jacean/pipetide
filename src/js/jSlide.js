@@ -50,7 +50,7 @@
             }
             function createGroup(groupObject) {
                 var optionsArr = groupObject.options;
-                var groupHtml = '<div class="slide-group">';
+                var groupHtml = '<div class="slide-group slide-option">';//既是group又是option
                 groupHtml += '<div class="slide-group-header ">' +
                     groupObject.header +
                     '</div>';
