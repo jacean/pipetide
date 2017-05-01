@@ -12,6 +12,16 @@
 .slide-container div{
     /*margin: 2px 5px 2px 15px;    */
 }
+.slide-head-show{
+    float: right;
+    width: 25px;
+    height: 25px;
+}
+.slide-head-hide{
+    width: 25px;
+    height: 25px;
+
+}
 /*header*/
 .slide-header {
     border-bottom: 1px solid #e7eaec;
@@ -44,12 +54,12 @@
 }
 .slide-group-header{
     background-color: white;    
-    border-left: 3px solid #4f9fcf;
+    border-left: 3px solid #73879C;
     font-size: 1em;
     padding:  5px 5px 5px 10px;
 }
 .slide-group-header:hover{
-    color: #4f9fcf;
+    color: #73879C;
     cursor:pointer;
 }
 .slide-option{

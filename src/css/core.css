@@ -20,3 +20,10 @@ body,html{
 .test-type-desc{
     margin: 20px 0px 20px 0px;
 }
+.pagination > li > a, .pagination > li > span  {
+    color: #73879C;
+}
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+    background-color: #73879C;
+    border-color: #73879C;
+}

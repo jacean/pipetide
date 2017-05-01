@@ -6,12 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>peptide</title>
-    <script src="..\lib\jquery-1.9.1\jquery.js"></script>
+    <script src="..\lib\jquery-3.1.1\jquery.js"></script>
     <script src="..\lib\bootstrap-3.3.7\js\bootstrap.js"></script>
     <link rel="stylesheet" href="..\lib\bootstrap-3.3.7\css\bootstrap.css">
+    <script src="..\lib\bootstrap-table\bootstrap-table.js"></script>
+    <link rel="stylesheet" href="..\lib\bootstrap-table\bootstrap-table.css">
     <script src="..\js\core.js"></script>
     <script src="..\js\jSlide.js"></script>
     <script src="..\js\jUpload.js"></script>
+    <script src="..\js\jBsTable.js"></script>
+    <script src="..\js\data.js"></script>
     <link rel="stylesheet" href="..\css\core.css">
     <link rel="stylesheet" href="..\css\jButton.css">
     <link rel="stylesheet" href="..\css\jSlide.css">
@@ -106,6 +110,18 @@
             var event = {
                 tabEvent: function (dom, text, value, label) {
                     showTab(text, value, label);
+                },
+                show: function () {
+                    $("#slideContainer").addClass("col-md-3");
+                    $("#tabContainer").addClass("col-md-9");
+                    $("#slideContainer").removeClass("col-md-1");
+                    $("#tabContainer").removeClass("col-md-11");
+                },
+                hide: function () {
+                    $("#slideContainer").removeClass("col-md-3");
+                    $("#tabContainer").removeClass("col-md-9");
+                    $("#slideContainer").addClass("col-md-1");
+                    $("#tabContainer").addClass("col-md-11");
                 }
             }
             jUI.jSlide("#slideContainer", {
@@ -131,7 +147,7 @@
                 submitForm("fileForm", $("#testType").data("value"));
 
             });
-            $("#submit_add_moudle").click(function(){
+            $("#submit_add_moudle").click(function () {
                 submitAddMoudle();
             });
 
@@ -145,7 +161,7 @@
             });
 
             //***//
-            $("[data-value=add]").click();
+            $("[data-value=search]").click();
 
 
 
@@ -277,6 +293,48 @@
             if (value == "search") {
                 //添加搜索模块
                 $("#tabContainer").html($("#searchMoudle").html());
+                //初始化表单
+                jUI.jBsTable("#seq_data_table", {
+                    config: {
+                        url: "ajax_data_search.php",
+                        toolbar: '#toolbar', //工具按钮用哪个容器
+                        sidePagination: "server",
+                        uniqueId: "uid",
+                        columns: fieldArr,
+                        queryParams: function (params) {
+                            var temp = {
+                                limit: params.limit, //页面大小
+                                offset: params.offset, //页码
+                                title: $("#search_val_title").val(),
+                                length: $("#search_val_length").val(),
+                                sequence: $("#search_val_sequence").val(),
+                                activity: (function () {
+                                    var act = "";
+                                    $("input[name='search_val_activity_cb']:checked").each(
+                                        function () {
+                                            act += $(this).val() + ",";
+                                        });
+                                    act = act == "" ? "" : act.substr(0, act.length - 1);
+                                    return act;
+                                })(),
+                                validated: $("#search_val_validated").val(),
+                                sourcedb: $("#search_val_database").val(),
+                                otherid: $("#search_val_otherid").val()
+                            };
+                            return temp;
+                        },
+                        onDblClickRow: function (row, $element) {
+                            //进入到详情页
+                            //alert(row['uid']);
+                            var uid=row['uid'];
+                            window.location.href="detail.html?uid="+uid;;
+                        }
+
+                    },
+                    button: {
+
+                    }
+                });
             }
             if (value == "add") {
                 //添加分类显示的模块
@@ -382,24 +440,24 @@
 
                         <div id="search_opt_activity" class="form-group col-md-10">
                             <label for="search_val_activity">activity</label>
-                            <div class="form-control-static">
+                            <div class="form-control-static" id="search_val_activity">
                                 <label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox2" value="option2"/> antiviral
+  <input type="checkbox" name="search_val_activity_cb" value="antiviral"/> antiviral
 </label>
                                 <label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antifungal
+  <input type="checkbox"  name="search_val_activity_cb" value="antifungal"/> antifungal
 </label>
                                 <label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox3" value="option3"/> anticancer
+  <input type="checkbox" name="search_val_activity_cb" value="anticancer"/> anticancer
 </label>
                                 <label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antihiv
+  <input type="checkbox" name="search_val_activity_cb" value="antihiv"/> antihiv
 </label>
                                 <label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antiparasitic
+  <input type="checkbox" name="search_val_activity_cb" value="antiparasitic"/> antiparasitic
 </label>
                                 <label class="checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox1" value="option1" />antibacterial
+                                <input type="checkbox" name="search_val_activity_cb" value="anti" />antibacterial
                                 
                                         <select name="" id="" class=" ">
                                             <option>any</option>
@@ -425,15 +483,15 @@
                         <div class="form-inline row">
                             <div id="search_opt_validated" class="form-group col-md-4">
                                 <label>validated</label>
-                                <input type="text" class="form-control" id="search_val_sequence" placeholder="validated">
+                                <input type="text" class="form-control" id="search_val_validated" placeholder="validated">
                             </div>
                             <div id="search_opt_database" class="form-group col-md-4">
                                 <label>源数据库</label>
-                                <input type="text" class="form-control" id="search_val_sequence" placeholder="source databse">
+                                <input type="text" class="form-control" id="search_val_database" placeholder="source databse">
                             </div>
                             <div id="search_opt_otherid" class="form-group col-md-4">
                                 <label>数据库ID</label>
-                                <input type="text" class="form-control" id="search_val_sequence" placeholder="source database id">
+                                <input type="text" class="form-control" id="search_val_otherid" placeholder="source database id">
                             </div>
                         </div>
                     </div>
@@ -443,14 +501,12 @@
         <div id="search_result">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading">查询序列</div>
-                <div class="panel-body">
-                    <p>本次查询共获取xxx条序列</p>
+                <div class="panel-heading">查询序列
                 </div>
-
+                <div id="toolbar" class="btn-group">
+                </div>
                 <!-- Table -->
-                <table class="table">
-                    bootstraptable实现
+                <table class="table" id="seq_data_table">
                 </table>
                 <div class="panel-footer">下载数据</div>
             </div>

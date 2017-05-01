@@ -26,6 +26,30 @@
             this.bindGroupEvent();
             this.bindLinkEvent();
             this.bindTabEvent();
+
+            
+            var event = self.event;
+            /**
+             * 控制显示隐藏
+             */
+            var control = $('.slide-control');
+            control.click(function () {
+                if (control.hasClass("slide-head-show")) {
+                    control.removeClass('slide-head-show');
+                     control.addClass('slide-head-hide');
+                    control.removeClass('glyphicon glyphicon-chevron-left');
+                    control.addClass('glyphicon glyphicon-chevron-right');
+                    $('.slide-container').css('opacity','0');
+                    event.hide();
+                } else {
+                    control.removeClass('slide-head-hide');
+                    control.addClass('slide-head-show');
+                    control.removeClass('glyphicon glyphicon-chevron-right');
+                     control.addClass('glyphicon glyphicon-chevron-left');
+                     event.show();
+                     $('.slide-container').css({'opacity':1});
+                }
+            })
             var $tabs = self.$main.find("[data-type='tab']");
             if ($tabs.length > 0) $tabs[0].click();
         },
@@ -35,6 +59,7 @@
             if (typeof data != "object") {
                 return false;
             }
+
             function createOption(option) {
                 if (typeof option == "string") {
                     return '<div class="slide-option ">' + option + '</div>';
@@ -48,9 +73,10 @@
                 }
 
             }
+
             function createGroup(groupObject) {
                 var optionsArr = groupObject.options;
-                var groupHtml = '<div class="slide-group slide-option">';//既是group又是option
+                var groupHtml = '<div class="slide-group slide-option">'; //既是group又是option
                 groupHtml += '<div class="slide-group-header ">' +
                     groupObject.header +
                     '</div>';
@@ -71,6 +97,7 @@
                 groupHtml += '</div>';
                 return groupHtml;
             };
+
             function createBody(bodyArr) {
                 var len = bodyArr.length;
                 var bodyHtml = '<div class="slide-body">';
@@ -89,8 +116,10 @@
                 bodyHtml += '</div>';
                 return bodyHtml;
             }
+
             function createHeader(headerObject) {
                 var headerHtml = '<div class="slide-header">';
+                
                 if (typeof headerObject == "string") {
                     headerHtml += '<div class="slide-header-content">' + headerObject + '</div>';
                 }
@@ -101,6 +130,7 @@
                 headerHtml += '</div>';
                 return headerHtml;
             }
+
             function createFooter(footerArr) {
                 var footerHtml = '<div class="slide-footer">';
                 var len = footerArr.length;
@@ -112,8 +142,9 @@
                 footerHtml += '</div>';
                 return footerHtml;
             }
-
-            var Html = ' <div class="slide-container">';
+            //add hide button 2017.5.1
+            var Html= "<div class='slide-control slide-head-show glyphicon glyphicon-chevron-left'></div>"
+            Html += ' <div class="slide-container">';
             if (data instanceof Array) {
                 /**是数组，表示只传入了body */
                 Html += createBody(data);
