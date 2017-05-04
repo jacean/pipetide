@@ -50,6 +50,11 @@
                             value: "CKSAAP_PhoglySite",
                             label: "Prediction of protein lysine phosphoglycerylation sites",
                             type: "tab"
+                        },{
+                            text:" predict antimicrobial peptides and their  functional  types ",
+                            value:"peptides",
+                            label:"",
+                            type:"tab"
                         }],
                         type: "group"
                     }, {
@@ -161,7 +166,7 @@
             });
 
             //***//
-            $("[data-value=search]").click();
+            // $("[data-value=search]").click();
 
 
 
@@ -284,7 +289,7 @@
         }
 
         function showTab(text, value, label) {
-            if (value == "IMP_PUP" || value == "iLM_2L" || value == "CKSAAP_PhoglySite") {
+            if (value == "IMP_PUP" || value == "iLM_2L" || value == "CKSAAP_PhoglySite"||value=="peptides") {
                 $("#tabContainer").html($("#predictMoudle").html());
                 $("#testType").text(text);
                 $("#testType").data('value', value);
