@@ -76,6 +76,10 @@ $(function () {
             for (var i = 0, len = _bts.length; i < len; i++) {
                 $(_bts[i].dom).on(_bts[i].type, _bts[i].event);
             }
+        },
+        refresh:function(){
+            var _me=this;
+            _me.init();
         }
     }
     _jUI = {

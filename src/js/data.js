@@ -14,8 +14,8 @@ var fieldArr = [{
     title: 'sequence',
     width:'10%'
 }, */{
-    field: 'seqlen',
-    title: 'seqlen',
+    field: 'length',
+    title: 'length',
     width:'5%'
 }, {
     field: 'fromdb',

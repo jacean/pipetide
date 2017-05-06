@@ -50,11 +50,11 @@
                             value: "CKSAAP_PhoglySite",
                             label: "Prediction of protein lysine phosphoglycerylation sites",
                             type: "tab"
-                        },{
-                            text:" predict antimicrobial peptides and their  functional  types ",
-                            value:"peptides",
-                            label:"",
-                            type:"tab"
+                        }, {
+                            text: " predict antimicrobial peptides and their  functional  types ",
+                            value: "peptides",
+                            label: "",
+                            type: "tab"
                         }],
                         type: "group"
                     }, {
@@ -152,6 +152,8 @@
                 submitForm("fileForm", $("#testType").data("value"));
 
             });
+
+
             $("#submit_add_moudle").click(function () {
                 submitAddMoudle();
             });
@@ -289,7 +291,7 @@
         }
 
         function showTab(text, value, label) {
-            if (value == "IMP_PUP" || value == "iLM_2L" || value == "CKSAAP_PhoglySite"||value=="peptides") {
+            if (value == "IMP_PUP" || value == "iLM_2L" || value == "CKSAAP_PhoglySite" || value == "peptides") {
                 $("#tabContainer").html($("#predictMoudle").html());
                 $("#testType").text(text);
                 $("#testType").data('value', value);
@@ -331,14 +333,18 @@
                         onDblClickRow: function (row, $element) {
                             //进入到详情页
                             //alert(row['uid']);
-                            var uid=row['uid'];
-                            window.location.href="detail.html?uid="+uid;;
+                            var uid = row['uid'];
+                            window.location.href = "detail.html?uid=" + uid;;
                         }
 
                     },
                     button: {
 
                     }
+                });
+                //每次都是加载script，所以需要这时候绑定事件
+                $("#search_submit").click(function () {
+                    $("#seq_data_table").data("jBsTable").refresh();
                 });
             }
             if (value == "add") {
@@ -436,7 +442,15 @@
 
                         <div id="search_opt_length" class="form-group  col-md-4">
                             <label for="search_val_length" calss="">length</label>
-                            <input type="number" class="form-control " id="search_val_length" placeholder="length">
+                            <!--<input type="number" class="form-control " id="search_val_length" placeholder="length">-->
+                            <select name="search_val_length" id="search_val_length" class="">
+                                            <option value=""></option>
+                                            <option value="0-10">0-10</option>
+                                            <option value="10-50">10-50</option>
+                                            <option value="50-100">50-100</option>
+                                            <option value="100-500">100-500</option>
+                                            <option value="500-">>500</option>
+                                        </select>
                         </div>
                         <div id="search_opt_sequence" class="form-group col-md-4">
                             <label for="search_val_sequence">sequence</label>
@@ -475,31 +489,21 @@
                             </div>
 
                         </div>
-
-                        <input class="btn btn-default form-control  col-md-1" type="button" value="搜索" />
-                        <div class="col-md-1" style="height:100%">
+                        <div id="search_opt_validated" class="form-group col-md-4">
+                            <label>validated</label>
+                            <input type="text" class="form-control" id="search_val_validated" placeholder="validated">
                         </div>
-
-                    </div>
-                    <button type="button" class="btn btn-default btn-xs"><small>more<span class="caret"></span></small></button>
-
-
-                    <div id="search_opt_adv" style="display:none">
-                        <div class="form-inline row">
-                            <div id="search_opt_validated" class="form-group col-md-4">
-                                <label>validated</label>
-                                <input type="text" class="form-control" id="search_val_validated" placeholder="validated">
-                            </div>
-                            <div id="search_opt_database" class="form-group col-md-4">
-                                <label>源数据库</label>
-                                <input type="text" class="form-control" id="search_val_database" placeholder="source databse">
-                            </div>
-                            <div id="search_opt_otherid" class="form-group col-md-4">
-                                <label>数据库ID</label>
-                                <input type="text" class="form-control" id="search_val_otherid" placeholder="source database id">
-                            </div>
+                        <div id="search_opt_database" class="form-group col-md-4">
+                            <label>源数据库</label>
+                            <input type="text" class="form-control" id="search_val_database" placeholder="source databse">
                         </div>
-                    </div>
+                        <div id="search_opt_otherid" class="form-group col-md-4">
+                            <label>数据库ID</label>
+                            <input type="text" class="form-control" id="search_val_otherid" placeholder="source database id">
+                        </div>
+                        <div class="btn btn-default form-control  col-md-1" id="search_submit">搜索</div>
+                    </div>                    
+
                 </div>
             </div>
         </div>
