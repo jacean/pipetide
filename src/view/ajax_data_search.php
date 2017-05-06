@@ -11,19 +11,25 @@ $offset = $_GET["offset"];
 $limit = $_GET["limit"];
 
 function setQueryCondition(){
+    $uid=isset($_GET["uid"])?$_GET["uid"]:"";
     $title=isset($_GET["title"])?$_GET["title"]:"";
     $length=isset($_GET["length"])?$_GET["length"]:"";
     $sequence=isset($_GET["sequence"])?$_GET["sequence"]:"";
     $activity=isset($_GET["activity"])?$_GET["activity"]:"";
     $validated=isset($_GET["validated"])?$_GET["validated"]:"";
-    $sourcedb=isset($_GET["sourcedb"])?$_GET["sourcedb"]:"";
-    $otherid=isset($_GET["otherid"])?$_GET["otherid"]:"";
+    $fromdb=isset($_GET["fromdb"])?$_GET["fromdb"]:"";
+    $source=isset($_GET["source"])?$_GET["source"]:"";
     
-
+    WriteLog($uid);
     $condition="";
     //可以模糊查找，修改=为%
     $condition.=$title==""?"":" title like '%".$title."%' ";
 
+    if($uid!=""){
+        $condition.=$condition==""?"":"  and ";
+        // $condition.=$length==""?"":" and length='".$length."' ";
+        $condition.=$uid==""?"":" uid =".$uid." ";    
+    }
     if($sequence!=""){
         $condition.=$condition==""?"":"  and ";
         // $condition.=$length==""?"":" and length='".$length."' ";
@@ -31,26 +37,36 @@ function setQueryCondition(){
     }
 
     if($activity!=""){
-        $condition.=$condition==""?"":"  and ";
-        $condition.=$activity==""?"":" activity like '%".$activity."%'";   
+        //TODO:可在此处扩展，选择是and还是or
+        $actArr=explode(',',$activity);
+        $actCount=count($actArr);
+        WriteLog($actArr,true);
+        for($i=0;$i<$actCount;$i++){
+            $condition.=$condition==""?"":"  and ";
+            $condition.=$actArr[$i]==""?"":" activity like '%".$actArr[$i]."%'";   
+        }
     }
  
-    if($validated!=""){
+    if($validated!=""&&$validated!="all"){
         $condition.=$condition==""?"":"  and ";
-        $condition.=$validated==""?"":"  validated like '%".$validated."%'";   
+        if($validated=="unknown"){
+            $condition.=$validated==""?"":"  validated='' ";               
+        }else{
+            $condition.=$validated==""?"":"  validated like '%".$validated."%'";   
+        } 
     }
  
-    if($sourcedb!=""){
+    if($fromdb!=""){
         $condition.=$condition==""?"":"  and ";
-        $condition.=$sourcedb==""?"":" sourcedb='".$sourcedb."'"; 
+        $condition.=$fromdb==""?"":" fromdb='".$fromdb."'"; 
     }
-    if($otherid!=""){    
+    if($source!=""){    
         $condition.=$condition==""?"":"  and ";
-        $condition.=$otherid==""?"":"  otherid='".$otherid."' ";
+        $condition.=$source==""?"":"  source like '%".$source."%' ";
     }
 
     $lenrange=explode('-',$length);
-    WriteLog($lenrange,TRUE);
+
     $cou=count($lenrange);
     if($cou>1){        
         if($lenrange[0]!=""){

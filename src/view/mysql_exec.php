@@ -24,13 +24,24 @@ class mysqlQuery {
     function execsql($sql) {
         try {
             $this->dbh->beginTransaction();
-            $affected = $this->dbh->exec($query);
+            $affected = $this->dbh->exec($sql);
             $this->dbh->commit();
-            return $affected;
+            $result=[];
+            if($affected){
+                $result["status"]="success";
+                $result["result"]=$affected;
+                return $result;
+            }else{
+                $result["status"]="fail";
+                $result["result"]=$this->dbh->errorCode().":".Arr2Str($this->dbh->errorinfo());
+                return $result;
+            }
         } catch (PDOException $e) {
             $dbh->rollBack();
-            echo $e->getMessage();
-            return -1;
+            WriteLog($e->getMessage()."ERROR:".$e->getMessage().'<br>'."Code:".$e->getCode().'<br>'."File:".$e->getFile().'<br>'."Line:".$e->getLine().'<br>'."Trace:".$e->getTraceAsString().'<br>');
+            $result["status"]="exception";
+            $result["result"]=$e->getCode().":".$e->getMessage();
+            return $result;
         }
     }
     /*

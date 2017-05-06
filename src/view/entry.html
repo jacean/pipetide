@@ -156,11 +156,6 @@
 
             });
 
-
-            $("#submit_add_moudle").click(function () {
-                submitAddMoudle();
-            });
-
             //隐藏结果面板            
             $("#resultPanel").hide();
 
@@ -170,8 +165,9 @@
                 // alert("Submit prevented");
             });
 
-            //***//设置默认显示搜索页面
-            $("[data-value=search]").click();
+            //***//设置默认显示搜索页面,开始
+            //$("[data-value=search]").click();
+            $("[data-value=add]").click();
 
 
 
@@ -264,23 +260,75 @@
 
         function submitAddMoudle() {
             //addmoudle模块上传事件
-            var fd = new FormData(document.getElementById("form_add_moudle"));
+            var sequence=$("#add_val_sequence").val();
+            var title=$("#add_val_title").val();
+            if(sequence==""||title==""){
+                alert("请输入序列及序列标题");
+                return ;
+            }
+            if(!(/^[A-Za-z]+$/.test(sequence))){//只能提交英文字母
+                alert("请输入合法序列");
+                return;
+            }
+            //            var fd = new FormData(document.getElementById("form_add_moudle"));
+            var fd = new FormData();
+            fd.append("title", $("#add_val_title").val());
+            fd.append("sequence", $("#add_val_sequence").val());
+
+            var activity=(function () {
+                var act = "";
+                $("input[name='add_val_activity_cb']:checked").each(
+                    function () {
+                        if ($(this).attr("id") ==
+                            "add_activity_antibacterial") {
+                            var select = $(
+                                "#add_activity_antibacterial_select"
+                            ).val();
+                            switch (select) {
+                                case "all":
+                                    act += "Gram,"; //TODO:也有没说明具体性质的序列应该是Antibacterial or gram
+                                    break;
+                                case "gram-":
+                                    act += "Gram-,";
+                                    break;
+                                case "gram+":
+                                    act += "Gram+,";
+                                    break;
+                                case "gram+&-":
+                                    act += "anti-Gram+ & Gram-,";
+                                    break;
+                                case "unknown":
+                                    act += "Antibacterial,";
+                            }
+                        } else {
+                            act += $(this).val() + ",";
+                        }
+
+                    });
+                act = act == "" ? "" : act.substr(0, act.length - 1);
+                return act;
+            })();
+            fd.append("activity", activity); //DONE:选项值
+            fd.append("validated", $("#add_val_validated").val());
+            fd.append("source", $("#add_val_source").val());
+            fd.append("target", $("#add_val_target").val());
+            fd.append("desctext", $("#add_val_desctext").val());
             $.ajax({
                 cache: true,
                 type: "POST",
-                url: 'upload_handle.php',
+                url: 'ajax_data_add.php',
                 data: fd,
                 async: false,
                 processData: false, // 告诉jQuery不要去处理发送的数据
                 contentType: false, // 告诉jQuery不要去设置Content-Type请求头
                 error: function (request) {
-                    alert("上传失败！");
+                    alert("提交失败！");
                 },
                 success: function (data) {
                     if (data.status == "ok") {
-                        alert("上传成功！" + data.result);
+                        alert("添加成功！" + data.result);
                     } else {
-                        alert("上传失败:" + data.result);
+                        alert("添加失败:" + data.result);
                     }
 
                 },
@@ -306,10 +354,55 @@
                 //用select2初始化select选择
                 $("#search_val_length").select2({
                     width: "100%",
-                    minimumResultsForSearch: Infinity
+                    minimumResultsForSearch: Infinity,
+                    data: [{
+                            id: "0",
+                            text: ">0"
+                        },
+                        {
+                            id: "0-10",
+                            text: "0-10"
+                        },
+                        {
+                            id: "10-50",
+                            text: "10-50"
+                        },
+                        {
+                            id: "50-100",
+                            text: "50-100"
+                        },
+                        {
+                            id: "100-500",
+                            text: "100-500"
+                        },
+                        {
+                            id: "500",
+                            text: ">500"
+                        }
+                    ]
+                });
+                $("#search_val_validated").select2({
+                    minimumResultsForSearch: Infinity,
+                    data: [{
+                        id: "all",
+                        text: "all"
+                    }, {
+                        id: "Experimentally Validated",
+                        text: "Experimentally Validated"
+                    }, {
+                        id: "Predicted",
+                        text: "Predicted"
+                    }, {
+                        id: "Predicted (Based on signature)",
+                        text: "Predicted (Based on signature)"
+                    }, {
+                        id: "unknown",
+                        text: "unknown"
+                    }]
                 });
                 $("#search_activity_antibacterial_select").select2({
-                    minimumResultsForSearch: Infinity
+                    minimumResultsForSearch: Infinity,
+                    data:[{id:"all",text:"all"},{id:"gram+",text:"gram+"},{id:"gram-",text:"gram-"},{id:"gram+&-",text:"gram+&-"},{id:"unknown",text:"unknown"}]
                 });
                 //初始化表单
                 jUI.jBsTable("#seq_data_table", {
@@ -323,6 +416,7 @@
                             var temp = {
                                 limit: params.limit, //页面大小
                                 offset: params.offset, //页码
+                                uid: $("#search_val_uid").val(),
                                 title: $("#search_val_title").val(),
                                 length: $("#search_val_length").val(),
                                 sequence: $("#search_val_sequence").val(),
@@ -330,14 +424,38 @@
                                     var act = "";
                                     $("input[name='search_val_activity_cb']:checked").each(
                                         function () {
-                                            act += $(this).val() + ",";
+                                            if ($(this).attr("id") ==
+                                                "search_activity_antibacterial") {
+                                                var select = $(
+                                                    "#search_activity_antibacterial_select"
+                                                ).val();
+                                                switch (select) {
+                                                    case "all":
+                                                        act += "Gram,"; //TODO:也有没说明具体性质的序列应该是Antibacterial or gram
+                                                        break;
+                                                    case "gram-":
+                                                        act += "Gram-,";
+                                                        break;
+                                                    case "gram+":
+                                                        act += "Gram+,";
+                                                        break;
+                                                    case "gram+&-":
+                                                        act += "anti-Gram+ & Gram-,";
+                                                        break;
+                                                    case "unknown":
+                                                        act += "Antibacterial,";
+                                                }
+                                            } else {
+                                                act += $(this).val() + ",";
+                                            }
+
                                         });
                                     act = act == "" ? "" : act.substr(0, act.length - 1);
                                     return act;
                                 })(),
                                 validated: $("#search_val_validated").val(),
-                                sourcedb: $("#search_val_database").val(),
-                                otherid: $("#search_val_otherid").val()
+                                fromdb: $("#search_val_fromdb").val(),
+                                source: $("#search_val_source").val()
                             };
                             return temp;
                         },
@@ -361,6 +479,13 @@
             if (value == "add") {
                 //添加分类显示的模块
                 $("#tabContainer").html($("#addMoudle").html());
+                $("#add_activity_antibacterial_select").select2({
+                    minimumResultsForSearch: Infinity,
+                    data:[{id:"all",text:"all"},{id:"gram+",text:"gram+"},{id:"gram-",text:"gram-"},{id:"gram+&-",text:"gram+&-"},{id:"unknown",text:"unknown"}]
+                });
+                $("#submit_add_moudle").click(function () {
+                    submitAddMoudle();
+                });
             }
 
         }
@@ -368,8 +493,8 @@
 
     <script type="text/javascript">
         /*上传附件addmodlue，稍后改*/
-        $('input[id=inputTxl]').change(function () {
-            $('#txlshow').val($(this).val());
+        $('input[id=add_val_file]').change(function () {
+            $('#add_val_file_show').val($(this).val());
         });
     </script>
     <script type="text/html" id="predictMoudle">
@@ -445,99 +570,93 @@
         <div id="search_opt">
             <div class="panel panel-default" id="search_opt_base">
                 <div class="panel-body">
-
                     <div class=" row ">
                         <div id="search_opt_sequence" class=" form-group col-md-12">
                             <label for="search_val_sequence" class="">sequence</label>
                             <input type="text" class="form-control" id="search_val_sequence" placeholder="sequence" />
                         </div>
-                        <div id="search_opt_uid" class="form-group col-md-4">
-                            <label for="search_opt_uid" class="">uid</label>
-                            <input type="text" class="form-control " id="search_opt_uid" placeholder="uid" />
+                        <div id="search_opt_uid" class="form-group col-md-3">
+                            <label for="search_val_uid" class="">uid</label>
+                            <input type="text" class="form-control " id="search_val_uid" placeholder="uid" />
                         </div>
-                        <div id="search_opt_title" class="form-group col-md-4">
+                        <div id="search_opt_title" class="form-group col-md-3">
                             <label for="search_val_title" class="">title</label>
                             <input type="text" class="form-control " id="search_val_title" placeholder="title" />
                         </div>
 
-                        <div id="search_opt_length" class="form-group">
-                            <label for="search_val_length" class="col-md-4">length   
+                        <div id="search_opt_length" class="form-group col-md-3">
+                            <label for="search_val_length" class="">length   
                             </label>
-                            <div class="col-md-4">
+                            <div class="">
                                 <select name="search_val_length" id="search_val_length">
-                                            <option value=""></option>
-                                            <option value="0-10">0-10</option>
-                                            <option value="10-50">10-50</option>
-                                            <option value="50-100">50-100</option>
-                                            <option value="100-500">100-500</option>
-                                            <option value="500-">>500</option>
                                         </select>
                             </div>
-
                         </div>
-
-                        <div id="search_opt_activity" class="form-group col-md-10">
+                        <div id="search_opt_validated" class="form-group col-md-3">
+                            <label>validated</label>
+                            <!--<input type="text" class="form-control" id="search_val_validated" placeholder="validated">-->
+                            <div class="">
+                                <select name="search_val_validated" id="search_val_validated">
+                                        </select>
+                            </div>
+                        </div>
+                        <div id="search_opt_activity" class="form-group col-md-8">
                             <label for="search_val_activity">activity</label>
-                            <div class="form-control-static" id="search_val_activity">                               
-                                    <label class="checkbox-inline">
-  <input type="checkbox" id="search_activity_antiviral" value="antiviral"/> antiviral
+                            <div class="form-control-static" id="search_val_activity">
+                                <label class="checkbox-inline">
+  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antiviral" value="antiviral"/> antiviral
 </label>
-                                    <label class="checkbox-inline">
-  <input type="checkbox" id="search_activity_antifungal" value="antifungal"/> antifungal
+                                <label class="checkbox-inline">
+  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antifungal" value="antifungal"/> antifungal
 </label>
-                                    <label class="checkbox-inline">
-  <input type="checkbox" id="search_activity_anticancer" value="anticancer"/> anticancer
+                                <label class="checkbox-inline">
+  <input type="checkbox" name="search_val_activity_cb" id="search_activity_anticancer" value="anticancer"/> anticancer
 </label>
-                                    <label class="checkbox-inline">
-  <input type="checkbox" id="search_activity_antihiv" value="antihiv"/> antihiv
+                                <label class="checkbox-inline">
+  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antihiv" value="antihiv"/> antihiv
 </label>
-                                    <label class="checkbox-inline">
-  <input type="checkbox" id="search_activity_antiparasitic" value="antiparasitic"/> antiparasitic
+                                <label class="checkbox-inline">
+  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antiparasitic" value="antiparasitic"/> antiparasitic
 </label>
-                                    <label class="checkbox-inline">
-                                <input type="checkbox" id="search_activity_antibacterial" value="antibacterial" />antibacterial                                
+                                <label class="checkbox-inline">
+                                <input type="checkbox" name="search_val_activity_cb" id="search_activity_antibacterial" value="antibacterial" />antibacterial                                
                                         <select name="" id="search_activity_antibacterial_select" class=" ">
-                                            <option>any</option>
-                                            <option>gram+</option>
-                                            <option>gram-</option>
-                                            <option>gram+&-</option>
                                         </select>
                                    
                                 </label>
-                                </div>
+                            </div>
 
-                            </div>
-                            <div id="search_opt_validated" class="form-group col-md-4">
-                                <label>validated</label>
-                                <input type="text" class="form-control" id="search_val_validated" placeholder="validated">
-                            </div>
-                            <div id="search_opt_database" class="form-group col-md-4">
-                                <label>源数据库</label>
-                                <input type="text" class="form-control" id="search_val_database" placeholder="source databse">
-                            </div>
-                            <div id="search_opt_otherid" class="form-group col-md-4">
-                                <label>数据库ID</label>
-                                <input type="text" class="form-control" id="search_val_otherid" placeholder="source database id">
-                            </div>
-                            <div class="btn btn-default form-control  col-md-1" id="search_submit">搜索</div>
+                        </div>
+                        <div id="search_opt_database" class="form-group col-md-2">
+                            <label>源数据库</label>
+                            <input type="text" class="form-control" id="search_val_fromdb" placeholder="from databse">
+                        </div>
+                        <div id="search_opt_source" class="form-group col-md-2">
+                            <label>来源</label>
+                            <input type="text" class="form-control" id="search_val_source" placeholder="source">
                         </div>
 
+                        <div type="button" class="btn btn-default col-md-offset-2 col-md-3" id="search_submit">搜索</div>
+                        <div type="button" class="btn btn-default col-md-offset-1 col-md-3" id="search_expand">收拢</div>
+
                     </div>
+
                 </div>
             </div>
-            <div id="search_result">
-                <div class="panel panel-default">
-                    <!-- Default panel contents -->
-                    <div class="panel-heading">查询序列
-                    </div>
-                    <div id="toolbar" class="btn-group">
-                    </div>
-                    <!-- Table -->
-                    <table class="table" id="seq_data_table">
-                    </table>
-                    <div class="panel-footer">下载数据</div>
+        </div>
+        <div id="search_result">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">查询序列
                 </div>
+                <div id="toolbar" class="btn-group">
+                </div>
+                <!-- Table -->
+                <table class="table" id="seq_data_table">
+                </table>
+                <div class="panel-footer">下载数据</div>
             </div>
+        </div>
     </script>
     <script type="text/html" id="addMoudle">
         <div id="add_hearder">
@@ -546,82 +665,70 @@
             </p>
         </div>
         <div id="add_body">
-            <form class="form-horizontal row " id="form_add_moudle">
+            <form class="form-horizontal" id="form_add_moudle">
                 <br>
                 <div class="form-group">
-                    <label for="yx" class="control-label col-xs-4 col-sm-3 text-right">sequence  :</label>
+                    <label for="add_val_sequence" class="control-label col-xs-4 col-sm-3 text-right">sequence  :</label>
                     <div class=" col-xs-6 col-sm-6">
-                        <input id="yx" name="yx" class="form-control" type="text" placeholder="">
+                        <input id="add_val_sequence" name="add_val_sequence" class="form-control" type="text" placeholder="">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="zy" class="control-label col-xs-4 col-sm-3 text-right">title  :</label>
+                    <label for="add_val_title" class="control-label col-xs-4 col-sm-3 text-right">title  :</label>
                     <div class=" col-xs-6 col-sm-6">
-                        <input id="zy" name="zy" class="form-control" type="text" placeholder="">
+                        <input id="add_val_title" name="add_val_title" class="form-control" type="text" placeholder="">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="search_val_activity" class="col-xs-4 col-sm-3 text-right">activity :</label>
-                    <div class="form-control-static col-xs-6 col-sm-6">
+                    <label for="add_val_activity" class="col-xs-4 col-sm-3 text-right">activity :</label>
+                    <div class="form-control-static col-xs-6 col-sm-6" id="add_val_activity">
                         <label class="checkbox-inline">
-  <input type="checkbox" id="search_activity_antiviral" value="antiviral"/> antiviral
+  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antiviral" value="antiviral"/> antiviral
 </label>
                         <label class="checkbox-inline">
-  <input type="checkbox" id="search_activity_antifungal" value="antifungal"/> antifungal
+  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antifungal" value="antifungal"/> antifungal
 </label>
                         <label class="checkbox-inline">
-  <input type="checkbox" id="search_activity_anticancer" value="anticancer"/> anticancer
+  <input type="checkbox" name="add_val_activity_cb" id="add_activity_anticancer" value="anticancer"/> anticancer
 </label>
                         <label class="checkbox-inline">
-  <input type="checkbox" id="search_activity_antihiv" value="antihiv"/> antihiv
+  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antihiv" value="antihiv"/> antihiv
 </label>
                         <label class="checkbox-inline">
-  <input type="checkbox" id="search_activity_antiparasitic" value="antiparasitic"/> antiparasitic
+  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antiparasitic" value="antiparasitic"/> antiparasitic
 </label>
                         <label class="checkbox-inline">
-                                <input type="checkbox" id="search_activity_antibacterial" value="antibacterial" />antibacterial                                
-                                        <select name="" id="" class=" ">
-                                            <option>any</option>
-                                            <option>gram+</option>
-                                            <option>gram-</option>
-                                            <option>gram+/-</option>
-                                        </select>
-                                   
+                                <input type="checkbox" name="add_val_activity_cb" id="add_activity_antibacterial" value="antibacterial" />antibacterial                                
+                                        <select name="add_activity_antibacterial_select" id="add_activity_antibacterial_select" class=" ">
+                                        </select>                                   
                                 </label>
                     </div>
 
                 </div>
                 <div class="form-group">
-                    <label for="name" class="control-label col-xs-4 col-sm-3 text-right">length  :</label>
+                    <label for="add_val_source" class="control-label col-xs-4 col-sm-3 text-right">source  :</label>
                     <div class=" col-xs-6 col-sm-6">
-                        <input id="name" name="name" class="form-control" type="text" readonly placeholder="">
+                        <input id="add_val_source" name="add_val_source" class="form-control" type="text" placeholder="">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="tel" class="control-label col-xs-4 col-sm-3 text-right">source  :</label>
+                    <label for="add_val_target" class="control-label col-xs-4 col-sm-3 text-right">target  :</label>
                     <div class=" col-xs-6 col-sm-6">
-                        <input id="tel" name="tel" class="form-control" type="tel" placeholder="">
+                        <input id="add_val_target" name="add_val_target" class="form-control" type="tel" placeholder="">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="email" class="control-label col-xs-4 col-sm-3 text-right">target  :</label>
+                    <label for="add_val_validated" class="control-label col-xs-4 col-sm-3 text-right">validated  :</label>
                     <div class=" col-xs-6 col-sm-6">
-                        <input id="email" name="email" class="form-control" type="text" placeholder="">
+                        <input id="add_val_validated" name="add_val_validated" class="form-control" type="text" placeholder="">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="email" class="control-label col-xs-4 col-sm-3 text-right">validated  :</label>
+                    <label for="add_val_desctext" class="control-label col-xs-4 col-sm-3 text-right">desctext  :</label>
                     <div class=" col-xs-6 col-sm-6">
-                        <input id="email" name="email" class="form-control" type="text" placeholder="">
+                        <textarea id="add_val_desctext" name="add_val_desctext" class="form-control" rows="3" placeholder=""></textarea>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="email" class="control-label col-xs-4 col-sm-3 text-right">link  :</label>
-                    <div class=" col-xs-6 col-sm-6">
-                        <input id="email" name="email" class="form-control" type="text" placeholder="">
-                    </div>
-                </div>
-
                 <div class="col-xs-12  col-sm-12 " style="background-color:#adafb0">
                 </div>
                 <div class="col-xs-12  col-sm-12" style="background-color:white">
@@ -629,27 +736,19 @@
                 </div>
                 <!--上传附件,以上内容可以用文件批量上传-->
                 <div id="div_fj2" style="" class="form-group">
-                    <label for="inputTxl" class="control-label col-xs-4 col-sm-3 text-right">multi upload :</label>
+                    <label for="add_val_file" class="control-label col-xs-4 col-sm-3 text-right">multi upload :</label>
                     <div class="col-xs-6 col-sm-6">
                         <div class="input-group ">
-                            <input id="inputTxl" name="inputTxl" type="file" style="display:none" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                            <input id="txlshow" type="text" class="form-control" aria-describedby="helpBlock2">
+                            <input id="add_val_file" name="add_val_file" type="file" style="display:none" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                            <input id="add_val_file_show" type="text" class="form-control" aria-describedby="helpBlock2">
                             <div class="input-group-btn">
-                                <a type="button" class="btn btn-default" onclick="$('input[id=inputTxl]').click();">上传</a>
+                                <a type="button" class="btn btn-default" onclick="$('input[id=add_val_file]').click();">上传</a>
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <!--留言-->
-                <div class="form-group">
-                    <label for="ly" class="control-label col-xs-4 col-sm-3 text-right">desctext  :</label>
-                    <div class=" col-xs-6 col-sm-6">
-                        <textarea id="ly" name="ly" class="form-control" rows="3" placeholder=""></textarea>
-                    </div>
-                </div>
-                <!--提交-->
                 <div class="form-group">
 
                     <div class="col-sm-6 col-xs-9 col-xs-offset-3 col-sm-offset-3">
