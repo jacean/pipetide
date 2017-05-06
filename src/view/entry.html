@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="..\lib\bootstrap-3.3.7\css\bootstrap.css">
     <script src="..\lib\bootstrap-table\bootstrap-table.js"></script>
     <link rel="stylesheet" href="..\lib\bootstrap-table\bootstrap-table.css">
+    <script src="..\lib\select2-4.0.3\js\select2.js"></script>
+    <link rel="stylesheet" href="..\lib\select2-4.0.3\css\select2.css">
     <script src="..\js\core.js"></script>
     <script src="..\js\jSlide.js"></script>
     <script src="..\js\jUpload.js"></script>
@@ -24,6 +26,7 @@
 
     <script>
         $(document).ready(function () {
+
             //初始化上传文件按钮
             jUI.jUpload("#uploadFile");
             //初始化左边栏
@@ -167,8 +170,8 @@
                 // alert("Submit prevented");
             });
 
-            //***//
-            // $("[data-value=search]").click();
+            //***//设置默认显示搜索页面
+            $("[data-value=search]").click();
 
 
 
@@ -300,6 +303,14 @@
             if (value == "search") {
                 //添加搜索模块
                 $("#tabContainer").html($("#searchMoudle").html());
+                //用select2初始化select选择
+                $("#search_val_length").select2({
+                    width: "100%",
+                    minimumResultsForSearch: Infinity
+                });
+                $("#search_activity_antibacterial_select").select2({
+                    minimumResultsForSearch: Infinity
+                });
                 //初始化表单
                 jUI.jBsTable("#seq_data_table", {
                     config: {
@@ -434,16 +445,26 @@
         <div id="search_opt">
             <div class="panel panel-default" id="search_opt_base">
                 <div class="panel-body">
-                    <div class="form-inline row">
+
+                    <div class=" row ">
+                        <div id="search_opt_sequence" class=" form-group col-md-12">
+                            <label for="search_val_sequence" class="">sequence</label>
+                            <input type="text" class="form-control" id="search_val_sequence" placeholder="sequence" />
+                        </div>
+                        <div id="search_opt_uid" class="form-group col-md-4">
+                            <label for="search_opt_uid" class="">uid</label>
+                            <input type="text" class="form-control " id="search_opt_uid" placeholder="uid" />
+                        </div>
                         <div id="search_opt_title" class="form-group col-md-4">
                             <label for="search_val_title" class="">title</label>
                             <input type="text" class="form-control " id="search_val_title" placeholder="title" />
                         </div>
 
-                        <div id="search_opt_length" class="form-group  col-md-4">
-                            <label for="search_val_length" calss="">length</label>
-                            <!--<input type="number" class="form-control " id="search_val_length" placeholder="length">-->
-                            <select name="search_val_length" id="search_val_length" class="">
+                        <div id="search_opt_length" class="form-group">
+                            <label for="search_val_length" class="col-md-4">length   
+                            </label>
+                            <div class="col-md-4">
+                                <select name="search_val_length" id="search_val_length">
                                             <option value=""></option>
                                             <option value="0-10">0-10</option>
                                             <option value="10-50">10-50</option>
@@ -451,75 +472,72 @@
                                             <option value="100-500">100-500</option>
                                             <option value="500-">>500</option>
                                         </select>
-                        </div>
-                        <div id="search_opt_sequence" class="form-group col-md-4">
-                            <label for="search_val_sequence">sequence</label>
-                            <input type="text" class="form-control" id="search_val_sequence" placeholder="sequence">
+                            </div>
+
                         </div>
 
                         <div id="search_opt_activity" class="form-group col-md-10">
                             <label for="search_val_activity">activity</label>
-                            <div class="form-control-static" id="search_val_activity">
-                                <label class="checkbox-inline">
-  <input type="checkbox" name="search_val_activity_cb" value="antiviral"/> antiviral
+                            <div class="form-control-static" id="search_val_activity">                               
+                                    <label class="checkbox-inline">
+  <input type="checkbox" id="search_activity_antiviral" value="antiviral"/> antiviral
 </label>
-                                <label class="checkbox-inline">
-  <input type="checkbox"  name="search_val_activity_cb" value="antifungal"/> antifungal
+                                    <label class="checkbox-inline">
+  <input type="checkbox" id="search_activity_antifungal" value="antifungal"/> antifungal
 </label>
-                                <label class="checkbox-inline">
-  <input type="checkbox" name="search_val_activity_cb" value="anticancer"/> anticancer
+                                    <label class="checkbox-inline">
+  <input type="checkbox" id="search_activity_anticancer" value="anticancer"/> anticancer
 </label>
-                                <label class="checkbox-inline">
-  <input type="checkbox" name="search_val_activity_cb" value="antihiv"/> antihiv
+                                    <label class="checkbox-inline">
+  <input type="checkbox" id="search_activity_antihiv" value="antihiv"/> antihiv
 </label>
-                                <label class="checkbox-inline">
-  <input type="checkbox" name="search_val_activity_cb" value="antiparasitic"/> antiparasitic
+                                    <label class="checkbox-inline">
+  <input type="checkbox" id="search_activity_antiparasitic" value="antiparasitic"/> antiparasitic
 </label>
-                                <label class="checkbox-inline">
-                                <input type="checkbox" name="search_val_activity_cb" value="anti" />antibacterial
-                                
-                                        <select name="" id="" class=" ">
+                                    <label class="checkbox-inline">
+                                <input type="checkbox" id="search_activity_antibacterial" value="antibacterial" />antibacterial                                
+                                        <select name="" id="search_activity_antibacterial_select" class=" ">
                                             <option>any</option>
                                             <option>gram+</option>
                                             <option>gram-</option>
-                                            <option>gram+/-</option>
+                                            <option>gram+&-</option>
                                         </select>
                                    
                                 </label>
+                                </div>
+
                             </div>
+                            <div id="search_opt_validated" class="form-group col-md-4">
+                                <label>validated</label>
+                                <input type="text" class="form-control" id="search_val_validated" placeholder="validated">
+                            </div>
+                            <div id="search_opt_database" class="form-group col-md-4">
+                                <label>源数据库</label>
+                                <input type="text" class="form-control" id="search_val_database" placeholder="source databse">
+                            </div>
+                            <div id="search_opt_otherid" class="form-group col-md-4">
+                                <label>数据库ID</label>
+                                <input type="text" class="form-control" id="search_val_otherid" placeholder="source database id">
+                            </div>
+                            <div class="btn btn-default form-control  col-md-1" id="search_submit">搜索</div>
+                        </div>
 
-                        </div>
-                        <div id="search_opt_validated" class="form-group col-md-4">
-                            <label>validated</label>
-                            <input type="text" class="form-control" id="search_val_validated" placeholder="validated">
-                        </div>
-                        <div id="search_opt_database" class="form-group col-md-4">
-                            <label>源数据库</label>
-                            <input type="text" class="form-control" id="search_val_database" placeholder="source databse">
-                        </div>
-                        <div id="search_opt_otherid" class="form-group col-md-4">
-                            <label>数据库ID</label>
-                            <input type="text" class="form-control" id="search_val_otherid" placeholder="source database id">
-                        </div>
-                        <div class="btn btn-default form-control  col-md-1" id="search_submit">搜索</div>
-                    </div>                    
-
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id="search_result">
-            <div class="panel panel-default">
-                <!-- Default panel contents -->
-                <div class="panel-heading">查询序列
+            <div id="search_result">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">查询序列
+                    </div>
+                    <div id="toolbar" class="btn-group">
+                    </div>
+                    <!-- Table -->
+                    <table class="table" id="seq_data_table">
+                    </table>
+                    <div class="panel-footer">下载数据</div>
                 </div>
-                <div id="toolbar" class="btn-group">
-                </div>
-                <!-- Table -->
-                <table class="table" id="seq_data_table">
-                </table>
-                <div class="panel-footer">下载数据</div>
             </div>
-        </div>
     </script>
     <script type="text/html" id="addMoudle">
         <div id="add_hearder">
@@ -546,23 +564,22 @@
                     <label for="search_val_activity" class="col-xs-4 col-sm-3 text-right">activity :</label>
                     <div class="form-control-static col-xs-6 col-sm-6">
                         <label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox2" value="option2"/> antiviral
+  <input type="checkbox" id="search_activity_antiviral" value="antiviral"/> antiviral
 </label>
                         <label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antifungal
+  <input type="checkbox" id="search_activity_antifungal" value="antifungal"/> antifungal
 </label>
                         <label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox3" value="option3"/> anticancer
+  <input type="checkbox" id="search_activity_anticancer" value="anticancer"/> anticancer
 </label>
                         <label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antihiv
+  <input type="checkbox" id="search_activity_antihiv" value="antihiv"/> antihiv
 </label>
                         <label class="checkbox-inline">
-  <input type="checkbox" id="inlineCheckbox3" value="option3"/> antiparasitic
+  <input type="checkbox" id="search_activity_antiparasitic" value="antiparasitic"/> antiparasitic
 </label>
                         <label class="checkbox-inline">
-                                <input type="checkbox" id="inlineCheckbox1" value="option1" />antibacterial
-                                
+                                <input type="checkbox" id="search_activity_antibacterial" value="antibacterial" />antibacterial                                
                                         <select name="" id="" class=" ">
                                             <option>any</option>
                                             <option>gram+</option>

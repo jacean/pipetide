@@ -197,8 +197,8 @@ a:focus {
 }
 
 .protocal-notice .btn.active {
-    background-color: #73879C;
-    border-color: #73879C;
+    background-color: #286fb7;
+    border-color: #286fb7;
     color: #fff
 }
 
@@ -231,12 +231,12 @@ a:focus {
 .packages .all-packages {
     padding: 30px;
     text-align: center;
-    color: #73879C
+    color: #286fb7
 }
 
 .packages .all-packages:active,
 .packages .all-packages:hover {
-    color: #73879C
+    color: #286fb7
 }
 
 .package-version {
@@ -315,7 +315,7 @@ a:focus {
 }
 
 #footer {
-    background-color: #73879C;
+    background-color: #286fb7;
     border-top: 1px solid #26aa5e;
     color: #fff
 }
@@ -351,7 +351,7 @@ a:focus {
 }
 
 #back-to-top:hover {
-    background: #73879C
+    background: #286fb7
 }
 
 #back-to-top i {
@@ -363,7 +363,7 @@ a:focus {
 .site-header {
     position: relative;
     text-align: center;
-    background-color: #73879C;
+    background-color: #286fb7;
     color: #fff;
     margin-bottom: 0
 }
@@ -540,8 +540,8 @@ a:focus {
 
 .btn-clipboard:hover {
     color: #fff;
-    background-color: #73879C;
-    border-color: #73879C
+    background-color: #286fb7;
+    border-color: #286fb7
 }
 
 .btn-clipboard-code {

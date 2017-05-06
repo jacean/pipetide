@@ -21,9 +21,9 @@ body,html{
     margin: 20px 0px 20px 0px;
 }
 .pagination > li > a, .pagination > li > span  {
-    color: #73879C;
+    color: #286fb7;
 }
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
-    background-color: #73879C;
-    border-color: #73879C;
+    background-color: #286fb7;
+    border-color: #286fb7;
 }

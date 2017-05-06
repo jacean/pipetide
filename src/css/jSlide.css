@@ -54,12 +54,12 @@
 }
 .slide-group-header{
     background-color: white;    
-    border-left: 3px solid #73879C;
+    border-left: 3px solid #286fb7;
     font-size: 1em;
     padding:  5px 5px 5px 10px;
 }
 .slide-group-header:hover{
-    color: #73879C;
+    color: #286fb7;
     cursor:pointer;
 }
 .slide-option{
