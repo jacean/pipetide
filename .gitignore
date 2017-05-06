@@ -165,3 +165,5 @@ pip-log.txt
 node_modules
 peptide.old
 src/server/download
+
+**/log/
