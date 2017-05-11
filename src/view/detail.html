@@ -15,36 +15,37 @@
     <script src="..\js\tools.js"></script>
     <a href="http://www.bootcdn.cn/"></a>
     <script>
+        var uid = GetUrlParms().querys['uid'];
 
-    var uid=GetUrlParms().querys['uid'];
-    function setShow(data){
-        for(var key in data){
-            var html="";
-            html=''+                
-            '<a class="package list-group-item" target="_blank">'+
-                    '<div class="row">'+
-                        '<div class="col-md-3">'+
-                            '<h4 class="package-name">'+key+'</h4>'+
-                        '</div>'+
-                        '<div class="col-md-9 hidden-xs">'+
-                            '<p class="package-description">'+data[key]+
-                            '</p>'+
-                        '</div>'+
-                        //'<div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12"><span><i class="fa fa-star"></i> search count</span></div>'+
-                    '</div>'+
-                '</a>'+
-                '';
-            $(html).insertBefore("#go_index");
+        function setShow(data) {
+            for (var key in data) {
+                var html = "";
+                html = '' +
+                    '<a class="package list-group-item" '+
+                    (key=="dblink"?('href="'+ data[key] + '" '):(' target="_blank"'))+
+                    '><div class="row">' +
+                    '<div class="col-md-3">' +
+                    '<h4 class="package-name">' + key + '</h4>' +
+                    '</div>' +
+                    '<div class="col-md-9 hidden-xs">' +
+                    '<p class="package-description">' + data[key] +
+                    '</p>' +
+                    '</div>' +
+                    //'<div class="package-extra-info col-md-9 col-md-offset-3 col-xs-12"><span><i class="fa fa-star"></i> search count</span></div>'+
+                    '</div>' +
+                    '</a>' +
+                    '';
+                $(html).insertBefore("#go_index");
+            }
+            $("#seq_title").text(data['title']);
+            $("#seq_seq").text(data['sequence']);
         }
-        $("#seq_title").text(data['title']);
-        $("#seq_seq").text(data['sequence']);
-    }
         $.ajax({
             cache: true,
             type: "GET",
             url: 'ajax_data_detail.php',
             data: {
-                uid:uid
+                uid: uid
             },
             async: true,
             error: function (request) {
@@ -76,8 +77,8 @@
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span>
                         </button>
-                    <div  class="navbar-brand brand-bootcdn">PEPTIDES</div>
-                    <div  class="navbar-brand brand-upyun">DUT</div>
+                    <div class="navbar-brand brand-bootcdn">PEPTIDES</div>
+                    <div class="navbar-brand brand-upyun">DUT</div>
                 </div>
                 <nav id="bs-navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -115,7 +116,7 @@
     <main class="packages-list-container" id="all-packages">
         <div class="container">
             <div class="list-group packages" id="common-packages">
-                <a  id="go_index" href="javascript:history.go(-1);" class="package list-group-item all-packages" target="_blank">返回</a>
+                <a id="go_index" href="javascript:history.go(-1);" class="package list-group-item all-packages" target="_blank">返回</a>
             </div>
             <div class="list-group packages" id="search-results" style="display: none"></div>
         </div>

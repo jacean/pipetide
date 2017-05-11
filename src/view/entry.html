@@ -7,26 +7,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>peptide</title>
     <script src="..\lib\jquery-3.1.1\jquery.js"></script>
+    <script src="..\lib\jacean\Util.js"></script>
+
+    <!--引用此文件实现md5加密-->
+    <script src="https://cdn.bootcss.com/blueimp-md5/2.7.0/js/md5.js"></script>
     <script src="..\lib\bootstrap-3.3.7\js\bootstrap.js"></script>
     <link rel="stylesheet" href="..\lib\bootstrap-3.3.7\css\bootstrap.css">
     <script src="..\lib\bootstrap-table\bootstrap-table.js"></script>
     <link rel="stylesheet" href="..\lib\bootstrap-table\bootstrap-table.css">
     <script src="..\lib\select2-4.0.3\js\select2.js"></script>
     <link rel="stylesheet" href="..\lib\select2-4.0.3\css\select2.css">
+
     <script src="..\js\core.js"></script>
     <script src="..\js\jSlide.js"></script>
     <script src="..\js\jUpload.js"></script>
     <script src="..\js\jBsTable.js"></script>
     <script src="..\js\data.js"></script>
+    <script src="..\js\jUserNotify.js"></script>
     <link rel="stylesheet" href="..\css\core.css">
     <link rel="stylesheet" href="..\css\jButton.css">
     <link rel="stylesheet" href="..\css\jSlide.css">
     <link rel="stylesheet" href="..\css\jUpload.css">
     <link rel="stylesheet" href="..\css\jLoading.css">
+    <link rel="stylesheet" href="..\css\jUserNotify.css">
 
     <script>
         $(document).ready(function () {
-
+            jUI.usernotify();
             //初始化上传文件按钮
             jUI.jUpload("#uploadFile");
             //初始化左边栏
@@ -260,13 +267,13 @@
 
         function submitAddMoudle() {
             //addmoudle模块上传事件
-            var sequence=$("#add_val_sequence").val();
-            var title=$("#add_val_title").val();
-            if(sequence==""||title==""){
+            var sequence = $("#add_val_sequence").val();
+            var title = $("#add_val_title").val();
+            if (sequence == "" || title == "") {
                 alert("请输入序列及序列标题");
-                return ;
+                return;
             }
-            if(!(/^[A-Za-z]+$/.test(sequence))){//只能提交英文字母
+            if (!(/^[A-Za-z]+$/.test(sequence))) { //只能提交英文字母
                 alert("请输入合法序列");
                 return;
             }
@@ -275,7 +282,7 @@
             fd.append("title", $("#add_val_title").val());
             fd.append("sequence", $("#add_val_sequence").val());
 
-            var activity=(function () {
+            var activity = (function () {
                 var act = "";
                 $("input[name='add_val_activity_cb']:checked").each(
                     function () {
@@ -402,7 +409,22 @@
                 });
                 $("#search_activity_antibacterial_select").select2({
                     minimumResultsForSearch: Infinity,
-                    data:[{id:"all",text:"all"},{id:"gram+",text:"gram+"},{id:"gram-",text:"gram-"},{id:"gram+&-",text:"gram+&-"},{id:"unknown",text:"unknown"}]
+                    data: [{
+                        id: "all",
+                        text: "all"
+                    }, {
+                        id: "gram+",
+                        text: "gram+"
+                    }, {
+                        id: "gram-",
+                        text: "gram-"
+                    }, {
+                        id: "gram+&-",
+                        text: "gram+&-"
+                    }, {
+                        id: "unknown",
+                        text: "unknown"
+                    }]
                 });
                 //初始化表单
                 jUI.jBsTable("#seq_data_table", {
@@ -481,7 +503,22 @@
                 $("#tabContainer").html($("#addMoudle").html());
                 $("#add_activity_antibacterial_select").select2({
                     minimumResultsForSearch: Infinity,
-                    data:[{id:"all",text:"all"},{id:"gram+",text:"gram+"},{id:"gram-",text:"gram-"},{id:"gram+&-",text:"gram+&-"},{id:"unknown",text:"unknown"}]
+                    data: [{
+                        id: "all",
+                        text: "all"
+                    }, {
+                        id: "gram+",
+                        text: "gram+"
+                    }, {
+                        id: "gram-",
+                        text: "gram-"
+                    }, {
+                        id: "gram+&-",
+                        text: "gram+&-"
+                    }, {
+                        id: "unknown",
+                        text: "unknown"
+                    }]
                 });
                 $("#submit_add_moudle").click(function () {
                     submitAddMoudle();

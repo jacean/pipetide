@@ -167,3 +167,5 @@ peptide.old
 src/server/download
 
 **/log/
+
+**/temp/
