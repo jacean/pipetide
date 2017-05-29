@@ -1,0 +1,98 @@
+<div id="add_hearder">
+    <h2 id="testType">添加序列</h2>
+    <p id="testLabel">添加您的序列来丰富数据资源
+    </p>
+</div>
+<div id="add_body">
+    <form class="form-horizontal" id="form_add_moudle">
+        <br>
+        <div class="form-group">
+            <label for="add_val_sequence" class="control-label col-xs-4 col-sm-3 text-right">sequence  :</label>
+            <div class=" col-xs-6 col-sm-6">
+                <input id="add_val_sequence" name="add_val_sequence" class="form-control" type="text" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="add_val_title" class="control-label col-xs-4 col-sm-3 text-right">title  :</label>
+            <div class=" col-xs-6 col-sm-6">
+                <input id="add_val_title" name="add_val_title" class="form-control" type="text" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="add_val_activity" class="col-xs-4 col-sm-3 text-right">activity :</label>
+            <div class="form-control-static col-xs-6 col-sm-6" id="add_val_activity">
+                <label class="checkbox-inline">
+  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antiviral" value="antiviral"/> antiviral
+</label>
+                <label class="checkbox-inline">
+  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antifungal" value="antifungal"/> antifungal
+</label>
+                <label class="checkbox-inline">
+  <input type="checkbox" name="add_val_activity_cb" id="add_activity_anticancer" value="anticancer"/> anticancer
+</label>
+                <label class="checkbox-inline">
+  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antihiv" value="antihiv"/> antihiv
+</label>
+                <label class="checkbox-inline">
+  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antiparasitic" value="antiparasitic"/> antiparasitic
+</label>
+                <label class="checkbox-inline">
+                                <input type="checkbox" name="add_val_activity_cb" id="add_activity_antibacterial" value="antibacterial" />antibacterial                                
+                                        <select name="add_activity_antibacterial_select" id="add_activity_antibacterial_select" class=" ">
+                                        </select>                                   
+                                </label>
+            </div>
+
+        </div>
+        <div class="form-group">
+            <label for="add_val_source" class="control-label col-xs-4 col-sm-3 text-right">source  :</label>
+            <div class=" col-xs-6 col-sm-6">
+                <input id="add_val_source" name="add_val_source" class="form-control" type="text" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="add_val_target" class="control-label col-xs-4 col-sm-3 text-right">target  :</label>
+            <div class=" col-xs-6 col-sm-6">
+                <input id="add_val_target" name="add_val_target" class="form-control" type="tel" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="add_val_validated" class="control-label col-xs-4 col-sm-3 text-right">validated  :</label>
+            <div class=" col-xs-6 col-sm-6">
+                <input id="add_val_validated" name="add_val_validated" class="form-control" type="text" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="add_val_desctext" class="control-label col-xs-4 col-sm-3 text-right">desctext  :</label>
+            <div class=" col-xs-6 col-sm-6">
+                <textarea id="add_val_desctext" name="add_val_desctext" class="form-control" rows="3" placeholder=""></textarea>
+            </div>
+        </div>
+        <div class="col-xs-12  col-sm-12 " style="background-color:#adafb0">
+        </div>
+        <div class="col-xs-12  col-sm-12" style="background-color:white">
+            &nbsp;
+        </div>
+        <!--上传附件,以上内容可以用文件批量上传-->
+        <div id="div_fj2" style="" class="form-group">
+            <label for="add_val_file" class="control-label col-xs-4 col-sm-3 text-right">multi upload :</label>
+            <div class="col-xs-6 col-sm-6">
+                <div class="input-group ">
+                    <input id="add_val_file" name="add_val_file" type="file" style="display:none" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                    <input id="add_val_file_show" type="text" class="form-control" aria-describedby="helpBlock2">
+                    <div class="input-group-btn">
+                        <a type="button" class="btn btn-default" onclick="$('input[id=add_val_file]').click();">上传</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-sm-6 col-xs-9 col-xs-offset-3 col-sm-offset-3">
+                <button type="button" id="submit_add_moudle" class="btn btn-primary col-xs-9 col-sm-6" onclick="">submit</button>
+            </div>
+        </div>
+    </form>
+</div>

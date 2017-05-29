@@ -9,21 +9,24 @@
     <script src="..\lib\jquery-3.1.1\jquery.js"></script>
     <script src="..\lib\jacean\Util.js"></script>
 
-    <!--引用此文件实现md5加密-->
-    <script src="https://cdn.bootcss.com/blueimp-md5/2.7.0/js/md5.js"></script>
+    <!-- 前期考虑不周，模块设计垃圾，关联耦合较重，FMVC崩塌
+         原意不用框架，能重写的尽量重写，可惜gg，太浪了
+     -->
+    <!-- third part lib-->
+    <!--<script src="https://cdn.bootcss.com/blueimp-md5/2.7.0/js/md5.js"></script>-->
     <script src="..\lib\bootstrap-3.3.7\js\bootstrap.js"></script>
     <link rel="stylesheet" href="..\lib\bootstrap-3.3.7\css\bootstrap.css">
     <script src="..\lib\bootstrap-table\bootstrap-table.js"></script>
     <link rel="stylesheet" href="..\lib\bootstrap-table\bootstrap-table.css">
     <script src="..\lib\select2-4.0.3\js\select2.js"></script>
     <link rel="stylesheet" href="..\lib\select2-4.0.3\css\select2.css">
+    <!---->
+    <!-- data -->
+    <script src="template/select.data.js"></script>
+    <script src="template/slide.data.js"></script>
+    <script src="template/table.data.js"></script>
+    <!---->
 
-    <script src="..\js\core.js"></script>
-    <script src="..\js\jSlide.js"></script>
-    <script src="..\js\jUpload.js"></script>
-    <script src="..\js\jBsTable.js"></script>
-    <script src="..\js\data.js"></script>
-    <script src="..\js\jUserNotify.js"></script>
     <link rel="stylesheet" href="..\css\core.css">
     <link rel="stylesheet" href="..\css\jButton.css">
     <link rel="stylesheet" href="..\css\jSlide.css">
@@ -31,775 +34,68 @@
     <link rel="stylesheet" href="..\css\jLoading.css">
     <link rel="stylesheet" href="..\css\jUserNotify.css">
 
+    <script src="..\js\core.js"></script>
+    <script src="..\js\jSlide.js"></script>
+    <script src="..\js\jUpload.js"></script>
+    <script src="..\js\jBsTable.js"></script>
+    <script src="..\js\jUserNotify.js"></script>
+
+    <!-- control -->
+    <script src="template/search.ctrl.js"></script>
+    <script src="template/add.ctrl.js"></script>
+    <script src="template/predict.ctrl.js"></script>
+    <script src="template/slide.ctrl.js"></script>
+
     <script>
         $(document).ready(function () {
             jUI.usernotify();
-            //初始化上传文件按钮
-            jUI.jUpload("#uploadFile");
-            //初始化左边栏
-            var slideData = {
-                header: {
-                    main: "peptide",
-                    label: "抗菌肽在线预测平台"
-                },
-                body: [{
-                        header: "功能",
-                        // options: ["IMP-PUP", "iLM-2L", "CKSAAP_PhoglySite"]
-                        options: [{
-                            text: "IMP_PUP",
-                            value: "IMP_PUP",
-                            label: "Prediction of pupylation sites in prokaryotic proteins",
-                            type: "tab"
-                        }, {
-                            text: "iLM_2L",
-                            value: "iLM_2L",
-                            label: "Prediction of protein lysine methylation sites and their methylation degrees",
-                            type: "tab"
-                        }, {
-                            text: "CKSAAP_PhoglySite",
-                            value: "CKSAAP_PhoglySite",
-                            label: "Prediction of protein lysine phosphoglycerylation sites",
-                            type: "tab"
-                        }, {
-                            text: " predict antimicrobial peptides and their  functional  types ",
-                            value: "peptides",
-                            label: "",
-                            type: "tab"
-                        }],
-                        type: "group"
-                    }, {
-                        header: "数据",
-                        options: [{
-                            text: "搜索",
-                            value: "search",
-                            label: "搜索抗菌肽序列",
-                            type: "tab"
-                        }, {
-                            text: "添加",
-                            value: "add",
-                            label: "填写您所知的抗菌肽序列丰富数据资源",
-                            type: "tab"
-                        }, {
-                            header: "链接",
-                            options: [{
-                                    text: "CAMP",
-                                    value: "http://www.camp.bicnirrh.res.in/",
-                                    type: "link"
-                                },
-                                {
-                                    text: "APD",
-                                    value: "http://aps.unmc.edu/AP/main.php",
-                                    type: "link"
-                                }
-                            ],
-                            type: "group"
-                        }],
-                        type: "group"
-                    }, {
-                        header: "说明",
-                        // options: ["readme", "data", "citation"]
-                        options: [{
-                            text: "readme",
-                            value: "ReadMe.html",
-                            type: "link"
-                        }, {
-                            text: "data",
-                            value: "data.html",
-                            type: "link"
-                        }, {
-                            text: "citation",
-                            value: "Citation.html",
-                            type: "link"
-                        }],
-                        type: "group"
-                    },
-                    // "Contact @ jacean"],
-                    {
-                        text: "Contact @ WanJiaqing",
-                        value: "mailto:wanjacean@outlook.com",
-                        type: "link"
-                    }
-                ],
-                footer: ["dut"]
-            };
-            var event = {
-                tabEvent: function (dom, text, value, label) {
-                    showTab(text, value, label);
-                },
-                show: function () {
-                    $("#slideContainer").addClass("col-md-3");
-                    $("#tabContainer").addClass("col-md-9");
-                    $("#slideContainer").removeClass("col-md-1");
-                    $("#tabContainer").removeClass("col-md-11");
-                },
-                hide: function () {
-                    $("#slideContainer").removeClass("col-md-3");
-                    $("#tabContainer").removeClass("col-md-9");
-                    $("#slideContainer").addClass("col-md-1");
-                    $("#tabContainer").addClass("col-md-11");
-                }
-            }
-            jUI.jSlide("#slideContainer", {
-                data: slideData,
-                event: event
-            });
 
-            //初始化按钮事件
-            $("#seqeSubmit").click(function () {
-                // submitForm("seqeForm", "IMP_PUP");
-                if ($("#seqe").val().trim() == "") {
-                    // console.log(1);
-                    return;
-                }
-                // $(this).attr("disabled",true);
-                addLoading();
-                submitForm("seqeForm", $("#testType").data("value"));
-
-            });
-            $("#fileSubmit").click(function () {
-                // $(this).attr("disabled",true);
-                addLoading();
-                submitForm("fileForm", $("#testType").data("value"));
-
-            });
-
-            //隐藏结果面板            
-            $("#resultPanel").hide();
-
-            //阻止默认提交事件
-            $("form").submit(function (e) {
-                e.preventDefault();
-                // alert("Submit prevented");
-            });
+            ctrl_slide_init();
 
             //***//设置默认显示搜索页面,开始
             //$("[data-value=search]").click();
-            $("[data-value=add]").click();
-
-
-
+            // $("[data-value=add]").click();
+            var anchor = Util.url.Hash(window.location);
+            var moduleOption = ["IMP_PUP", "iLM_2L", "CKSAAP_PhoglySite"];
+            if (moduleOption.indexOf(anchor) > -1) {
+                showTab(anchor,$("[data-value='"+anchor+"']"));
+            }else if(anchor=="search"||anchor=="add"){
+                showTab(anchor);
+            }
         });
 
-        function setResultPanel(title, status) {
 
-        }
-
-        function addLoading() {
-
-            var loadHtml = "<div class='loading'>" +
-                "<span > </span>" +
-                "<span > </span>" +
-                "<span > </span>" +
-                "<span > </span>" +
-                "<span > </span>" +
-                "</div>";
-            $("#resultPanel").show().removeClass("panel-success panel-danger").addClass("panel-default");
-            $("#resultTitle").html("正在执行");
-            $("#resultInfo").html("");
-            $("#resultInfo").append(loadHtml);
-            $("#seqeSubmit").attr("disabled", true);
-            $("#seqeSubmit").addClass("j-btn-disable");
-            $("#fileSubmit").addClass("j-btn-disable");
-            $("#fileSubmit").attr("disabled", true);
-        }
-
-        function removeLoading() {
-            $(".loading").remove();
-            $("#seqeSubmit").attr("disabled", false);
-            $("#fileSubmit").attr("disabled", false);
-            $("#seqeSubmit").removeClass("j-btn-disable");
-            $("#fileSubmit").removeClass("j-btn-disable");
-        }
-
-        function submitForm(formid, exec) {
-            var fd = new FormData(document.getElementById(formid));
-            fd.append("exec", exec);
-            fd.append("type", formid);
-            $.ajax({
-                cache: true,
-                type: "POST",
-                url: '../server/uploadclassnew.php',
-                data: fd,
-                async: true,
-                processData: false, // 告诉jQuery不要去处理发送的数据
-                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
-                error: function (request) {
-                    $("#resultPanel").show().removeClass("panel-default panel-success").addClass(
-                        "panel-danger");
-                    $("#resultTitle").html("提交失败");
-                    $("#resultInfo").html(request);
-                    removeLoading();
-                },
-                success: function (data) {
-                    if (data.status == "ok") {
-                        $("#resultPanel").show().removeClass("panel-default panel-danger").addClass(
-                            "panel-success");
-                        $("#resultTitle").html("执行成功");
-                        var str = data.result;
-                        // $("#resultInfo").html(str.replace(/\r\n/g,"</br>"));
-                        var strArr = str.split('\r\n');
-                        var len = strArr.length;
-                        var tempStr = "";
-                        for (var i = 0; i < len; i++) {
-                            tempStr += "<p>" + strArr[i] + "</p>"
-                        }
-                        tempStr += "<a href='" + data.data + "'>click this to download result file</a>";
-                        $("#resultInfo").html(tempStr);
-                    } else {
-                        $("#resultPanel").show().removeClass("panel-default panel-success").addClass(
-                            "panel-danger");
-                        $("#resultTitle").html("执行失败");
-                        var str = data.result;
-                        // $("#resultInfo").html(str.replace(/\r\n/g,"</br>"));
-                        var strArr = str.split('\r\n');
-                        var len = strArr.length;
-                        var tempStr = "";
-                        for (var i = 0; i < len; i++) {
-                            tempStr += "<p>" + strArr[i] + "</p>"
-                        }
-                        $("#resultInfo").html(tempStr);
-                    }
-                    removeLoading();
-                },
-                dataType: "json"
-            });
-        }
-
-        function submitAddMoudle() {
-            //addmoudle模块上传事件
-            var sequence = $("#add_val_sequence").val();
-            var title = $("#add_val_title").val();
-            if (sequence == "" || title == "") {
-                alert("请输入序列及序列标题");
-                return;
-            }
-            if (!(/^[A-Za-z]+$/.test(sequence))) { //只能提交英文字母
-                alert("请输入合法序列");
-                return;
-            }
-            //            var fd = new FormData(document.getElementById("form_add_moudle"));
-            var fd = new FormData();
-            fd.append("title", $("#add_val_title").val());
-            fd.append("sequence", $("#add_val_sequence").val());
-
-            var activity = (function () {
-                var act = "";
-                $("input[name='add_val_activity_cb']:checked").each(
-                    function () {
-                        if ($(this).attr("id") ==
-                            "add_activity_antibacterial") {
-                            var select = $(
-                                "#add_activity_antibacterial_select"
-                            ).val();
-                            switch (select) {
-                                case "all":
-                                    act += "Gram,"; //TODO:也有没说明具体性质的序列应该是Antibacterial or gram
-                                    break;
-                                case "gram-":
-                                    act += "Gram-,";
-                                    break;
-                                case "gram+":
-                                    act += "Gram+,";
-                                    break;
-                                case "gram+&-":
-                                    act += "anti-Gram+ & Gram-,";
-                                    break;
-                                case "unknown":
-                                    act += "Antibacterial,";
-                            }
-                        } else {
-                            act += $(this).val() + ",";
-                        }
-
-                    });
-                act = act == "" ? "" : act.substr(0, act.length - 1);
-                return act;
-            })();
-            fd.append("activity", activity); //DONE:选项值
-            fd.append("validated", $("#add_val_validated").val());
-            fd.append("source", $("#add_val_source").val());
-            fd.append("target", $("#add_val_target").val());
-            fd.append("desctext", $("#add_val_desctext").val());
-            $.ajax({
-                cache: true,
-                type: "POST",
-                url: 'ajax_data_add.php',
-                data: fd,
-                async: false,
-                processData: false, // 告诉jQuery不要去处理发送的数据
-                contentType: false, // 告诉jQuery不要去设置Content-Type请求头
-                error: function (request) {
-                    alert("提交失败！");
-                },
-                success: function (data) {
-                    if (data.status == "ok") {
-                        alert("添加成功！" + data.result);
-                    } else {
-                        alert("添加失败:" + data.result);
-                    }
-
-                },
-                dataType: "json"
-            });
-
-        }
-
-        function clearForm() {
-            //type="reset"会重置form
-        }
-
-        function showTab(text, value, label) {
+        function showTab(value,dom) {
+            //var value=$(dom).data("value");
             if (value == "IMP_PUP" || value == "iLM_2L" || value == "CKSAAP_PhoglySite" || value == "peptides") {
-                $("#tabContainer").html($("#predictMoudle").html());
-                $("#testType").text(text);
-                $("#testType").data('value', value);
-                $("#testLabel").text(label);
-            }
-            if (value == "search") {
-                //添加搜索模块
-                $("#tabContainer").html($("#searchMoudle").html());
-                //用select2初始化select选择
-                $("#search_val_length").select2({
-                    width: "100%",
-                    minimumResultsForSearch: Infinity,
-                    data: [{
-                            id: "0",
-                            text: ">0"
-                        },
-                        {
-                            id: "0-10",
-                            text: "0-10"
-                        },
-                        {
-                            id: "10-50",
-                            text: "10-50"
-                        },
-                        {
-                            id: "50-100",
-                            text: "50-100"
-                        },
-                        {
-                            id: "100-500",
-                            text: "100-500"
-                        },
-                        {
-                            id: "500",
-                            text: ">500"
-                        }
-                    ]
-                });
-                $("#search_val_validated").select2({
-                    minimumResultsForSearch: Infinity,
-                    data: [{
-                        id: "all",
-                        text: "all"
-                    }, {
-                        id: "Experimentally Validated",
-                        text: "Experimentally Validated"
-                    }, {
-                        id: "Predicted",
-                        text: "Predicted"
-                    }, {
-                        id: "Predicted (Based on signature)",
-                        text: "Predicted (Based on signature)"
-                    }, {
-                        id: "unknown",
-                        text: "unknown"
-                    }]
-                });
-                $("#search_activity_antibacterial_select").select2({
-                    minimumResultsForSearch: Infinity,
-                    data: [{
-                        id: "all",
-                        text: "all"
-                    }, {
-                        id: "gram+",
-                        text: "gram+"
-                    }, {
-                        id: "gram-",
-                        text: "gram-"
-                    }, {
-                        id: "gram+&-",
-                        text: "gram+&-"
-                    }, {
-                        id: "unknown",
-                        text: "unknown"
-                    }]
-                });
-                //初始化表单
-                jUI.jBsTable("#seq_data_table", {
-                    config: {
-                        url: "ajax_data_search.php",
-                        toolbar: '#toolbar', //工具按钮用哪个容器
-                        sidePagination: "server",
-                        uniqueId: "uid",
-                        columns: fieldArr,
-                        queryParams: function (params) {
-                            var temp = {
-                                limit: params.limit, //页面大小
-                                offset: params.offset, //页码
-                                uid: $("#search_val_uid").val(),
-                                title: $("#search_val_title").val(),
-                                length: $("#search_val_length").val(),
-                                sequence: $("#search_val_sequence").val(),
-                                activity: (function () {
-                                    var act = "";
-                                    $("input[name='search_val_activity_cb']:checked").each(
-                                        function () {
-                                            if ($(this).attr("id") ==
-                                                "search_activity_antibacterial") {
-                                                var select = $(
-                                                    "#search_activity_antibacterial_select"
-                                                ).val();
-                                                switch (select) {
-                                                    case "all":
-                                                        act += "Gram,"; //TODO:也有没说明具体性质的序列应该是Antibacterial or gram
-                                                        break;
-                                                    case "gram-":
-                                                        act += "Gram-,";
-                                                        break;
-                                                    case "gram+":
-                                                        act += "Gram+,";
-                                                        break;
-                                                    case "gram+&-":
-                                                        act += "anti-Gram+ & Gram-,";
-                                                        break;
-                                                    case "unknown":
-                                                        act += "Antibacterial,";
-                                                }
-                                            } else {
-                                                act += $(this).val() + ",";
-                                            }
-
-                                        });
-                                    act = act == "" ? "" : act.substr(0, act.length - 1);
-                                    return act;
-                                })(),
-                                validated: $("#search_val_validated").val(),
-                                fromdb: $("#search_val_fromdb").val(),
-                                source: $("#search_val_source").val()
-                            };
-                            return temp;
-                        },
-                        onDblClickRow: function (row, $element) {
-                            //进入到详情页
-                            //alert(row['uid']);
-                            var uid = row['uid'];
-                            window.location.href = "detail.html?uid=" + uid;;
-                        }
-
-                    },
-                    button: {
-
+                $("#tabContainer").load("template/predict.tpl.html", function (r, s) {
+                    if (s == "success") {
+                        ctrl_predict_init(dom);
                     }
                 });
-                //每次都是加载script，所以需要这时候绑定事件
-                $("#search_submit").click(function () {
-                    $("#seq_data_table").data("jBsTable").refresh();
+            }
+            if (value == "search") { //添加搜索模块
+                $("#tabContainer").load("template/search.tpl.html", function (r, s, x) {
+                    if (s == "success") {
+                        ctrl_search_init();
+                    }
                 });
             }
             if (value == "add") {
-                //添加分类显示的模块
-                $("#tabContainer").html($("#addMoudle").html());
-                $("#add_activity_antibacterial_select").select2({
-                    minimumResultsForSearch: Infinity,
-                    data: [{
-                        id: "all",
-                        text: "all"
-                    }, {
-                        id: "gram+",
-                        text: "gram+"
-                    }, {
-                        id: "gram-",
-                        text: "gram-"
-                    }, {
-                        id: "gram+&-",
-                        text: "gram+&-"
-                    }, {
-                        id: "unknown",
-                        text: "unknown"
-                    }]
-                });
-                $("#submit_add_moudle").click(function () {
-                    submitAddMoudle();
+                $("#tabContainer").load("template/add.tpl.html", function (r, s, x) {
+                    if (s == "success") {
+                        ctrl_add_init();
+                    }
                 });
             }
+             Util.url.Hash(window.location,value);
 
         }
-    </script>
-
-    <script type="text/javascript">
-        /*上传附件addmodlue，稍后改*/
-        $('input[id=add_val_file]').change(function () {
-            $('#add_val_file_show').val($(this).val());
-        });
-    </script>
-    <script type="text/html" id="predictMoudle">
-        <div class="" id="testContainer">
-            <div class="" id="testDescription">
-                <h2 id="testType">iLM-2L</h2>
-                <p id="testLabel">Prediction of protein lysine methylation sites and their methylation degrees
-                </p>
-            </div>
-            <div>
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active "><a class="text-right" href="#testSequences" aria-controls="testSequences" role="tab" data-toggle="tab">序列测试</a></li>
-                    <li role="presentation"><a class="text-left" href="#testFile" aria-controls="testFile" role="tab" data-toggle="tab">文件测试</a></li>
-                </ul>
-                <!-- Tab panes -->
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="testSequences">
-                        <div class="center-custom">
-                            <form id="seqeForm">
-                                <p class="test-type-desc">
-                                    Enter or copy/paste query protein sequences in FASTA format (Example):
-                                </p>
-                                <div>
-                                    <textarea name="seqe" id="seqe" cols="60" rows="10"></textarea>
-                                    <div>
-                                        <button id="seqeSubmit" class="j-btn j-btn-submit">submit</button>
-                                        <button id="seqeClear" type="reset" class="j-btn j-btn-clear">clear</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div role="tabpanel" class="tab-pane " id="testFile">
-                        <div class="center-custom" style="width: 100%">
-                            <form id="fileForm">
-                                <p class="test-type-desc">Upload your input file in FASTA format:</p>
-                                <div class="inline-custom">
-                                    <input id="uploadFile" name="uploadFile" type="file" />
-                                </div>
-                                <div>
-
-                                    <div>
-                                        <button id="fileSubmit" class="j-btn j-btn-submit">submit</button>
-                                        <button id="fileClear" type="reset" class="j-btn j-btn-clear">clear</button>
-                                    </div>
-                                </div>
-                            </form>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="resultPanel" class="panel panel-default">
-            <div class="panel-heading">
-                <h3 id="resultTitle" class="panel-title">执行结果</h3>
-            </div>
-            <div class="panel-body">
-                <div id="resultInfo"></div>
-                <div id="resultDown"></div>
-            </div>
-        </div>
-    </script>
-    <script type="text/html" id="searchMoudle">
-        <div id="search_hearder">
-            <h2 id="testType">序列查询</h2>
-            <p id="testLabel">通过设定条件查找序列
-            </p>
-        </div>
-        <div id="search_opt">
-            <div class="panel panel-default" id="search_opt_base">
-                <div class="panel-body">
-                    <div class=" row ">
-                        <div id="search_opt_sequence" class=" form-group col-md-12">
-                            <label for="search_val_sequence" class="">sequence</label>
-                            <input type="text" class="form-control" id="search_val_sequence" placeholder="sequence" />
-                        </div>
-                        <div id="search_opt_uid" class="form-group col-md-3">
-                            <label for="search_val_uid" class="">uid</label>
-                            <input type="text" class="form-control " id="search_val_uid" placeholder="uid" />
-                        </div>
-                        <div id="search_opt_title" class="form-group col-md-3">
-                            <label for="search_val_title" class="">title</label>
-                            <input type="text" class="form-control " id="search_val_title" placeholder="title" />
-                        </div>
-
-                        <div id="search_opt_length" class="form-group col-md-3">
-                            <label for="search_val_length" class="">length   
-                            </label>
-                            <div class="">
-                                <select name="search_val_length" id="search_val_length">
-                                        </select>
-                            </div>
-                        </div>
-                        <div id="search_opt_validated" class="form-group col-md-3">
-                            <label>validated</label>
-                            <!--<input type="text" class="form-control" id="search_val_validated" placeholder="validated">-->
-                            <div class="">
-                                <select name="search_val_validated" id="search_val_validated">
-                                        </select>
-                            </div>
-                        </div>
-                        <div id="search_opt_activity" class="form-group col-md-8">
-                            <label for="search_val_activity">activity</label>
-                            <div class="form-control-static" id="search_val_activity">
-                                <label class="checkbox-inline">
-  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antiviral" value="antiviral"/> antiviral
-</label>
-                                <label class="checkbox-inline">
-  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antifungal" value="antifungal"/> antifungal
-</label>
-                                <label class="checkbox-inline">
-  <input type="checkbox" name="search_val_activity_cb" id="search_activity_anticancer" value="anticancer"/> anticancer
-</label>
-                                <label class="checkbox-inline">
-  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antihiv" value="antihiv"/> antihiv
-</label>
-                                <label class="checkbox-inline">
-  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antiparasitic" value="antiparasitic"/> antiparasitic
-</label>
-                                <label class="checkbox-inline">
-                                <input type="checkbox" name="search_val_activity_cb" id="search_activity_antibacterial" value="antibacterial" />antibacterial                                
-                                        <select name="" id="search_activity_antibacterial_select" class=" ">
-                                        </select>
-                                   
-                                </label>
-                            </div>
-
-                        </div>
-                        <div id="search_opt_database" class="form-group col-md-2">
-                            <label>源数据库</label>
-                            <input type="text" class="form-control" id="search_val_fromdb" placeholder="from databse">
-                        </div>
-                        <div id="search_opt_source" class="form-group col-md-2">
-                            <label>来源</label>
-                            <input type="text" class="form-control" id="search_val_source" placeholder="source">
-                        </div>
-
-                        <div type="button" class="btn btn-default col-md-offset-2 col-md-3" id="search_submit">搜索</div>
-                        <div type="button" class="btn btn-default col-md-offset-1 col-md-3" id="search_expand">收拢</div>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <div id="search_result">
-            <div class="panel panel-default">
-                <!-- Default panel contents -->
-                <div class="panel-heading">查询序列
-                </div>
-                <div id="toolbar" class="btn-group">
-                </div>
-                <!-- Table -->
-                <table class="table" id="seq_data_table">
-                </table>
-                <div class="panel-footer">下载数据</div>
-            </div>
-        </div>
-    </script>
-    <script type="text/html" id="addMoudle">
-        <div id="add_hearder">
-            <h2 id="testType">添加序列</h2>
-            <p id="testLabel">添加您的序列来丰富数据资源
-            </p>
-        </div>
-        <div id="add_body">
-            <form class="form-horizontal" id="form_add_moudle">
-                <br>
-                <div class="form-group">
-                    <label for="add_val_sequence" class="control-label col-xs-4 col-sm-3 text-right">sequence  :</label>
-                    <div class=" col-xs-6 col-sm-6">
-                        <input id="add_val_sequence" name="add_val_sequence" class="form-control" type="text" placeholder="">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="add_val_title" class="control-label col-xs-4 col-sm-3 text-right">title  :</label>
-                    <div class=" col-xs-6 col-sm-6">
-                        <input id="add_val_title" name="add_val_title" class="form-control" type="text" placeholder="">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="add_val_activity" class="col-xs-4 col-sm-3 text-right">activity :</label>
-                    <div class="form-control-static col-xs-6 col-sm-6" id="add_val_activity">
-                        <label class="checkbox-inline">
-  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antiviral" value="antiviral"/> antiviral
-</label>
-                        <label class="checkbox-inline">
-  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antifungal" value="antifungal"/> antifungal
-</label>
-                        <label class="checkbox-inline">
-  <input type="checkbox" name="add_val_activity_cb" id="add_activity_anticancer" value="anticancer"/> anticancer
-</label>
-                        <label class="checkbox-inline">
-  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antihiv" value="antihiv"/> antihiv
-</label>
-                        <label class="checkbox-inline">
-  <input type="checkbox" name="add_val_activity_cb" id="add_activity_antiparasitic" value="antiparasitic"/> antiparasitic
-</label>
-                        <label class="checkbox-inline">
-                                <input type="checkbox" name="add_val_activity_cb" id="add_activity_antibacterial" value="antibacterial" />antibacterial                                
-                                        <select name="add_activity_antibacterial_select" id="add_activity_antibacterial_select" class=" ">
-                                        </select>                                   
-                                </label>
-                    </div>
-
-                </div>
-                <div class="form-group">
-                    <label for="add_val_source" class="control-label col-xs-4 col-sm-3 text-right">source  :</label>
-                    <div class=" col-xs-6 col-sm-6">
-                        <input id="add_val_source" name="add_val_source" class="form-control" type="text" placeholder="">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="add_val_target" class="control-label col-xs-4 col-sm-3 text-right">target  :</label>
-                    <div class=" col-xs-6 col-sm-6">
-                        <input id="add_val_target" name="add_val_target" class="form-control" type="tel" placeholder="">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="add_val_validated" class="control-label col-xs-4 col-sm-3 text-right">validated  :</label>
-                    <div class=" col-xs-6 col-sm-6">
-                        <input id="add_val_validated" name="add_val_validated" class="form-control" type="text" placeholder="">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="add_val_desctext" class="control-label col-xs-4 col-sm-3 text-right">desctext  :</label>
-                    <div class=" col-xs-6 col-sm-6">
-                        <textarea id="add_val_desctext" name="add_val_desctext" class="form-control" rows="3" placeholder=""></textarea>
-                    </div>
-                </div>
-                <div class="col-xs-12  col-sm-12 " style="background-color:#adafb0">
-                </div>
-                <div class="col-xs-12  col-sm-12" style="background-color:white">
-                    &nbsp;
-                </div>
-                <!--上传附件,以上内容可以用文件批量上传-->
-                <div id="div_fj2" style="" class="form-group">
-                    <label for="add_val_file" class="control-label col-xs-4 col-sm-3 text-right">multi upload :</label>
-                    <div class="col-xs-6 col-sm-6">
-                        <div class="input-group ">
-                            <input id="add_val_file" name="add_val_file" type="file" style="display:none" accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                            <input id="add_val_file_show" type="text" class="form-control" aria-describedby="helpBlock2">
-                            <div class="input-group-btn">
-                                <a type="button" class="btn btn-default" onclick="$('input[id=add_val_file]').click();">上传</a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="form-group">
-
-                    <div class="col-sm-6 col-xs-9 col-xs-offset-3 col-sm-offset-3">
-                        <button type="button" id="submit_add_moudle" class="btn btn-primary col-xs-9 col-sm-6" onclick="">submit</button>
-                    </div>
-                </div>
-            </form>
-        </div>
     </script>
 
 </head>
 
 <body>
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3" id="slideContainer">

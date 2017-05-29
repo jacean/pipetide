@@ -9,7 +9,7 @@ $conn = new mysqlQuery();
 
 //密码
 $email=$_GET["email"];
-$pwd=$_GET["pwd"];
+$pwd=MD5($_GET["pwd"]);
 //pwd应该在前台已经进行了md5加密，传输过程中避免真实数据
 //用户输入进行合法性验证
 //TODO:正则实现

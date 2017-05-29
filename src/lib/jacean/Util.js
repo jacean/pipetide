@@ -6,10 +6,13 @@
     if (typeof define === 'function' && define.amd) {
         define(factory);
     } else {
-        root.Util=factory();
+        root.Util = factory();
     }
 }(this, function () {
     var Util = {
+        /**
+         * 类型判断
+         */
         getObject: function (objects, key, value) {
             if (!this.is(objects, "array")) {
                 objects = [objects];
@@ -53,6 +56,7 @@
             return str.replace(/^\s+|\s+$/g, '');
         },
         /**
+         * 输入校验
          * type:空，邮箱，数字，电话号之类
          * empty,email,phone
          */
@@ -98,7 +102,7 @@
                 return false;
             }
             // var reg = /^([a-zA-Z_0-9-])+@([a-zA-Z_0-9-])+(\.[a-zA-Z_0-9-])+$/;
-            var reg = /^([a-zA-Z0-9_\-])+@([a-zA-Z0-9_\-])+(\.[a-zA-Z0-9_\-])+/ ;
+            var reg = /^([a-zA-Z0-9_\-])+@([a-zA-Z0-9_\-])+(\.[a-zA-Z0-9_\-])+/;
             return reg.test(str);
         },
         isFloat2: function (str) {
@@ -123,9 +127,9 @@
             var reg = /^(\w){6,20}$/;
             return reg.test(str);
         },
-        isPwdStrong:function(){
+        isPwdStrong: function () {
             //只能包含数字、字母、下划线、特殊字符(!@#$%&^*_)
-            var reg =/^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%_^&*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%_^&*]+$)(?![\d!@#$%_^&*]+$)[a-zA-Z\d!@#$%_^&*]+$/;
+            var reg = /^(?![a-zA-z]+$)(?!\d+$)(?![!@#$%_^&*]+$)(?![a-zA-z\d]+$)(?![a-zA-z!@#$%_^&*]+$)(?![\d!@#$%_^&*]+$)[a-zA-Z\d!@#$%_^&*]+$/;
             return reg.test("str");
         },
         isNum: function (str) {
@@ -141,7 +145,45 @@
             }
             var reg = /[\u4E00-\u9FA5\uf900-\ufa2d]/g;
             return reg.test(str);
+        },
+        url: {
+            getPaths: function (location) {
+                var path = location.pathname.substring(1);
+                var paths = path.split("/");
+                return paths;
+
+            },
+            getParams: function (location) {
+                var args = new Object();
+                var query = location.search.substring(1); //获取查询串
+                query = decodeURI(query);
+
+                var pairs = query.split("&"); //在逗号处断开
+                for (var i = 0; i < pairs.length; i++) {
+                    var pos = pairs[i].indexOf("="); //查找name=value
+
+                    if (pos == -1) continue; //如果没有找到就跳过
+
+                    var argname = pairs[i].substring(0, pos); //提取name
+
+                    var value = pairs[i].substring(pos + 1); //提取value
+
+                    args[argname] = unescape(value); //存为属性
+                }
+                return args;
+            },
+            Hash: function (location, value) {
+                if (Util.isUndefined(value)) {
+                    var query = location.hash.substring(1); //获取查询串
+                    return query;
+                } else {
+                    location.hash = value;
+                    return value;
+                }
+
+            }
         }
+
 
     }
     return Util;

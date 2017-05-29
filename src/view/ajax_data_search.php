@@ -112,7 +112,7 @@ function setQueryCondition(){
     $total = $rownum["num"];
     $response = array('total' => $total, 'rows' => $results);
 
-//WriteLog(json_encode($response));
+WriteLog(json_encode($response));
 echo json_encode($response);
 $conn->close();
 ?>

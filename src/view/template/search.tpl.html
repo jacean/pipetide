@@ -1,0 +1,95 @@
+<div id="search_hearder">
+    <h2 id="testType">序列查询</h2>
+    <p id="testLabel">通过设定条件查找序列
+    </p>
+</div>
+<div id="search_opt">
+    <div class="panel panel-default" id="search_opt_base">
+        <div class="panel-body">
+            <div class=" row ">
+                <div id="search_opt_sequence" class=" form-group col-md-12">
+                    <label for="search_val_sequence" class="">sequence</label>
+                    <input type="text" class="form-control" id="search_val_sequence" placeholder="sequence" />
+                </div>
+                <div id="search_opt_uid" class="form-group col-md-3">
+                    <label for="search_val_uid" class="">uid</label>
+                    <input type="text" class="form-control " id="search_val_uid" placeholder="uid" />
+                </div>
+                <div id="search_opt_title" class="form-group col-md-3">
+                    <label for="search_val_title" class="">title</label>
+                    <input type="text" class="form-control " id="search_val_title" placeholder="title" />
+                </div>
+
+                <div id="search_opt_length" class="form-group col-md-3">
+                    <label for="search_val_length" class="">length   
+                            </label>
+                    <div class="">
+                        <select name="search_val_length" id="search_val_length">
+                                        </select>
+                    </div>
+                </div>
+                <div id="search_opt_validated" class="form-group col-md-3">
+                    <label>validated</label>
+                    <!--<input type="text" class="form-control" id="search_val_validated" placeholder="validated">-->
+                    <div class="">
+                        <select name="search_val_validated" id="search_val_validated">
+                                        </select>
+                    </div>
+                </div>
+                <div id="search_opt_activity" class="form-group col-md-8">
+                    <label for="search_val_activity">activity</label>
+                    <div class="form-control-static" id="search_val_activity">
+                        <label class="checkbox-inline">
+  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antiviral" value="antiviral"/> antiviral
+</label>
+                        <label class="checkbox-inline">
+  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antifungal" value="antifungal"/> antifungal
+</label>
+                        <label class="checkbox-inline">
+  <input type="checkbox" name="search_val_activity_cb" id="search_activity_anticancer" value="anticancer"/> anticancer
+</label>
+                        <label class="checkbox-inline">
+  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antihiv" value="antihiv"/> antihiv
+</label>
+                        <label class="checkbox-inline">
+  <input type="checkbox" name="search_val_activity_cb" id="search_activity_antiparasitic" value="antiparasitic"/> antiparasitic
+</label>
+                        <label class="checkbox-inline">
+                                <input type="checkbox" name="search_val_activity_cb" id="search_activity_antibacterial" value="antibacterial" />antibacterial                                
+                                        <select name="" id="search_activity_antibacterial_select" class=" ">
+                                        </select>
+                                   
+                                </label>
+                    </div>
+
+                </div>
+                <div id="search_opt_database" class="form-group col-md-2">
+                    <label>源数据库</label>
+                    <input type="text" class="form-control" id="search_val_fromdb" placeholder="from databse">
+                </div>
+                <div id="search_opt_source" class="form-group col-md-2">
+                    <label>来源</label>
+                    <input type="text" class="form-control" id="search_val_source" placeholder="source">
+                </div>
+
+                <div type="button" class="btn btn-default col-md-offset-2 col-md-3" id="search_submit">搜索</div>
+                <div type="button" class="btn btn-default col-md-offset-1 col-md-3" id="search_expand">收拢</div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="search_result">
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">查询序列
+        </div>
+        <div id="toolbar" class="btn-group">
+        </div>
+        <!-- Table -->
+        <table class="table" id="seq_data_table">
+        </table>
+        <div class="panel-footer">下载数据</div>
+    </div>
+</div>

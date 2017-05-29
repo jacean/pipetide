@@ -1,4 +1,4 @@
-var fieldArr = [{
+var data_table_field=[{
     checkbox: true,
     width:"2%",
 }, {

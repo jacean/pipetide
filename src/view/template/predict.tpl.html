@@ -1,0 +1,62 @@
+<div class="" id="testContainer">
+    <div class="" id="testDescription">
+        <h2 id="testType">iLM-2L</h2>
+        <p id="testLabel">Prediction of protein lysine methylation sites and their methylation degrees
+        </p>
+    </div>
+    <div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active "><a class="text-right" href="#testSequences" aria-controls="testSequences" role="tab" data-toggle="tab">序列测试</a></li>
+            <li role="presentation"><a class="text-left" href="#testFile" aria-controls="testFile" role="tab" data-toggle="tab">文件测试</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="testSequences">
+                <div class="center-custom">
+                    <form id="seqeForm">
+                        <p class="test-type-desc">
+                            Enter or copy/paste query protein sequences in FASTA format (Example):
+                        </p>
+                        <div>
+                            <textarea name="seqe" id="seqe" cols="60" rows="10"></textarea>
+                            <div>
+                                <button id="seqeSubmit" class="j-btn j-btn-submit">submit</button>
+                                <button id="seqeClear" type="reset" class="j-btn j-btn-clear">clear</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane " id="testFile">
+                <div class="center-custom" style="width: 100%">
+                    <form id="fileForm">
+                        <p class="test-type-desc">Upload your input file in FASTA format:</p>
+                        <div class="inline-custom">
+                            <input id="uploadFile" name="uploadFile" type="file" />
+                        </div>
+                        <div>
+
+                            <div>
+                                <button id="fileSubmit" class="j-btn j-btn-submit">submit</button>
+                                <button id="fileClear" type="reset" class="j-btn j-btn-clear">clear</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="resultPanel" class="panel panel-default">
+    <div class="panel-heading">
+        <h3 id="resultTitle" class="panel-title">执行结果</h3>
+    </div>
+    <div class="panel-body">
+        <div id="resultInfo"></div>
+        <div id="resultDown"></div>
+    </div>
+</div>

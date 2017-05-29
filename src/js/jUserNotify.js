@@ -16,31 +16,73 @@
      * 5、登录后的右上角信息展示
      */
     var defaultOptions = {
-        type: "window",
         data: {
-            main: "Antimicrobial Peptide Online Forecasting Platform",
-            sub: "Welcome to"
+            name: "guest",
+            level: "guest",
+            status: "LOG_WAIT"
         },
-        event: { in: function (data) {
+        event: {
+            in: function (data, J) {
                 console.log("login");
                 /**
                  * ajax与后台交互，进行登录操作
                  * 密码在前台即做md5加密
                  */
+                $.ajax({
+                    type: "post",
+                    url: "ajax_user_info.php",
+                    data: data,
+                    success: function (res) {
+                        if (res.status == "ok") {
+                            console.log("return response");
+                            console.log(res.result);
+                            J.refresh(J.LOGSTATUS[2], res.result);
+                        } else {
+
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    },
+                    dataType: "json"
+                });
 
 
             },
-            out: function (data) {
+            out: function (data, J) {
                 console.log("logout");
             },
-            up: function (data) {
+            up: function (data, J) {
                 console.log("sign up");
                 /**
                  * 注册的时候可能需要用ajax实时和后台拿数据看是不是已经存在了这个邮箱账户
                  */
+                $.ajax({
+                    type: "post",
+                    url: "ajax_user_info.php",
+                    data: data,
+                    success: function (res) {
+                        if (res.status == "ok") {
+                            console.log("return up response");
+                            console.log(res.result);
+                            //level?
+                            J.refresh(J.LOGSTATUS[2], res.result);
+                        } else {
+                            alert(res.result);
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    },
+                    dataType: "json"
+                });
             }
         }
     };
+    var WindowText = {
+        main: "Antimicrobial Peptide Online Forecasting Platform",
+        sub: "Welcome to"
+    }
 
     var btnConfig = [{
         text: "log in",
@@ -59,14 +101,14 @@
     var UserNotify = function (_options) {
         //因为选项里包含多个对象，extend无法深度合并，所以单独处理
         if (_options == "undefined") _options = {};
-
-        this.type = typeof _options.type == "undefined" ? defaultOptions.type : _options.type;
+        this.LOGSTATUS = ["LOG_WAIT", "LOG_SHOW", "LOG_END"];
         this.data = $.extend(defaultOptions.data, _options.data);
+        this._data = defaultOptions.data;
         this.event = $.extend(defaultOptions.event, _options.event);
 
         this.template = {};
         this.template.container = '' +
-            '<div class="login-container">' +
+            '<div class="login-container login-window-container">' +
             '<div class="login-mask"></div>' +
             '<div class="login-container-inbox">' +
             '</div>' +
@@ -86,10 +128,10 @@
             '</div>' +
             '';
         this.template.notify = '' +
-            '<div class="login-notify-container">' +
+            '<div class="login-container login-notify-container">' +
             '<div class="login-notify-inbox">' +
-            '<div class="login-notify-group"><span class=" login-notify-child login-notify-name">wanjq</span></div>' +
-            '<div class="login-notify-group"><span class="login-notify-child login-notify-level">admin</span></div>' +
+            '<div class="login-notify-group"><span class=" login-notify-child login-notify-name">sign in</span></div>' +
+            '<div class="login-notify-group"><span class="login-notify-child login-notify-level">guest</span></div>' +
             '<div class="login-notify-group"><span class=" login-notify-child login-notify-out">log out</span></div>' +
             '</div>' +
             '</div>' +
@@ -136,65 +178,93 @@
     UserNotify.prototype = {
         init: function () {
             var _me = this;
-            var type = _me.type,
-                info = _me.data;
-            if (type == "window") {
-                _me.setWindow(info);
-            }
-            if (type == "notify") {
-                _me.setNotify(info);
-            }
-            this.bindEvent();
+            _me.setContainer();
+            _me.changeStatus(_me.data.status);
         },
-        setNotify: function () {
+        refresh: function (status, info) {
+            this.changeStatus(status, info);
+        },
+        destroy: function () {
 
         },
-        setWindow: function (info) {
+        changeStatus: function (status, info) {
+            $(".login-notify-container").hide();
+            $(".login-window-container").hide();
+            if (status == this.LOGSTATUS[0]) {
+                this.setLogWait(this._data);//默认的未登录提示信息
+            }
+            if (status == this.LOGSTATUS[1]) {
+                this.setLogShow();
+            }
+            if (status == this.LOGSTATUS[2]) {
+                this.setLogEnd(info);//登陆后后台饭回来的数据
+            }
+        },
+        setLogWait: function (info) {
             var _me = this;
-            _me.setContainer();
-            _me.setMainWindow(info);
-            _me.setInWindow();
-            _me.setUpWindow();
-            _me.showWindow("main");
-        },
-        setContainer: function () {
-            var template = this.template.container;
-            $('body').append(template);
-        },
-        setMainWindow: function (info) {
-            var template = this.template.mainwindow;
-            $('.login-container-inbox').append(template);
-            $(".login-sub-text").text(info.sub);
-            $(".login-main-text").text(info.main);
-        },
-        setInWindow: function () {
-            var template = this.template.inwindow;
-            $('.login-container-inbox').append(template);
-        },
-        setUpWindow: function () {
-            var template = this.template.upwindow;
-            $('.login-container-inbox').append(template);
-        },
-        setNotifyContent: function (info) {
-            var template = this.template.notify;
-            $('.login-container-inbox').append(template);
+            //未登录【guest,(hide),sign in】,status[0]
+            $(".login-notify-container").show();
+
             $(".login-notify-name").text(info.name);
             $(".login-notify-level").text(info.level);
-            $(".login-notify-out").text(info.out);
+            $(".login-notify-out").text("sign in");
+
+            $(".login-notify-level").parent().hide();
+
+            $(".login-notify-out").click(function () {
+                _me.changeStatus(_me.LOGSTATUS[1]);
+            });
+        },
+        setLogShow: function () {
+            var _me = this;
+            _me.showWindow("main");
+        },
+        setLogEnd: function (info) {
+            var _me = this;
+            $(".login-notify-container").show();
+            $(".login-notify-name").text(info.name);
+            $(".login-notify-level").text(info.level);
+            //已登录【wanjq,admin,log out】
+            $(".login-notify-out").text("log out");
+            $(".login-notify-level").parent().show();
+            $(".login-notify-out").click(function () {
+                _me.changeStatus(_me.LOGSTATUS[0]);
+            });
+
+        },
+        setContainer: function () {
+            /**
+             * 将所有模板代码全部插入，写入固定标签信息，绑定事件
+             */
+            var template, _me = this;
+            var info = _me.data;
+            var tip = WindowText;
+            $("body").remove(".login-container");
+            $('body').append(_me.template.container);
+            $('body').append(_me.template.notify);
+            $('.login-container-inbox').append(this.template.mainwindow);
+            $('.login-container-inbox').append(this.template.inwindow);
+            $('.login-container-inbox').append(this.template.upwindow);
+            $(".login-sub-text").text(tip.sub);
+            $(".login-main-text").text(tip.main);
+
+            _me.bindEvent();
+
         },
         showWindow: function (type) {
             $('body').addClass("body-mask");
-            $(".login-container").show();
+            $(".login-window-container").show();
             $("[data-jrole^='window']").hide();
             $("[data-jrole*='-" + type + "']").show();
         },
         hideWindow: function () {
             $("body").removeClass("body-mask");
-            $(".login-container").hide();
+            $(".login-window-container").hide();
         },
         maskClick: function () {
             var _me = this;
             this.hideWindow();
+            $(".login-notify-container").show();
         },
         bindEvent: function () {
             var _me = this;
@@ -207,16 +277,16 @@
             });
             //邮箱验证
             $("input[type='email']").change(function () {
-                if(!_me.checkValid($(this).val(), "email")){
+                if (!_me.checkValid($(this).val(), "email")) {
                     alert("违法的邮箱格式");
                 };
             });
             //密码验证
             $("input[type='password']").change(function () {
-                if(!_me.checkValid($(this).val(), "password")){
+                if (!_me.checkValid($(this).val(), "password")) {
                     alert("密码支持6位及以上数字字母下划线");
                 }; //数字字母下划线
-            });            
+            });
         },
         handle: function (role) {
             var _me = this;
@@ -240,19 +310,27 @@
         logHandle: function (type) {
             var _me = this;
             var data = {};
+            //需要设置页面信息，所以必须得在函数内部
             if (type == "in") {
-                data.email = $(".log-in-email").val();
-                data.pwd = md5($(".log-in-pwd").val());
-                _me.event.in(data);
+                data.email = $("#log-in-email").val();
+                data.pwd = ($("#log-in-pwd").val());
+                data.option = "in";
+                data.type = "notify";
+                _me.event.in(data, _me);
             }
             if (type == "up") {
-                data.email = $(".log-in-email").val();
-                data.pwd = md5($(".log-in-pwd").val());
-                _me.event.up();
+                data.email = $("#log-up-email").val();
+                data.pwd = ($("#log-up-pwd").val());
+                data.option = "up";
+                data.type = "notify";
+                _me.event.up(data, _me);
             }
             if (type == "out") {
-                _me.event.out();
+                data = _me.data;
+                data.option = "out"
+                _me.event.out(data, _me);
             }
+            console.log(data);
         },
         checkValid: function (str, type) {
             //type可以是空判断，邮箱判断之类
@@ -262,7 +340,7 @@
 
     var _jUI = {
         usernotify: function (options) {
-            new UserNotify($(this), options);
+            return new UserNotify($(this), options);
         }
     }
     if (typeof window.jUI == "undefined") {

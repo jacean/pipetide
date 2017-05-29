@@ -183,7 +183,7 @@
             $tab.each(function () {
                 $(this).click(function () {
                     var $t = $(this);
-                    event.tabEvent(this, $t.data('text'), $t.data('value'), $t.data('label'));
+                    event.tabEvent(this);
                 });
             });
         },
