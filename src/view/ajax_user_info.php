@@ -7,9 +7,9 @@ require_once("oftentools.php");
 $option=$_POST["option"];
 $email=$_POST["email"];
 $pwd=$_POST["pwd"];
-WriteLog($_POST,true);
-WriteLog($email);
-WriteLog($pwd);
+// WriteLog($_POST,true);
+// WriteLog($email);
+// WriteLog($pwd);
 $conn = new mysqlQuery();
 $result=[];
 if($option=="in"){
@@ -20,6 +20,9 @@ if($option=="in"){
     if($row = $statement->fetch(PDO::FETCH_ASSOC)){
         if($row["user_level"]=="1"){
             $result["level"]="user";
+        }
+        if($row["user_level"]=="9"){
+            $result["level"]="admin";
         }
         $result["name"]=$row["user_email"];
         $response = array('status' => 'ok', 'result' => $result);
@@ -46,7 +49,6 @@ if($option=="out"){
 
 }   
     
-
 echo json_encode($response);
 $conn->close();
 

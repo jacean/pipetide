@@ -22,9 +22,9 @@ var data_slide_data = {
                 label: "Prediction of protein lysine phosphoglycerylation sites",
                 type: "tab"
             }, {
-                text: " predict antimicrobial peptides and their  functional  types ",
+                text: "antimicrobial peptides",
                 value: "peptides",
-                label: "",
+                label: "predict antimicrobial peptides and their  functional  types",
                 type: "tab"
             }],
             type: "group"

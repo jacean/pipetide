@@ -10,10 +10,12 @@ var ctrl_search_init = function () {
         data: data_select_search
     });
     $("#search_val_validated").select2({
+        width: "100%",
         minimumResultsForSearch: Infinity,
         data: data_select_validated
     });
     $("#search_activity_antibacterial_select").select2({
+        width:"80px",
         minimumResultsForSearch: Infinity,
         data: data_select_antibacterial
     });

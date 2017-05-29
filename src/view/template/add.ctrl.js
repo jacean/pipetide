@@ -12,6 +12,10 @@ var ctrl_add_init = function () {
                 data: data_select_antibacterial
             });
             $("#submit_add_moudle").click(function () {
+                if(window.isLog!="LOG_END"){
+                    alert("please submit after log in!");
+                    return;
+                }
                 submitAddMoudle();
             });
         }

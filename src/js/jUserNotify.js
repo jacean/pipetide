@@ -38,7 +38,7 @@
                             console.log(res.result);
                             J.refresh(J.LOGSTATUS[2], res.result);
                         } else {
-
+                            alert(res.result);
                         }
                     },
                     error: function (e) {
@@ -188,8 +188,7 @@
 
         },
         changeStatus: function (status, info) {
-            $(".login-notify-container").hide();
-            $(".login-window-container").hide();
+            this.hideAll();
             if (status == this.LOGSTATUS[0]) {
                 this.setLogWait(this._data);//默认的未登录提示信息
             }
@@ -199,6 +198,7 @@
             if (status == this.LOGSTATUS[2]) {
                 this.setLogEnd(info);//登陆后后台饭回来的数据
             }
+            window.isLog = status;
         },
         setLogWait: function (info) {
             var _me = this;
@@ -257,14 +257,14 @@
             $("[data-jrole^='window']").hide();
             $("[data-jrole*='-" + type + "']").show();
         },
-        hideWindow: function () {
+        hideAll: function () {
             $("body").removeClass("body-mask");
+            $(".login-notify-container").hide();
             $(".login-window-container").hide();
         },
         maskClick: function () {
             var _me = this;
-            this.hideWindow();
-            $(".login-notify-container").show();
+            _me.changeStatus(_me.LOGSTATUS[0]);
         },
         bindEvent: function () {
             var _me = this;
@@ -312,6 +312,12 @@
             var data = {};
             //需要设置页面信息，所以必须得在函数内部
             if (type == "in") {
+                //进行验证？？？
+                if (!_me.checkValid($("#log-in-email").val(), "email")) {
+                    alert("违法的邮箱格式");
+                    return;
+                };
+
                 data.email = $("#log-in-email").val();
                 data.pwd = ($("#log-in-pwd").val());
                 data.option = "in";
@@ -319,6 +325,19 @@
                 _me.event.in(data, _me);
             }
             if (type == "up") {
+                //进行验证？？？
+                if (!_me.checkValid($("#log-up-email").val(), "email")) {
+                    alert("违法的邮箱格式");
+                    return;
+                };
+                if (!_me.checkValid($("#log-up-pwd").val(), "password")) {
+                    alert("密码支持6位及以上数字字母下划线");
+                    return;
+                }; //数字字母下划线
+                if($("#log-up-pwd2").val()!=$("#log-up-pwd").val()){
+                    alert("两次密码不匹配");
+                    return;
+                }
                 data.email = $("#log-up-email").val();
                 data.pwd = ($("#log-up-pwd").val());
                 data.option = "up";
