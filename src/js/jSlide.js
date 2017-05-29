@@ -27,7 +27,7 @@
             this.bindLinkEvent();
             this.bindTabEvent();
 
-            
+
             var event = self.event;
             /**
              * 控制显示隐藏
@@ -36,22 +36,25 @@
             control.click(function () {
                 if (control.hasClass("slide-head-show")) {
                     control.removeClass('slide-head-show');
-                     control.addClass('slide-head-hide');
+                    control.addClass('slide-head-hide');
                     control.removeClass('glyphicon glyphicon-chevron-left');
                     control.addClass('glyphicon glyphicon-chevron-right');
-                    $('.slide-container').css('opacity','0');
+                    $('.slide-container').css('opacity', '0');
                     event.hide();
                 } else {
                     control.removeClass('slide-head-hide');
                     control.addClass('slide-head-show');
                     control.removeClass('glyphicon glyphicon-chevron-right');
-                     control.addClass('glyphicon glyphicon-chevron-left');
-                     event.show();
-                     $('.slide-container').css({'opacity':1});
+                    control.addClass('glyphicon glyphicon-chevron-left');
+                    event.show();
+                    $('.slide-container').css({ 'opacity': 1 });
                 }
             })
-            var $tabs = self.$main.find("[data-type='tab']");
-            if ($tabs.length > 0) $tabs[0].click();
+            if (self.options.selected) {
+                var $tabs = self.$main.find("[data-type='tab']");
+                if ($tabs.length > 0) $tabs[0].click();
+            }
+
         },
         createElement: function () {
             var self = this;
@@ -119,7 +122,7 @@
 
             function createHeader(headerObject) {
                 var headerHtml = '<div class="slide-header">';
-                
+
                 if (typeof headerObject == "string") {
                     headerHtml += '<div class="slide-header-content">' + headerObject + '</div>';
                 }
@@ -143,7 +146,7 @@
                 return footerHtml;
             }
             //add hide button 2017.5.1
-            var Html= "<div class='slide-control slide-head-show glyphicon glyphicon-chevron-left'></div>"
+            var Html = "<div class='slide-control slide-head-show glyphicon glyphicon-chevron-left'></div>"
             Html += ' <div class="slide-container">';
             if (data instanceof Array) {
                 /**是数组，表示只传入了body */
