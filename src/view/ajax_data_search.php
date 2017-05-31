@@ -7,7 +7,8 @@ require_once("oftentools.php");
 
 $conn = new mysqlQuery();
 
-function setQueryCondition(){
+function setQueryCondition()
+{
     $uid=isset($_GET["uid"])?$_GET["uid"]:"";
     $title=isset($_GET["title"])?$_GET["title"]:"";
     $length=isset($_GET["length"])?$_GET["length"]:"";
@@ -22,81 +23,78 @@ function setQueryCondition(){
     //可以模糊查找，修改=为%
     $condition.=$title==""?"":" title like '%".$title."%' ";
 
-    if($uid!=""){
+    if ($uid!="") {
         $condition.=$condition==""?"":"  and ";
         // $condition.=$length==""?"":" and length='".$length."' ";
-        $condition.=$uid==""?"":" uid =".$uid." ";    
+        $condition.=$uid==""?"":" uid =".$uid." ";
     }
-    if($sequence!=""){
+    if ($sequence!="") {
         $condition.=$condition==""?"":"  and ";
         // $condition.=$length==""?"":" and length='".$length."' ";
-        $condition.=$sequence==""?"":" sequence like '%".$sequence."%'";    
+        $condition.=$sequence==""?"":" sequence like '%".$sequence."%'";
     }
 
-    if($activity!=""){
+    if ($activity!="") {
         //TODO:可在此处扩展，选择是and还是or
-        $actArr=explode(',',$activity);
+        $actArr=explode(',', $activity);
         $actCount=count($actArr);
-        WriteLog($actArr,true);
-        for($i=0;$i<$actCount;$i++){
+        WriteLog($actArr, true);
+        for ($i=0; $i<$actCount; $i++) {
             $condition.=$condition==""?"":"  and ";
-            $condition.=$actArr[$i]==""?"":" activity like '%".$actArr[$i]."%'";   
+            $condition.=$actArr[$i]==""?"":" activity like '%".$actArr[$i]."%'";
         }
     }
  
-    if($validated!=""&&$validated!="all"){
+    if ($validated!=""&&$validated!="all") {
         $condition.=$condition==""?"":"  and ";
-        if($validated=="unknown"){
-            $condition.=$validated==""?"":"  validated='' ";               
-        }else{
-            $condition.=$validated==""?"":"  validated like '%".$validated."%'";   
-        } 
+        if ($validated=="unknown") {
+            $condition.=$validated==""?"":"  validated='' ";
+        } else {
+            $condition.=$validated==""?"":"  validated like '%".$validated."%'";
+        }
     }
  
-    if($fromdb!=""){
+    if ($fromdb!="") {
         $condition.=$condition==""?"":"  and ";
-        $condition.=$fromdb==""?"":" fromdb='".$fromdb."'"; 
+        $condition.=$fromdb==""?"":" fromdb='".$fromdb."'";
     }
-    if($source!=""){    
+    if ($source!="") {
         $condition.=$condition==""?"":"  and ";
         $condition.=$source==""?"":"  source like '%".$source."%' ";
     }
 
-    $lenrange=explode('-',$length);
+    $lenrange=explode('-', $length);
 
     $cou=count($lenrange);
-    if($cou>1){        
-        if($lenrange[0]!=""){
+    if ($cou>1) {
+        if ($lenrange[0]!="") {
             $condition.=$condition==""?"":"  and ";
             $condition.= " length>".$lenrange[0];
         }
-        if($lenrange[1]!=""){
+        if ($lenrange[1]!="") {
             $condition.=$condition==""?"":"  and ";
             $condition.= " length<".$lenrange[1];
         }
-
-    }else if ($cou>0&&$lenrange[0]!=""){
-        
+    } elseif ($cou>0&&$lenrange[0]!="") {
         $condition.=$condition==""?"":"  and ";
         $condition.=" length>".$lenrange[0];
-    }    
+    }
 
     //$condition.= " limit ".$offset.", ".$limit."";
-    if($condition==""){
+    if ($condition=="") {
         $condition=" 1 ";
     }
     $condition=" where ".$condition;
     WriteLog($condition);
-    return $condition;    
-        
+    return $condition;
 }
 
 
-    $condition=setQueryCondition();    
+    $condition=setQueryCondition();
     $query = "select * from `peptides` ";
     $query.=$condition;
 
-if(isset($_GET["offset"])){
+if (isset($_GET["offset"])) {
     $offset = $_GET["offset"];
     $limit = $_GET["limit"];
     $query.= " limit ".$offset.", ".$limit."";
@@ -113,8 +111,7 @@ if(isset($_GET["offset"])){
     $rownum = $statement->fetch(PDO::FETCH_ASSOC);
     $total = $rownum["num"];
     $response = array('total' => $total, 'rows' => $results);
-
-}else{
+} else {
         $statement = $conn->querysql($query);
 
     $results=[];
@@ -131,4 +128,3 @@ if(isset($_GET["offset"])){
 // WriteLog(json_encode($response));
 echo json_encode($response);
 $conn->close();
-?>

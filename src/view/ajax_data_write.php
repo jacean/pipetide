@@ -9,7 +9,7 @@
             mkdir($logDir, 0777, true);
         }
         $logDir = rtrim($logDir,'/');        
-        $logFileName = date("YmdHis").".fasta";
+        $logFileName = date("YmdHis").rand(0,1000).".fasta";
         
         $count=count($data);
         $str="";

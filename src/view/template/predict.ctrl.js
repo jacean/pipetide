@@ -8,7 +8,7 @@ var ctrl_predict_init = function (dom) {
      * 设置预测小模块显示值
      */
     var $t = $(dom);
-    var text=$t.data('text'), value=$t.data('value'), label=$t.data('label');
+    var text = $t.data('text'), value = $t.data('value'), label = $t.data('label');
     $("#testType").text(text);
     $("#testType").data('value', value);
     $("#testLabel").text(label);
@@ -103,6 +103,44 @@ var ctrl_predict_init = function (dom) {
                     }
                     tempStr += "<a href='" + data.data + "'>click this to download result file</a>";
                     $("#resultInfo").html(tempStr);
+                    var predictStr = data.predict;
+                    console.log(predictStr);
+                    var predictArr = predictStr.split("\n"), predictObject = [],predictHead=[];
+                    var predictDesc = predictArr[0].split(",");
+
+                    var widthp=100/predictDesc.length;
+                    for(var i=0,l=predictDesc.length;i<l;i++){
+                        predictHead.push({
+                            field:predictDesc[i],
+                            title:predictDesc[i],
+                            width:widthp+"%"
+                        });
+                    }
+                    for (var i = 2, l = predictArr.length; i < l; i++) {
+                        var arr = predictArr[i].split(","), obj = {};
+                        if (arr.length < 2) { continue; }
+                        for (var j = 0, c = predictDesc.length; j < c; j++) {
+                            obj[predictDesc[j]] = arr[j];
+                        }
+                        predictObject.push(obj);
+                    }
+                    console.log(predictObject);
+                    $("#resultInfo").append("<div id='predict_result_table'></div>");
+                    jUI.jBsTable("#predict_result_table", {
+                        config: {
+                            data: predictObject,
+                            sidePagination: "client",
+                            columns:predictHead,
+                            queryParams: function (params) {
+                                var temp = {
+                                    limit: params.limit, //页面大小
+                                    offset: params.offset, //页码
+                                };
+                                return temp;
+                            }
+                        }
+                    });
+
                 } else {
                     $("#resultPanel").show().removeClass("panel-default panel-success").addClass(
                         "panel-danger");
