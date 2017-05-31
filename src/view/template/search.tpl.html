@@ -74,6 +74,15 @@
         <div class="panel-heading">查询序列
         </div>
         <div id="toolbar" class="btn-group">
+            <div class="form-inline" role="form">
+                <div class="form-group">
+                    <select class="form-control" id="search_export_type">
+                        <option value="basic">Export Basic</option>
+                        <option value="selected">Export Selected</option>
+                    </select>
+                </div>
+                <button id="search_export_result" class="btn btn-default">导出fasta文件</button>
+            </div>
         </div>
         <!-- Table -->
         <table class="table" id="seq_data_table">

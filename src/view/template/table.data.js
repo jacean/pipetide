@@ -1,14 +1,14 @@
-var data_table_field=[{
+var data_table_field = [{
     checkbox: true,
-    width:"2%",
+    width: "2%",
 }, {
     field: 'uid',
     title: 'uid',
-    width:'5%'
+    width: '5%'
 }, {
     field: 'title',
     title: 'title',
-    width:'20%'
+    width: '20%'
 }, /*{
     field: 'sequence',
     title: 'sequence',
@@ -16,11 +16,11 @@ var data_table_field=[{
 }, */{
     field: 'length',
     title: 'length',
-    width:'5%'
+    width: '5%'
 }, {
     field: 'fromdb',
     title: 'from database',
-    width:'10%'
+    width: '10%'
 },/* {
     field: 'activity',
     title: 'activity'
@@ -39,5 +39,6 @@ var data_table_field=[{
 }, */{
     field: 'desctext',
     title: 'descrpition',
-    width:'50%'
+    width: '50%'
 }];
+

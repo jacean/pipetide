@@ -7,9 +7,6 @@ require_once("oftentools.php");
 
 $conn = new mysqlQuery();
 
-$offset = $_GET["offset"];
-$limit = $_GET["limit"];
-
 function setQueryCondition(){
     $uid=isset($_GET["uid"])?$_GET["uid"]:"";
     $title=isset($_GET["title"])?$_GET["title"]:"";
@@ -20,7 +17,7 @@ function setQueryCondition(){
     $fromdb=isset($_GET["fromdb"])?$_GET["fromdb"]:"";
     $source=isset($_GET["source"])?$_GET["source"]:"";
     
-    WriteLog($uid);
+    // WriteLog($uid);
     $condition="";
     //可以模糊查找，修改=为%
     $condition.=$title==""?"":" title like '%".$title."%' ";
@@ -93,11 +90,17 @@ function setQueryCondition(){
     return $condition;    
         
 }
-    $condition=setQueryCondition();
+
+
+    $condition=setQueryCondition();    
     $query = "select * from `peptides` ";
     $query.=$condition;
+
+if(isset($_GET["offset"])){
+    $offset = $_GET["offset"];
+    $limit = $_GET["limit"];
     $query.= " limit ".$offset.", ".$limit."";
-    
+
     //$query = "select * from `peptides` limit ".$offset.", ".$limit."";
     $statement = $conn->querysql($query);
 
@@ -105,14 +108,27 @@ function setQueryCondition(){
     while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
         $results[] = $row;
     }
-
     $fenye = "SELECT count(`uid`) num FROM `peptides` ".$condition;
     $statement = $conn->querysql($fenye);
     $rownum = $statement->fetch(PDO::FETCH_ASSOC);
     $total = $rownum["num"];
     $response = array('total' => $total, 'rows' => $results);
 
-WriteLog(json_encode($response));
+}else{
+        $statement = $conn->querysql($query);
+
+    $results=[];
+    while ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+        $results[] = $row;
+    }
+    $response = $results;
+}
+
+
+
+
+
+// WriteLog(json_encode($response));
 echo json_encode($response);
 $conn->close();
 ?>

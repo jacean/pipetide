@@ -51,8 +51,6 @@
             jUI.usernotify();
 
             ctrl_slide_init();
-        console.log(window.location);
-
             //***//设置默认显示搜索页面,开始
             //$("[data-value=search]").click();
             // $("[data-value=add]").click();
@@ -62,6 +60,8 @@
                 showTab(anchor,$("[data-value='"+anchor+"']"));
             }else if(anchor=="search"||anchor=="add"){
                 showTab(anchor);
+            }else{
+                showTab(moduleOption[0],$("[data-value='"+moduleOption[0]+"']"));
             }
         });
 

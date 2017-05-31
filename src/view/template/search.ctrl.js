@@ -15,10 +15,12 @@ var ctrl_search_init = function () {
         data: data_select_validated
     });
     $("#search_activity_antibacterial_select").select2({
-        width:"80px",
+        width: "80px",
         minimumResultsForSearch: Infinity,
         data: data_select_antibacterial
     });
+
+
     //初始化表单
     jUI.jBsTable("#seq_data_table", {
         config: {
@@ -94,6 +96,39 @@ var ctrl_search_init = function () {
     //每次都是加载script，所以需要这时候绑定事件
     $("#search_submit").click(function () {
         $("#seq_data_table").data("jBsTable").refresh();
+    });
+
+    $("#search_export_result").click(function () {
+        var type = $("#search_export_type").val(), data;
+        var $table = $("#seq_data_table");
+        if (type == "basic") {
+            data = $table.bootstrapTable("getData");//服务端分页，所以当前加载的就是全部了
+        }
+        if (type == "selected") {
+            data = $table.bootstrapTable("getAllSelections");
+        }
+        if(data.length>0){
+            data=data.map(function(d){return {title:d.title,sequence:d.sequence}});
+            $.ajax({
+                type:"post",
+                url:"ajax_data_write.php",
+                data:{
+                    sequ:data
+                },
+                dataType:"json",
+                success:function(res){
+                    if(res.status=="ok"){                       
+                        window.open(res.result,'target','');
+                    }else{
+                        alert("服务器处理失败");
+                    }
+                },
+                error:function(e){
+                    alert("error:"+e);
+                }
+            });
+        }
+
     });
 
 }
