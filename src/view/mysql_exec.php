@@ -27,7 +27,7 @@ class mysqlQuery {
             $affected = $this->dbh->exec($sql);
             $this->dbh->commit();
             $result=[];
-            if($affected){
+            if($affected>-1){
                 $result["status"]="success";
                 $result["result"]=$affected;
                 return $result;

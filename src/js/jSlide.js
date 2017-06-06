@@ -5,10 +5,6 @@
      * data is object by json
      * 
      */
-    /*
-    
-    
-    */
     var jSlide = function (dom, options) {
         this.$main = dom;
         this.options = options;
@@ -62,6 +58,9 @@
             if (typeof data != "object") {
                 return false;
             }
+            //清空容器
+            self.$main.html("");
+
 
             function createOption(option) {
                 if (typeof option == "string") {
@@ -199,6 +198,9 @@
 
                 })
             });
+        },
+        destroy:function(){
+
         }
     }
     _jUI = {

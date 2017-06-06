@@ -14,12 +14,20 @@
      -->
     <!-- third part lib-->
     <!--<script src="https://cdn.bootcss.com/blueimp-md5/2.7.0/js/md5.js"></script>-->
-    <script src="..\lib\bootstrap-3.3.7\js\bootstrap.js"></script>
-    <link rel="stylesheet" href="..\lib\bootstrap-3.3.7\css\bootstrap.css">
-    <script src="..\lib\bootstrap-table\bootstrap-table.js"></script>
     <link rel="stylesheet" href="..\lib\bootstrap-table\bootstrap-table.css">
+    <link rel="stylesheet" href="..\lib\bootstrap-3.3.7\css\bootstrap.css">
+    <script src="..\lib\bootstrap-3.3.7\js\bootstrap.js"></script>
+    <script src="..\lib\bootstrap-table\bootstrap-table.js"></script>
+    <!--edit-->
+    <link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">
+    <script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+    <script src="..\lib\bootstrap-table\extensions/editable/bootstrap-table-editable.js"></script>
+    
     <script src="..\lib\select2-4.0.3\js\select2.js"></script>
     <link rel="stylesheet" href="..\lib\select2-4.0.3\css\select2.css">
+    <link rel="stylesheet" href="..\lib\jquery-ui-1.12.1\jquery-ui.css">
+    <script src="..\lib\jquery-ui-1.12.1\jquery-ui.js"></script>
+
     <!---->
     <!-- data -->
     <script src="template/select.data.js"></script>
@@ -45,9 +53,14 @@
     <script src="template/add.ctrl.js"></script>
     <script src="template/predict.ctrl.js"></script>
     <script src="template/slide.ctrl.js"></script>
+    <script src="template/check.ctrl.js"></script>
 
     <script>
         $(document).ready(function () {
+            //TODO://检查本地缓存登录状态
+            // checkLogStatus();
+
+
             jUI.usernotify();
 
             ctrl_slide_init();
@@ -57,16 +70,24 @@
             var anchor = Util.url.Hash(window.location);
             var moduleOption = ["IMP_PUP", "iLM_2L", "CKSAAP_PhoglySite"];
             if (moduleOption.indexOf(anchor) > -1) {
-                showTab(anchor,$("[data-value='"+anchor+"']"));
-            }else if(anchor=="search"||anchor=="add"){
+                showTab(anchor, $("[data-value='" + anchor + "']"));
+            } else if (anchor == "search" || anchor == "add") {
                 showTab(anchor);
-            }else{
-                showTab(moduleOption[0],$("[data-value='"+moduleOption[0]+"']"));
+            } else if (anchor == "check") {
+                //正经情况下，这里的用户登录态应该传至服务器由服务器哦判断TODO：？？？
+                if (window.isLog != "LOG_END") {
+                    showTab(moduleOption[0], $("[data-value='" + moduleOption[0] + "']"));
+                } else {
+                    showTab(anchor);
+                }
+                // showTab(anchor);
+            } else {
+                showTab(moduleOption[0], $("[data-value='" + moduleOption[0] + "']"));
             }
         });
 
 
-        function showTab(value,dom) {
+        function showTab(value, dom) {
             //var value=$(dom).data("value");
             if (value == "IMP_PUP" || value == "iLM_2L" || value == "CKSAAP_PhoglySite" || value == "peptides") {
                 $("#tabContainer").load("template/predict.tpl.html", function (r, s) {
@@ -89,7 +110,14 @@
                     }
                 });
             }
-             Util.url.Hash(window.location,value);
+            if (value == "check") {
+                $("#tabContainer").load("template/check.tpl.html", function (r, s, x) {
+                    if (s == "success") {
+                        ctrl_check_init();
+                    }
+                });
+            }
+            Util.url.Hash(window.location, value);
 
         }
     </script>

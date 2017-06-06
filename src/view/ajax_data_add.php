@@ -8,7 +8,7 @@ require_once("mysql_exec.php");
 $conn = new mysqlQuery();
 
 
-$query_header="insert into peptides (sequence,seqmd,title,activity,length,source,fromdb,dblink,target,validated,insertdate,modifydate,desctext)values( ";
+$query_header="insert into temp_peptides (sequence,seqmd,title,activity,length,source,fromdb,dblink,target,validated,insertdate,modifydate,desctext)values( ";
 $query_value="";
 
 $title=isset($_POST["title"])?$_POST["title"]:"";

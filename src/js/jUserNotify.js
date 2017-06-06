@@ -37,6 +37,19 @@
                             console.log("return response");
                             console.log(res.result);
                             J.refresh(J.LOGSTATUS[2], res.result);
+                            //slide刷新，添加管理员修改的界面
+                            if (res.result.level == "admin") {
+                                var admin_slide_data = $.extend({}, data_slide_data);
+                                admin_slide_data.body.unshift({
+                                    text: "check submit",
+                                    value: "check",
+                                    type: "tab"
+                                });
+                                ctrl_slide_init();
+                            } else {
+
+                            }
+
                         } else {
                             alert(res.result);
                         }
@@ -51,6 +64,7 @@
             },
             out: function (data, J) {
                 console.log("logout");
+                ctrl_slide_init();//如果事管理员退出的话就要重新刷新侧栏？？？
             },
             up: function (data, J) {
                 console.log("sign up");
@@ -65,8 +79,9 @@
                         if (res.status == "ok") {
                             console.log("return up response");
                             console.log(res.result);
-                            //level?
+                            //level?注册成功的用户都是普通用户
                             J.refresh(J.LOGSTATUS[2], res.result);
+
                         } else {
                             alert(res.result);
                         }
@@ -334,7 +349,7 @@
                     alert("密码支持6位及以上数字字母下划线");
                     return;
                 }; //数字字母下划线
-                if($("#log-up-pwd2").val()!=$("#log-up-pwd").val()){
+                if ($("#log-up-pwd2").val() != $("#log-up-pwd").val()) {
                     alert("两次密码不匹配");
                     return;
                 }

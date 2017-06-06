@@ -98,37 +98,64 @@ var ctrl_search_init = function () {
         $("#seq_data_table").data("jBsTable").refresh();
     });
 
-    $("#search_export_result").click(function () {
+
+    function exportTableData() {
         var type = $("#search_export_type").val(), data;
         var $table = $("#seq_data_table");
-        if (type == "basic") {
-            data = $table.bootstrapTable("getData");//服务端分页，所以当前加载的就是全部了
-        }
-        if (type == "selected") {
-            data = $table.bootstrapTable("getAllSelections");
-        }
-        if(data.length>0){
-            data=data.map(function(d){return {title:d.title,sequence:d.sequence}});
+        if (type != "all") {
+            if (type == "basic") {
+                data = $table.bootstrapTable("getData");//服务端分页，所以当前加载的就是全部了
+            }
+            if (type == "selected") {
+                data = $table.bootstrapTable("getAllSelections");
+            }
+            if (data.length > 0) {
+                data = data.map(function (d) { return { title: d.title, sequence: d.sequence, uid: d.uid } });
+                $.ajax({
+                    type: "post",
+                    url: "ajax_data_write.php",
+                    data: {
+                        sequ: data,
+                        isAll: false
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.status == "ok") {
+                            window.open(res.result, 'target', '');
+                        } else {
+                            alert("服务器处理失败");
+                        }
+                    },
+                    error: function (e) {
+                        alert("error:" + e.responseText);
+                    }
+                });
+            } else {
+                alert("未选中序列可供导出");
+            }
+        } else {
+            //这样一来一回平白增加了不少流量,太大了不允许交互
             $.ajax({
-                type:"post",
-                url:"ajax_data_write.php",
-                data:{
-                    sequ:data
-                },
-                dataType:"json",
-                success:function(res){
-                    if(res.status=="ok"){                       
-                        window.open(res.result,'target','');
-                    }else{
+                type: "post",
+                url: "ajax_data_write.php",
+                data: { isAll: true },
+                success: function (res) {
+                    if (res.status == "ok") {
+                        window.open(res.result, 'target', '');
+                    } else {
                         alert("服务器处理失败");
                     }
                 },
-                error:function(e){
-                    alert("error:"+e);
-                }
+                error: function (e) {
+                    console.log(e);
+                    alert("error:" + e.responseText);
+                },
+                dataType: "json"
             });
         }
-
+    }
+    $("#search_export_result").click(function () {
+        exportTableData();
     });
 
 }

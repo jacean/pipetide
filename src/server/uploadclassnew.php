@@ -73,7 +73,7 @@ class TextVerify
                 $GLOBALS["response"]["result"].=" 2. run sucess,The prediction results have been saved to result file '$mypath' .\r\n";
                 $GLOBALS["response"]["data"]=$mypath;
                 $GLOBALS["response"]["predict"]=file_get_contents($mypath);//2017.5.31添加读取预测结果
-				WriteLog($GLOBALS["response"]["predict"]);
+				// WriteLog($GLOBALS["response"]["predict"]);
                 // echo("<form enctype='multipart/form-data' method='POST' >
                 // 	<input type='button' name='button' value='Download' onclick=\"javascript:window.location.href='$mypath'\">
                 // 	</form>");
