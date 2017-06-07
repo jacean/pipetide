@@ -84,8 +84,14 @@ var ctrl_search_init = function () {
             onDblClickRow: function (row, $element) {
                 //进入到详情页
                 //alert(row['uid']);
-                var uid = row['uid'];
-                window.location.href = "detail.html?uid=" + uid;;
+                // var uid = row['uid'];
+                // window.location.href = "detail.html?uid=" + uid;;
+            },
+            onClickCell:function(field, value, row, $element){
+                // console.log(value);
+                if(field=="uid"){
+                    window.location.href = "detail.html?uid=" + value;;
+                }
             }
 
         },

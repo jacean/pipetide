@@ -4,7 +4,8 @@ var data_table_field = [{
 }, {
     field: 'uid',
     title: 'uid',
-    width: '5%'
+    width: '5%',
+    class: "bst-link"
 }, {
     field: 'title',
     title: 'title',

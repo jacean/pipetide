@@ -39,13 +39,13 @@
                             J.refresh(J.LOGSTATUS[2], res.result);
                             //slide刷新，添加管理员修改的界面
                             if (res.result.level == "admin") {
-                                var admin_slide_data = $.extend({}, data_slide_data);
+                                var admin_slide_data = $.extend(true, {}, data_slide_data);//深度复制，没用true就是浅复制
                                 admin_slide_data.body.unshift({
                                     text: "check submit",
                                     value: "check",
                                     type: "tab"
                                 });
-                                ctrl_slide_init();
+                                ctrl_slide_init(admin_slide_data);
                             } else {
 
                             }
@@ -244,6 +244,7 @@
             $(".login-notify-level").parent().show();
             $(".login-notify-out").click(function () {
                 _me.changeStatus(_me.LOGSTATUS[0]);
+                _me.logHandle("out");
             });
 
         },

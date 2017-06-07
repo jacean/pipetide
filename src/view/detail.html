@@ -12,20 +12,31 @@
     <script src="..\lib\bootstrap-table\bootstrap-table.js"></script>
     <link rel="stylesheet" href="..\lib\bootstrap-table\bootstrap-table.css">
     <link rel="stylesheet" href="..\css\site.min.css">
+    <link rel="stylesheet" href="..\css\core.css">
     <script src="..\js\tools.js"></script>
     <a href="http://www.bootcdn.cn/"></a>
     <script>
         var uid = GetUrlParms().querys['uid'];
 
+        function setkey(k){
+            if(k=="fromdb"){
+                return "source database"
+            }
+            if(k=="dblink"){
+                return "database link"
+            }
+            return k;
+        }
         function setShow(data) {
             for (var key in data) {
+                if(key=="seqmd"){continue;}
                 var html = "";
                 html = '' +
-                    '<a class="package list-group-item" '+
-                    (key=="dblink"?('href="'+ data[key] + '" '):(' target="_blank"'))+
+                    '<a class="package list-group-item '+
+                    (key=="dblink"?('bst-link " href="'+ data[key] + '" '):('" target="_blank"'))+
                     '><div class="row">' +
                     '<div class="col-md-3">' +
-                    '<h4 class="package-name">' + key + '</h4>' +
+                    '<h4 class="package-name">' + setkey(key) + '</h4>' +
                     '</div>' +
                     '<div class="col-md-9 hidden-xs">' +
                     '<p class="package-description">' + data[key] +
@@ -38,7 +49,7 @@
                 $(html).insertBefore("#go_index");
             }
             $("#seq_title").text(data['title']);
-            $("#seq_seq").text(data['sequence']);
+            // $("#seq_seq").text(data['sequence']);
         }
         $.ajax({
             cache: true,
@@ -92,7 +103,7 @@
         <div class="container jumbotron">
             <div class="row">
                 <div class="col-xs-12">
-                    <h3 id="seq_title">序列title</h3>
+                    <h3 id="seq_title" class="">序列title</h3>
                     <p id="seq_seq"></p>
                 </div>
             </div>

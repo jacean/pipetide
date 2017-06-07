@@ -30,3 +30,12 @@ body,html{
     background-color: #286fb7;
     border-color: #286fb7;
 }
+
+/*表格超链接列*/
+.bst-link{
+    cursor: pointer
+}
+.bst-link:hover{
+    text-decoration: underline !important;
+    color: blue;
+}
