@@ -68,7 +68,7 @@
             //$("[data-value=search]").click();
             // $("[data-value=add]").click();
             var anchor = Util.url.Hash(window.location);
-            var moduleOption = ["IMP_PUP", "iLM_2L", "CKSAAP_PhoglySite"];
+            var moduleOption = ["IMP_PUP", "iLM_2L", "CKSAAP_PhoglySite","peptide"];
             if (moduleOption.indexOf(anchor) > -1) {
                 showTab(anchor, $("[data-value='" + anchor + "']"));
             } else if (anchor == "search" || anchor == "add") {
@@ -89,7 +89,7 @@
 
         function showTab(value, dom) {
             //var value=$(dom).data("value");
-            if (value == "IMP_PUP" || value == "iLM_2L" || value == "CKSAAP_PhoglySite" || value == "peptides") {
+            if (value == "IMP_PUP" || value == "iLM_2L" || value == "CKSAAP_PhoglySite" || value == "peptide"||value=="IMKNN") {
                 $("#tabContainer").load("template/predict.tpl.html", function (r, s) {
                     if (s == "success") {
                         ctrl_predict_init(dom);

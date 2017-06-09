@@ -1,1 +1,0 @@
-s1s2.mat 和s1s3.mat 中的train_data，test_data为通过CKSAAP特征提取方法设置k=0生成的，每个序列（即每列）有400维向量，s1均为train,s2或s3为test，抗菌肽在前，非抗菌肽在后排列

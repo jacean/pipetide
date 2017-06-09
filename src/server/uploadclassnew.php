@@ -10,8 +10,8 @@ require_once("oftentools.php");
 // iLM_2L
 // */
 $exec=$_POST["exec"];
-$execPath=dirname(__FILE__)."\\";
-$execFile=$exec.".exe";
+$execPath=dirname(__FILE__)."\\".$exec."\\";
+$execFile=$exec."\\start.bat";//TOD:???
 $type=$_POST["type"];
 $targetDir="../server/download/".$exec."/";
 $response = array('status' => "ok","result"=>"received data and start run by follow order. \r\n","data"=>"","predict"=>"" );
@@ -49,14 +49,22 @@ class TextVerify
         //读取文本域序列并保存成Xinput.fasta文件
         $this->text_content =$GLOBALS["seqe"];
         // $myfile = fopen("Xinput.fasta", "w") or die("Unable to open file!");
-        if (($myfile=fopen("Xinput.fasta", "w"))==false) {
+        if (($myfile=fopen($GLOBALS["execPath"]."Xinput.fasta", "w"))==false) {
             $GLOBALS["response"]["status"]="false";
             $GLOBALS["response"]["result"].=" 1. create seqe file fail,Error : Unable to open file! \r\n";
+            return;
         } else {
             $GLOBALS["response"]["result"].=" 1. create seqe file sucess,next start ".$GLOBALS["exec"].".exe. \r\n";
         }
-        fwrite($myfile, $this->text_content);
-           
+
+        if (fwrite($myfile, $this->text_content) === false) {
+            $GLOBALS["response"]["status"]="false";
+            $GLOBALS["response"]["result"].=" 1. create seqe file fail,Error : Unable to write file! \r\n";
+            return;
+        }
+        fclose($myfile);
+
+        writeLog($GLOBALS["execFile"]);
         system($GLOBALS["execFile"]);
 
         if (!is_dir($this->upload_target_dir)) {
@@ -73,7 +81,7 @@ class TextVerify
                 $GLOBALS["response"]["result"].=" 2. run sucess,The prediction results have been saved to result file '$mypath' .\r\n";
                 $GLOBALS["response"]["data"]=$mypath;
                 $GLOBALS["response"]["predict"]=file_get_contents($mypath);//2017.5.31添加读取预测结果
-				// WriteLog($GLOBALS["response"]["predict"]);
+                // WriteLog($GLOBALS["response"]["predict"]);
                 // echo("<form enctype='multipart/form-data' method='POST' >
                 // 	<input type='button' name='button' value='Download' onclick=\"javascript:window.location.href='$mypath'\">
                 // 	</form>");
@@ -81,6 +89,7 @@ class TextVerify
             // ob_end_clean();
             $GLOBALS["response"]["status"]="false";
             $GLOBALS["response"]["result"].=" 2. run fail,Error: The input was not a valid FASTA file OR contained some illegal characters, the prediction have been stopped.\r\n";
+            return ;
         }
     }
     
@@ -128,10 +137,11 @@ class Upload
                     }
                     $mypath=$this->upload_target_dir."\\".$this->upload_target_name;
 
-                    $this->upload_final_name = 'Xinput.fasta';
-                    if (!move_uploaded_file($this->upload_tmp_name, "./Xinput.fasta")) {
+                    $this->upload_final_name = $GLOBALS["execPath"].'Xinput.fasta';
+                    if (!move_uploaded_file($this->upload_tmp_name, $this->upload_final_name)) {
                         $GLOBALS["response"]["status"]="false";
                         $GLOBALS["response"]["result"].=" 1. file upload failed. \r\n";
+                        return;
                     } else {
                         $GLOBALS["response"]["result"].= " 1. file upload successed,next start ".$GLOBALS["exec"]."exe. \r\n";
                     }
@@ -145,6 +155,7 @@ class Upload
 
                         $GLOBALS["response"]["result"].=" 2. run sucess,The prediction results have been saved to result file '$mypath' . \r\n";
                         $GLOBALS["response"]["data"]=$mypath;
+                        $GLOBALS["response"]["predict"]=file_get_contents($mypath);//2017.5.31添加读取预测结果
                         // echo("<form enctype='multipart/form-data' method='POST' >
                         // 	<input type='button' name='button' value='Download' onclick=\"javascript:window.location.href='$mypath'\">
                         // 	</form>");
@@ -152,18 +163,22 @@ class Upload
                         // ob_end_clean();
                         $GLOBALS["response"]["status"]="false";
                         $GLOBALS["response"]["result"].=" 2. run fail,Error: The input was not a valid FASTA file OR contained some illegal characters, the prediction have been stopped.\r\n";
+                        return;
                     }
                 } else {
                     $GLOBALS["response"]["status"]="false";
                     $GLOBALS["response"]["result"].=" 1. file upload failed.Error : file was too big. \r\n";
+                    return ;
                 }
             } else {
                 $GLOBALS["response"]["status"]="false";
                 $GLOBALS["response"]["result"].=" 1. file upload failed.Error : file type is not supported. \r\n";
+                return;
             }
         } else {
             $GLOBALS["response"]["status"]="false";
             $GLOBALS["response"]["result"].=" 1. file upload failed.Error : The input is empty, please upload again! \r\n";
+            return;
         }
     }
    /**

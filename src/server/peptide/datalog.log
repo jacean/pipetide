@@ -1,0 +1,37 @@
+[2017-06-09 19:18:40]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-09 19:19:29]:execute 3 seque(s),take 0.002000 (s)
+[2017-06-09 23:39:38]:execute 3 seque(s),take 0.011000 (s)
+[2017-06-09 23:44:32]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-09 23:48:38]:execute 3 seque(s),take 0.003000 (s)
+[2017-06-09 23:49:04]:execute 3 seque(s),take 0.002000 (s)
+[2017-06-09 23:49:32]:execute 3 seque(s),take 0.002000 (s)
+[2017-06-09 23:50:03]:execute 3 seque(s),take 0.002000 (s)
+[2017-06-09 23:50:15]:execute 3 seque(s),take 0.002000 (s)
+[2017-06-09 23:50:27]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-09 23:50:43]:open infile dataset.txt failed
+[2017-06-09 23:55:59]:open infile dataset.txt failed
+[2017-06-09 23:58:46]:open infile dataset.txt failed
+[2017-06-10 00:01:31]:open infile dataset.txt failed
+[2017-06-10 00:02:39]:open infile dataset.txt failed
+[2017-06-10 00:04:07]:open infile dataset.txt failed
+[2017-06-10 00:07:16]:execute 3 seque(s),take 0.005000 (s)
+[2017-06-10 00:08:12]:execute 3 seque(s),take 0.002000 (s)
+[2017-06-10 00:12:17]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:12:28]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:14:03]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:15:27]:execute 3 seque(s),take 0.002000 (s)
+[2017-06-10 00:16:16]:execute 879 seque(s),take 0.114000 (s)
+[2017-06-10 00:17:12]:execute 879 seque(s),take 0.169000 (s)
+[2017-06-10 00:17:40]:execute 879 seque(s),take 0.156000 (s)
+[2017-06-10 00:19:09]:execute 879 seque(s),take 0.104000 (s)
+[2017-06-10 00:21:44]:execute 879 seque(s),take 0.147000 (s)
+[2017-06-10 00:22:34]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:23:28]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:23:46]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:24:10]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:32:01]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:44:11]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:46:38]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:47:18]:execute 3 seque(s),take 0.001000 (s)
+[2017-06-10 00:49:58]:execute 3 seque(s),take 0.002000 (s)
+[2017-06-10 00:51:12]:execute 3 seque(s),take 0.001000 (s)

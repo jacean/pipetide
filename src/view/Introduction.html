@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Introduction</title>
+    <script src="..\lib\jquery-3.1.1\jquery.js"></script>
+    <script src="..\lib\bootstrap-3.3.7\js\bootstrap.js"></script>
+    <link rel="stylesheet" href="..\lib\bootstrap-3.3.7\css\bootstrap.css">
+    <link rel="stylesheet" href="..\css\core.css">
+
+</head>
+
+<body>
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Introduction</h1>
+            <div style="word-break:break-word;">
+                <h3 class="text-info">About this bioinformatics prediction platform: </h3>
+                <p>The bioinformatics prediction platform is established for providing useful tools based on computational methods
+                    for following bioinformatics researches:</p>
+                <ol>
+                    <li>Identification of antimicrobial peptides (AMPs) and their function types</li>
+                    <li>Prediction of protein subcellular localization</li>
+                    <li>Prediction of protein post-translational modification sites</li>
+                </ol>
+                <p>The web-server can complete above tasks online and provides free predicting services for public. Especially,
+                    the platform contains a database of antimicrobial peptides as a tool for AMPs study.</p>
+                <h3 class="text-info">About data format: </h3>
+                <p>Query peptide/protein sequences should be in FASTA format.</p>
+                <P>Example: </P>
+
+                <blockquote>
+                    > query sequence 1; example of AMPs AVPLAVPLVYMGASVSPAVWNWLLVTFGAAAVAAAAVTVSDNDSHSCANNRGWCRSRCFSHEYIDSWHSDVCGSYDCCRPRY
+                </blockquote>
+
+                <blockquote>
+                    > query sequence 2; example of protein subcellular localization MAATLGRDQYVYMAKLAEQAERYEEMVQFMEQLVTGATPAEELTVEERNLLSVAYKNVIGSLRAAWRIVSSIEQKEESRKNDEHVSLVKDYRSKVESELSSVCSGILKLLDSHLIPSAGASESKVFYLKMKGDYHRYMAEFKSGDERKTAAEDTMLAYKAAQDIAAADMAPTHPIRLGLALNFSVFYYEILNSSDKACNMAKQAFEEAIAELDTLGEESYKDSTLIMQLLRDNLTLWTSDMQEQMDEA
+                </blockquote>
+
+                <blockquote>
+                    > query sequence 3; example of protein post-translational modification MALPSNYKQIAVGGQGSATPLQGGGGGSGGGSRSRSSGGGGGGDRNKDQTPIFTHSNYGNPAFTPQKVTKSSSSKNQNESRLPKPPKPPEKPILPYMRYSKRVWDSVKAKHPELKLWELGKKIGAMWKLLPEDEKTEFIDEYEAEKLEYEKSLKAYHQTPAYQAYMSAKSKVKTDVDMHETPSRGGGSKSQHERRIDIQPAEDEDDQDEGYTTKHLAYARYLHNHRLINEIFSEAVVPDVRSVVTTTRMQVLKRQVSSLTMHQTKLEAELQQMEEKFEAKKQRMVESSEAFQEELKRHCKPAVDEETFQKMVLRMYEDIKRDRQRLDEPNANANSAANPAAAAATAAAAPVTRSEEAVKPPTQPGQPAATPAGQEPASAVPAPAAPPKETPPAVKPATLNPTPSSTPTPAPAVHVHETASKTDPEPMDIEPPPKPSVPPPPIKPEKLEMAAALPPQSTLVEPPKTEPAKVVAQPGKVPTPVPTPTPPPEVAPAAGAVTAATTTTRRTPTPPPVPQQVPLPQQQGGPAPPPGMPQMHPHPGHPPPGHSLMPPHMGPHQPPPGMPGLPPPPPHTGYANYGGPPHGPPPGPPGGPARPYYQPQYGGHPTPQPYYAPFSPYQQSYGPPPGSHYMSPRPPPPQHNGNPGHPYAPEHGSNPPPPQQQQQQQPPPGHLHEPSGGGPGAPGGGAGAAAAAAPGAGVYPTPGAGAGPGAPPGPAGGAPLGEAAVAGGVGPPAATALGKHPEAEKHEAD
+                </blockquote>
+                <h3 class="text-info">NOTE: The FASTA format for the current predictor can be described as follows. </h3>
+                <ol>
+
+                    <li>The first line of each query protein input format must begin with a greater-than (">") symbol in the
+                        first column. The word following the ">" symbol is the identifier and description of the sequence,
+                        but both are optional.
+                    </li>
+                    <li>The sequence (in single-character code) begins in a different line and ends if another line starting
+                        with a ">" appears, which indicates the start of another query protein
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

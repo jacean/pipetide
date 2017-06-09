@@ -1,0 +1,1 @@
+echo %cd% >a.txt

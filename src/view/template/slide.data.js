@@ -8,10 +8,16 @@ var data_slide_data = {
         // options: ["IMP-PUP", "iLM-2L", "CKSAAP_PhoglySite"]
         options: [{
             text: "Predict Antimicrobial Peptides",
-            value: "peptides",
+            value: "peptide",
             label: "predict antimicrobial peptides and their  functional  types",
             type: "tab"
-        },{
+        },
+        {
+            text: "IMKNN",
+            value: "IMKNN",
+            label: "Predicting Subcellular Localization of Gram-negative Bacterial Proteins by IMKNN Algorithm",
+            type: "tab"
+        }, {
             text: "IMP_PUP",
             value: "IMP_PUP",
             label: "Prediction of pupylation sites in prokaryotic proteins",
@@ -60,25 +66,23 @@ var data_slide_data = {
         header: "说明",
         // options: ["readme", "data", "citation"]
         options: [{
-            text: "readme",
-            value: "ReadMe.html",
+            text: "Introduction ",
+            value: "Introduction.html",
             type: "link"
         }, {
-            text: "data",
-            value: "data.html",
-            type: "link"
-        }, {
-            text: "citation",
+            text: "Citation",
             value: "Citation.html",
+            type: "link"
+        }, {
+            text: "About us",
+            value: "About.html",
+            type: "link"
+        }, {
+            text: "Contact us",
+            value: "Contact.html",
             type: "link"
         }],
         type: "group"
-    },
-    // "Contact @ jacean"],
-    {
-        text: "Contact @ WanJiaqing",
-        value: "mailto:wanjacean@outlook.com",
-        type: "link"
     }
     ],
     footer: [""]
@@ -89,8 +93,8 @@ var data_slide_event = {
     },
     show: function () {
         $("#slideContainer").animate();
-        $("#slideContainer").removeClass("col-md-1",500);
-        $("#tabContainer").removeClass("col-md-11",500);
+        $("#slideContainer").removeClass("col-md-1", 500);
+        $("#tabContainer").removeClass("col-md-11", 500);
         // $("#slideContainer").addClass("col-md-3", 300);
         // $("#tabContainer").addClass("col-md-9", 300);
     },

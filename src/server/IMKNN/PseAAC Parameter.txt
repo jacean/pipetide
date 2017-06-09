@@ -1,0 +1,6 @@
+PseAAC: http://www.csbio.sjtu.edu.cn/bioinf/
+
+PseAA mode: Type 2- Amphiphilic 
+Amino acid character: Hydrophobicity Hydrophilicity Mass 
+Weight factor W: 0.2
+Lambda parameter: 11

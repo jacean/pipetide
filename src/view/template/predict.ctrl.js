@@ -85,7 +85,7 @@ var ctrl_predict_init = function (dom) {
                 $("#resultPanel").show().removeClass("panel-default panel-success").addClass(
                     "panel-danger");
                 $("#resultTitle").html("提交失败");
-                $("#resultInfo").html(request);
+                $("#resultInfo").html(request.responseText);
                 removeLoading();
             },
             success: function (data) {
@@ -102,21 +102,33 @@ var ctrl_predict_init = function (dom) {
                         tempStr += "<p>" + strArr[i] + "</p>"
                     }
                     tempStr += "<a href='" + data.data + "'>click this to download result file</a>";
-                    $("#resultInfo").html(tempStr);
+                    $("#resultInfo").html(tempStr);                    
+                    $("#resultInfo").append("<div id='predict_result_table'></div>");
                     var predictStr = data.predict;
                     console.log(predictStr);
-                    var predictArr = predictStr.split("\n"), predictObject = [],predictHead=[];
+                    var predictArr = predictStr.split("\n"), predictObject = [], predictHead = [];
                     var predictDesc = predictArr[0].split(",");
 
-                    var widthp=100/predictDesc.length;
-                    for(var i=0,l=predictDesc.length;i<l;i++){
+                    //当原本宽度不够大的时候，百分比不会扩充
+                    var allw=$("#predict_result_table").width();
+                    // var widthp = parseInt(100 / predictDesc.length);
+                    var widthp = parseInt(allw / predictDesc.length);                    
+                    // var left = 100;
+                    var left = allw;
+                    for (var i = 0, l = predictDesc.length - 1; i < l; i++) {
+                        left -= widthp;
                         predictHead.push({
-                            field:predictDesc[i],
-                            title:predictDesc[i],
-                            width:widthp+"%"
+                            field: predictDesc[i],
+                            title: predictDesc[i],
+                            width: widthp + 'px'
                         });
                     }
-                    for (var i = 2, l = predictArr.length; i < l; i++) {
+                    predictHead.push({
+                        field: predictDesc[i],
+                        title: predictDesc[i],
+                        width: left + 'px'
+                    });
+                    for (var i = 1, l = predictArr.length; i < l; i++) {
                         var arr = predictArr[i].split(","), obj = {};
                         if (arr.length < 2) { continue; }
                         for (var j = 0, c = predictDesc.length; j < c; j++) {
@@ -125,12 +137,11 @@ var ctrl_predict_init = function (dom) {
                         predictObject.push(obj);
                     }
                     console.log(predictObject);
-                    $("#resultInfo").append("<div id='predict_result_table'></div>");
                     jUI.jBsTable("#predict_result_table", {
                         config: {
                             data: predictObject,
                             sidePagination: "client",
-                            columns:predictHead,
+                            columns: predictHead,
                             queryParams: function (params) {
                                 var temp = {
                                     limit: params.limit, //页面大小
