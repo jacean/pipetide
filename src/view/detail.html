@@ -18,22 +18,22 @@
     <script>
         var uid = GetUrlParms().querys['uid'];
 
-        function setkey(k){
-            if(k=="fromdb"){
+        function setkey(k) {
+            if (k == "fromdb") {
                 return "source database"
             }
-            if(k=="dblink"){
+            if (k == "dblink") {
                 return "database link"
             }
             return k;
         }
         function setShow(data) {
             for (var key in data) {
-                if(key=="seqmd"){continue;}
+                if (key == "seqmd") { continue; }
                 var html = "";
                 html = '' +
-                    '<a class="package list-group-item '+
-                    (key=="dblink"?('bst-link " href="'+ data[key] + '" '):('" target="_blank"'))+
+                    '<a class="package list-group-item ' +
+                    (key == "dblink" ? ('bst-link " href="' + data[key] + '" ') : ('" target="_blank"')) +
                     '><div class="row">' +
                     '<div class="col-md-3">' +
                     '<h4 class="package-name">' + setkey(key) + '</h4>' +
@@ -48,7 +48,7 @@
                     '';
                 $(html).insertBefore("#go_index");
             }
-            $("#seq_title").text(data['title']);
+            // $("#seq_title").text(data['title']);
             // $("#seq_seq").text(data['sequence']);
         }
         $.ajax({
@@ -80,30 +80,15 @@
     <header class="site-header">
         <nav class="navbar navbar-static-top main-navbar" id="top">
             <div class="container">
-                <div class="navbar-header">
-                    <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar" aria-controls="bs-navbar"
-                        aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span> 
-                        <span class="icon-bar"></span> 
-                        <span class="icon-bar"></span>
-                        </button>
-                    <div class="navbar-brand brand-bootcdn">PEPTIDES</div>
-                    <div class="navbar-brand brand-upyun">DUT</div>
-                </div>
-                <nav id="bs-navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="" target="_blank">首页</a></li>
-                        <li><a href="" target="_blank">介绍</a></li>
-                        <li><a href="">关于</a></li>
-                    </ul>
-                </nav>
+
+
+
             </div>
         </nav>
         <div class="container jumbotron">
             <div class="row">
                 <div class="col-xs-12">
-                    <h3 id="seq_title" class="">序列title</h3>
+                    <h3>Antimicrobial Peptide Predicting Platform</h3>
                     <p id="seq_seq"></p>
                 </div>
             </div>
@@ -111,23 +96,11 @@
         <!--<div class="mostused-packages well well-sm text-center hidden-xs hidden-sm">
         </div>-->
     </header>
-    <div class="container protocal-notice hidden-xs">
-        <div class="row">
-            <div class="col-xs-12">
-                <form class="form-inline pull-right"><label>选择操作：</label>
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-default active"><input type="radio" name="options" id="https" checked="">copy</label>
-                        <label class="btn btn-default"><input type="radio" name="options" id="http">download</label>
-                        <label class="btn btn-default"><input type="radio" name="options" id="relative">save</label></div>
-                    <span class="help-block"><a href="" target="_blank" >了解详情 <i class="fa fa-info-circle"></i></a></span>
-                </form>
-            </div>
-        </div>
-    </div>
+
     <main class="packages-list-container" id="all-packages">
         <div class="container">
             <div class="list-group packages" id="common-packages">
-                <a id="go_index" href="javascript:history.go(-1);" class="package list-group-item all-packages" target="_blank">返回</a>
+                <a id="go_index" href="javascript:history.go(-1);" class="package list-group-item all-packages" target="_blank"></a>
             </div>
             <div class="list-group packages" id="search-results" style="display: none"></div>
         </div>

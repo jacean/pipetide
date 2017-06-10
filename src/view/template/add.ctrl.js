@@ -100,8 +100,8 @@ var ctrl_add_init = function () {
 
     }
 
-    /*上传附件addmodlue，稍后改*/
-    $('input[id=add_val_file]').change(function () {
-        $('#add_val_file_show').val($(this).val());
-    });
+    // /*上传附件addmodlue，稍后改*/
+    // $('input[id=add_val_file]').change(function () {
+    //     $('#add_val_file_show').val($(this).val());
+    // });
 }

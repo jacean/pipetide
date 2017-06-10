@@ -1,7 +1,15 @@
 /**
 *slide 的 css 文件
 */
-
+.slide-control{
+    background-color: transparent;
+    border-radius: 5px;
+    border: 0px;
+    padding: 10px;
+}
+.slide-hide{
+    height: 60px;
+}
 .slide-container{
     border-right-style: solid;
     border-right-color: #e7eaec;
@@ -14,12 +22,8 @@
 }
 .slide-head-show{
     float: right;
-    width: 25px;
-    height: 25px;
 }
 .slide-head-hide{
-    width: 25px;
-    height: 25px;
 
 }
 /*header*/
@@ -27,7 +31,7 @@
     border-bottom: 1px solid #e7eaec;
     text-align: left;
     /*padding-bottom: 50px;*/
-    padding-top: 50px;
+    padding-top: 80px;
 }
 .slide-header-content{
     font-size: 2.5em;

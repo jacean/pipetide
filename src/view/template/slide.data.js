@@ -1,10 +1,10 @@
 var data_slide_data = {
     header: {
         main: "抗菌肽在线预测",
-        label: "Antimicrobial Peptide Forecasting Platform"
+        label: "Antimicrobial Peptide Predicting Platform"
     },
     body: [{
-        header: "功能",
+        header: "预测",
         // options: ["IMP-PUP", "iLM-2L", "CKSAAP_PhoglySite"]
         options: [{
             text: "Predict Antimicrobial Peptides",
@@ -35,7 +35,7 @@ var data_slide_data = {
         }],
         type: "group"
     }, {
-        header: "数据",
+        header: "功能",
         options: [{
             text: "搜索",
             value: "search",
@@ -93,8 +93,10 @@ var data_slide_event = {
     },
     show: function () {
         $("#slideContainer").animate();
-        $("#slideContainer").removeClass("col-md-1", 500);
+        $("#slideContainer").removeClass("col-md-1", 500);        
+        $("#slideContainer").removeClass("slide-hide",500);
         $("#tabContainer").removeClass("col-md-11", 500);
+        window.jSlide="show";
         // $("#slideContainer").addClass("col-md-3", 300);
         // $("#tabContainer").addClass("col-md-9", 300);
     },
@@ -102,6 +104,9 @@ var data_slide_event = {
         // $("#slideContainer").removeClass("col-md-3");
         // $("#tabContainer").removeClass("col-md-9");
         $("#slideContainer").addClass("col-md-1", 500);
+        $("#slideContainer").addClass("slide-hide", 500);
         $("#tabContainer").addClass("col-md-11", 500);
+        
+        window.jSlide="hide";
     }
 }

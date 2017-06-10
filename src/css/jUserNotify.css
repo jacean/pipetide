@@ -108,9 +108,13 @@
             position: absolute;
             float: right;
             z-index: 9;
-            right: 0px;
+            right: 30px;
             top: 0px;
-            margin: 8px 15px;
+            margin: 0px 15px;            
+            /*给slide的三角让位*/
+            margin-left:60px;
+
+            text-align: right;
         }
 
         .login-notify-child {
@@ -181,18 +185,12 @@
         }
 
         .login-window {
-            vertical-align: middle;
-            /*设置居中*/
-            margin: auto;
-            left: 0;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            /**/
-            position: relative;
-            /*height: 100%;*/
-            /*脱离文档流*/
+
+            left: 50%;
+            position: absolute;
+            width: 100%;
             top: 50%;
-            /*偏移*/
-            transform: translateY(-50%);
+            transform: translate(-50%,-50%);
+            text-align: center;
+
         }

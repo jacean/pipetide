@@ -60,8 +60,8 @@
                     <input type="text" class="form-control" id="search_val_source" placeholder="source">
                 </div>-->
 
-                <div type="button" class="btn btn-default col-md-offset-2 col-md-3" id="search_submit">搜索</div>
-                <div type="button" class="btn btn-default col-md-offset-1 col-md-3" id="search_expand">收拢</div>
+                <div type="button" class="btn btn-default col-md-offset-4 col-md-4" id="search_submit">搜索</div>
+                <!--<div type="button" class="btn btn-default col-md-offset-1 col-md-3" id="search_expand">收拢</div>-->
 
             </div>
 
@@ -73,17 +73,27 @@
         <!-- Default panel contents -->
         <div class="panel-heading">查询序列
         </div>
-        <div id="toolbar" class="btn-group">
+        <div id="toolbar" class="btn-group" role="group">
             <div class="form-inline" role="form">
-                <div class="form-group">
-                    <select class="form-control" id="search_export_type">
+                <div class="input-group">
+                    <div class="form-group ">
+                        <select class="form-control" id="search_export_type">
                         <option value="selected">Export Selected</option>
                         <option value="basic">Export Basic</option>
                         <option value="all">Export All</option>
                     </select>
+                    </div>
+                    <button id="search_export_result" class="btn btn-default" type="button">export fasta</button>
                 </div>
-                <button id="search_export_result" class="btn btn-default">导出fasta文件</button>
+                <div class="input-group">
+                    <input id="search_page_num" type="number" value="1" min="1" style="width: 80px" class="form-control" placeholder="select page">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default form-control" id="search_page_select" type="button">Go</button>
+                    </span>
+                </div>
+                <!-- /input-group -->
             </div>
+
         </div>
         <!-- Table -->
         <table class="table" id="seq_data_table">

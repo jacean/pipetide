@@ -221,7 +221,9 @@ a:focus {
 }
 
 .packages .package-description {
-    color: #333
+    color: #333;
+    word-wrap:break-word; 
+    word-break:normal;
 }
 
 .packages .package-extra-info {

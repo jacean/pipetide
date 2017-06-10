@@ -33,15 +33,15 @@
                 if (control.hasClass("slide-head-show")) {
                     control.removeClass('slide-head-show');
                     control.addClass('slide-head-hide');
-                    control.removeClass('glyphicon glyphicon-chevron-left');
-                    control.addClass('glyphicon glyphicon-chevron-right');
+                    control.find("span").removeClass('glyphicon glyphicon-chevron-left');
+                    control.find("span").addClass('glyphicon glyphicon-chevron-right');
                     $('.slide-container').css('opacity', '0');
                     event.hide();
                 } else {
                     control.removeClass('slide-head-hide');
                     control.addClass('slide-head-show');
-                    control.removeClass('glyphicon glyphicon-chevron-right');
-                    control.addClass('glyphicon glyphicon-chevron-left');
+                    control.find("span").removeClass('glyphicon glyphicon-chevron-right');
+                    control.find("span").addClass('glyphicon glyphicon-chevron-left');
                     event.show();
                     $('.slide-container').css({ 'opacity': 1 });
                 }
@@ -145,7 +145,7 @@
                 return footerHtml;
             }
             //add hide button 2017.5.1
-            var Html = "<div class='slide-control slide-head-show glyphicon glyphicon-chevron-left'></div>"
+            var Html = "<button class='slide-control slide-head-show'><span class=' glyphicon glyphicon-chevron-left'></span></button>"
             Html += ' <div class="slide-container">';
             if (data instanceof Array) {
                 /**是数组，表示只传入了body */

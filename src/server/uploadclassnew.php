@@ -64,7 +64,7 @@ class TextVerify
         }
         fclose($myfile);
 
-        writeLog($GLOBALS["execFile"]);
+        // writeLog($GLOBALS["execFile"]);
         system($GLOBALS["execFile"]);
 
         if (!is_dir($this->upload_target_dir)) {

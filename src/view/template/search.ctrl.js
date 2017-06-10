@@ -87,10 +87,15 @@ var ctrl_search_init = function () {
                 // var uid = row['uid'];
                 // window.location.href = "detail.html?uid=" + uid;;
             },
-            onClickCell:function(field, value, row, $element){
+            onClickCell: function (field, value, row, $element) {
                 // console.log(value);
-                if(field=="uid"){
-                    window.location.href = "detail.html?uid=" + value;;
+                if (field == "uid") {
+                    // window.location.href = "detail.html?uid=" + value;;//避免弹窗阻止
+                    var a = $("<a href='detail.html?uid=" + value+"' target='_blank'></a>").get(0);
+
+                    var e = document.createEvent('MouseEvents');
+                    e.initEvent('click', true, true);
+                    a.dispatchEvent(e);
                 }
             }
 
@@ -163,5 +168,9 @@ var ctrl_search_init = function () {
     $("#search_export_result").click(function () {
         exportTableData();
     });
-
+    $("#search_page_select").click(function(){
+        var $table = $('#seq_data_table'),
+        $page = $('#search_page_num');
+        $table.bootstrapTable('selectPage', +$page.val());
+    });
 }

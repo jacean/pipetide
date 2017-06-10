@@ -11,4 +11,7 @@ var ctrl_slide_init = function (data) {
         event: data_slide_event,
         selected: false
     });
+    if(window.jSlide=="hide"){
+        $('.slide-control').click();
+    }
 }

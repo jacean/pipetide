@@ -99,10 +99,22 @@ var ctrl_predict_init = function (dom) {
                     var len = strArr.length;
                     var tempStr = "";
                     for (var i = 0; i < len; i++) {
-                        tempStr += "<p>" + strArr[i] + "</p>"
+                        tempStr += "<p style='word-break:break-word;'>" + strArr[i] + "</p>"
                     }
                     tempStr += "<a href='" + data.data + "'>click this to download result file</a>";
-                    $("#resultInfo").html(tempStr);                    
+                    $("#resultInfo").html(tempStr);
+                    $("#resultInfo").append("" +
+                        '<div id="toolbar" class="btn-group" role="group">' +
+                        '<div class="form-inline" role="form">' +
+                        '<div class="input-group">' +
+                        '<input id="search_page_num" type="number" value="1" min="1" style="width: 80px" class="form-control" placeholder="select page">' +
+                        '<span class="input-group-btn">' +
+                        '<button class="btn btn-default form-control" id="search_page_select" type="button">Go</button>' +
+                        '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        "");
                     $("#resultInfo").append("<div id='predict_result_table'></div>");
                     var predictStr = data.predict;
                     console.log(predictStr);
@@ -110,9 +122,9 @@ var ctrl_predict_init = function (dom) {
                     var predictDesc = predictArr[0].split(",");
 
                     //当原本宽度不够大的时候，百分比不会扩充
-                    var allw=$("#predict_result_table").width();
+                    var allw = $("#predict_result_table").width();
                     // var widthp = parseInt(100 / predictDesc.length);
-                    var widthp = parseInt(allw / predictDesc.length);                    
+                    var widthp = parseInt(allw / predictDesc.length);
                     // var left = 100;
                     var left = allw;
                     for (var i = 0, l = predictDesc.length - 1; i < l; i++) {
@@ -142,6 +154,9 @@ var ctrl_predict_init = function (dom) {
                             data: predictObject,
                             sidePagination: "client",
                             columns: predictHead,
+                            toolbar: "#toolbar",
+                            search: true,
+                            searchOnEnterKey: true,
                             queryParams: function (params) {
                                 var temp = {
                                     limit: params.limit, //页面大小
